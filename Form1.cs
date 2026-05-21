@@ -414,5 +414,109 @@ namespace DataManager
         {
 
         }
+
+        private void RefreshGraphbtn_Click(object sender, EventArgs e)
+        {
+            LoadGraph();
+        }
+
+        private void OpenGraphBrowserbtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Imgtxt.Text)) return;
+
+            string dataPath = Imgtxt.Text;
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            List<double> angles = new List<double>();
+            List<double> throttles = new List<double>();
+
+            foreach (string catalogFile in catalogFiles)
+            {
+                string[] lines = File.ReadAllLines(catalogFile);
+                foreach (string line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    JObject json = JObject.Parse(line);
+                    angles.Add((double)json["user/angle"]);
+                    throttles.Add((double)json["user/throttle"]);
+                }
+            }
+
+            string anglesJs = string.Join(",", angles);
+            string throttlesJs = string.Join(",", throttles);
+
+            string tempHtmlPath = Path.Combine(Path.GetTempPath(), "donkey_graph.html");
+
+            string html = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graph Viewer</title>
+    <script src=""https://cdn.jsdelivr.net/npm/chart.js""></script>
+    <style>
+        body {{ background: #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; font-family: Arial; }}
+        canvas {{ width: 95vw !important; height: 85vh !important; }}
+    </style>
+</head>
+<body>
+    <canvas id='myChart'></canvas>
+    <script>
+        const labels = Array.from({{length: {angles.Count}}}, (_, i) => i);
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {{
+            type: 'line',
+            data: {{
+                labels: labels,
+                datasets: [
+                    {{
+                        label: 'Angle',
+                        data: [{anglesJs}],
+                        borderColor: 'cornflowerblue',
+                        borderWidth: 1.5,
+                        pointRadius: 0
+                    }},
+                    {{
+                        label: 'Throttle',
+                        data: [{throttlesJs}],
+                        borderColor: 'orangered',
+                        borderWidth: 1.5,
+                        pointRadius: 0
+                    }}
+                ]
+            }},
+            options: {{
+                animation: false,
+                scales: {{
+                    y: {{
+                        min: -1.0,
+                        max: 1.0,
+                        ticks: {{ color: 'white' }},
+                        grid: {{ color: '#444' }}
+                    }},
+                    x: {{
+                        ticks: {{ color: 'white', maxTicksLimit: 10 }},
+                        grid: {{ color: '#444' }}
+                    }}
+                }},
+                plugins: {{
+                    legend: {{ labels: {{ color: 'white' }} }}
+                }}
+            }}
+        }});
+    </script>
+</body>
+</html>";
+
+            File.WriteAllText(tempHtmlPath, html);
+
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = tempHtmlPath,
+                UseShellExecute = true
+            });
+        }
     }
 }

@@ -29,21 +29,24 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.GoDatabtn = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SortMethodlbl = new System.Windows.Forms.Label();
             this.SortMethodcom = new System.Windows.Forms.ComboBox();
             this.TrainingStartbtn = new System.Windows.Forms.Button();
+            this.GoDatabtn = new System.Windows.Forms.Button();
             this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
-            this.SortMethodlbl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.GoDatabtn, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.Traninglst, 0, 2);
@@ -51,27 +54,18 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 36.23188F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 63.76812F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 843F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1006);
             this.tableLayoutPanel1.TabIndex = 1;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
-            // GoDatabtn
-            // 
-            this.GoDatabtn.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoDatabtn.Location = new System.Drawing.Point(3, 3);
-            this.GoDatabtn.Name = "GoDatabtn";
-            this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
-            this.GoDatabtn.TabIndex = 3;
-            this.GoDatabtn.Text = "데이터";
-            this.GoDatabtn.UseVisualStyleBackColor = true;
-            this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
-            // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.SortMethodlbl);
             this.panel2.Controls.Add(this.SortMethodcom);
             this.panel2.Controls.Add(this.TrainingStartbtn);
@@ -79,6 +73,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1412, 72);
             this.panel2.TabIndex = 7;
+            // 
+            // SortMethodlbl
+            // 
+            this.SortMethodlbl.AutoSize = true;
+            this.SortMethodlbl.Font = new System.Drawing.Font("한컴 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SortMethodlbl.Location = new System.Drawing.Point(13, 11);
+            this.SortMethodlbl.Name = "SortMethodlbl";
+            this.SortMethodlbl.Size = new System.Drawing.Size(244, 47);
+            this.SortMethodlbl.TabIndex = 10;
+            this.SortMethodlbl.Text = "보기 방법 변경";
+            this.SortMethodlbl.Click += new System.EventHandler(this.SortMethodlbl_Click);
             // 
             // SortMethodcom
             // 
@@ -95,13 +100,28 @@
             // 
             // TrainingStartbtn
             // 
+            this.TrainingStartbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TrainingStartbtn.BackColor = System.Drawing.Color.DarkSalmon;
             this.TrainingStartbtn.Font = new System.Drawing.Font("한컴 고딕", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrainingStartbtn.Location = new System.Drawing.Point(783, 2);
             this.TrainingStartbtn.Name = "TrainingStartbtn";
             this.TrainingStartbtn.Size = new System.Drawing.Size(626, 69);
             this.TrainingStartbtn.TabIndex = 7;
             this.TrainingStartbtn.Text = "훈련 시작";
-            this.TrainingStartbtn.UseVisualStyleBackColor = true;
+            this.TrainingStartbtn.UseVisualStyleBackColor = false;
+            // 
+            // GoDatabtn
+            // 
+            this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoDatabtn.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoDatabtn.Location = new System.Drawing.Point(3, 3);
+            this.GoDatabtn.Name = "GoDatabtn";
+            this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
+            this.GoDatabtn.TabIndex = 3;
+            this.GoDatabtn.Text = "데이터";
+            this.GoDatabtn.UseVisualStyleBackColor = false;
+            this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
             // Traninglst
             // 
@@ -123,21 +143,11 @@
             this.Massagelbl.TabIndex = 9;
             this.Massagelbl.Text = "경고 텍스트";
             // 
-            // SortMethodlbl
-            // 
-            this.SortMethodlbl.AutoSize = true;
-            this.SortMethodlbl.Font = new System.Drawing.Font("한컴 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SortMethodlbl.Location = new System.Drawing.Point(13, 11);
-            this.SortMethodlbl.Name = "SortMethodlbl";
-            this.SortMethodlbl.Size = new System.Drawing.Size(244, 47);
-            this.SortMethodlbl.TabIndex = 10;
-            this.SortMethodlbl.Text = "보기 방법 변경";
-            this.SortMethodlbl.Click += new System.EventHandler(this.SortMethodlbl_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form2";

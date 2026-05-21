@@ -231,5 +231,75 @@ namespace DataManager
         {
             DoubleSpeedbtn.ContextMenuStrip.Show(DoubleSpeedbtn, new Point(0, DoubleSpeedbtn.Height));
         }
+
+        private void ImgDeletebtn_Click(object sender, EventArgs e)
+        {
+            if (imageFiles.Length == 0) return;
+
+            string fileToDelete = imageFiles[currentIndex];
+
+            DialogResult confirm = MessageBox.Show(
+                $"현재 이미지를 삭제할까요?\n{fileToDelete}",
+                "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                // 파일 삭제
+                File.Delete(fileToDelete);
+
+                // imageFiles 배열에서 제거
+                imageFiles = imageFiles.Where(f => f != fileToDelete).ToArray();
+
+                if (imageFiles.Length == 0)
+                {
+                    Imagepic.Image = null;
+                    Imagebar.Value = 0;
+                    return;
+                }
+
+                // 삭제 후 인덱스 조정
+                if (currentIndex >= imageFiles.Length)
+                    currentIndex = imageFiles.Length - 1;
+
+                ShowImage(currentIndex);
+            }
+        }
+
+        private void ImgAddbtn_Click(object sender, EventArgs e)
+        {
+            string windowsUser = Environment.UserName;
+            string wslBasePath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "추가할 이미지를 선택하세요";
+                openFileDialog.Filter = "이미지 파일|*.jpg;*.jpeg;*.png";
+                openFileDialog.InitialDirectory = Directory.Exists(wslBasePath) ? wslBasePath : "";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string selectedFile = openFileDialog.FileName;
+
+                    // 현재 images 폴더 경로
+                    string imagesPath = Path.GetDirectoryName(imageFiles[0]);
+
+                    // 새 파일명 생성 (현재 인덱스 바로 뒤 순서로)
+                    string newFileName = Path.Combine(imagesPath, Path.GetFileName(selectedFile));
+
+                    // 같은 폴더가 아니면 복사
+                    if (selectedFile != newFileName)
+                        File.Copy(selectedFile, newFileName, overwrite: true);
+
+                    // imageFiles 배열 재정렬 (현재 인덱스 바로 뒤에 삽입)
+                    List<string> fileList = imageFiles.ToList();
+                    fileList.Insert(currentIndex + 1, newFileName);
+                    imageFiles = fileList.ToArray();
+
+                    // 추가한 이미지로 이동
+                    currentIndex = currentIndex + 1;
+                    ShowImage(currentIndex);
+                }
+            }
+        }
     }
 }

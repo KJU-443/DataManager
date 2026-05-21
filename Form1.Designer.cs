@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea14 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend14 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series14 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend16 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -213,18 +213,18 @@
             // 
             // Graph
             // 
-            chartArea14.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea14);
-            legend14.Name = "Legend1";
-            this.Graph.Legends.Add(legend14);
+            chartArea16.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea16);
+            legend16.Name = "Legend1";
+            this.Graph.Legends.Add(legend16);
             this.Graph.Location = new System.Drawing.Point(0, 0);
             this.Graph.Name = "Graph";
-            series14.BorderWidth = 3;
-            series14.ChartArea = "ChartArea1";
-            series14.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series14.Legend = "Legend1";
-            series14.Name = "Series1";
-            this.Graph.Series.Add(series14);
+            series16.BorderWidth = 3;
+            series16.ChartArea = "ChartArea1";
+            series16.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series16.Legend = "Legend1";
+            series16.Name = "Series1";
+            this.Graph.Series.Add(series16);
             this.Graph.Size = new System.Drawing.Size(1036, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -350,6 +350,7 @@
             this.ImgAddbtn.TabIndex = 2;
             this.ImgAddbtn.Text = "추가";
             this.ImgAddbtn.UseVisualStyleBackColor = true;
+            this.ImgAddbtn.Click += new System.EventHandler(this.ImgAddbtn_Click);
             // 
             // ImgDeletebtn
             // 
@@ -360,6 +361,7 @@
             this.ImgDeletebtn.TabIndex = 4;
             this.ImgDeletebtn.Text = "삭제";
             this.ImgDeletebtn.UseVisualStyleBackColor = true;
+            this.ImgDeletebtn.Click += new System.EventHandler(this.ImgDeletebtn_Click);
             // 
             // label2
             // 

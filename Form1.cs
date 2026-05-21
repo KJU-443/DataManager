@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq; // 추가
+using System.Windows.Forms.DataVisualization.Charting;  //추가
 
 namespace DataManager
 {
@@ -110,6 +112,7 @@ namespace DataManager
                         {
                             currentIndex = 0;
                             ShowImage(currentIndex);
+                            LoadGraph();
                         }
                         else
                         {
@@ -302,7 +305,7 @@ namespace DataManager
             }
         }
 
-        private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
+        private void OpenImgBrowserbtn_Click(object sender, EventArgs e)    // 이미지 브라우저 열기
         {
             if (imageFiles.Length == 0) return;
 
@@ -355,6 +358,61 @@ namespace DataManager
                 FileName = tempHtmlPath,
                 UseShellExecute = true
             });
+        }
+
+        private void LoadGraph()
+        {
+            if (string.IsNullOrEmpty(Imgtxt.Text)) return;
+
+            string dataPath = Imgtxt.Text;
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            List<double> angles = new List<double>();
+            List<double> throttles = new List<double>();
+
+            foreach (string catalogFile in catalogFiles)
+            {
+                string[] lines = File.ReadAllLines(catalogFile);
+                foreach (string line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    JObject json = JObject.Parse(line);
+                    angles.Add((double)json["user/angle"]);
+                    throttles.Add((double)json["user/throttle"]);
+                }
+            }
+
+            // 그래프 초기화
+            Graph.Series.Clear();
+            Graph.ChartAreas[0].AxisX.Title = "Index";
+            Graph.ChartAreas[0].AxisY.Title = "Value";
+            Graph.ChartAreas[0].AxisY.Minimum = -1.0;
+            Graph.ChartAreas[0].AxisY.Maximum = 1.0;
+
+            // Angle 시리즈
+            Series angleSeries = new Series("Angle");
+            angleSeries.ChartType = SeriesChartType.Line;
+            angleSeries.Color = Color.CornflowerBlue;
+            for (int i = 0; i < angles.Count; i++)
+                angleSeries.Points.AddXY(i, angles[i]);
+
+            // Throttle 시리즈
+            Series throttleSeries = new Series("Throttle");
+            throttleSeries.ChartType = SeriesChartType.Line;
+            throttleSeries.Color = Color.OrangeRed;
+            for (int i = 0; i < throttles.Count; i++)
+                throttleSeries.Points.AddXY(i, throttles[i]);
+
+            Graph.Series.Add(angleSeries);
+            Graph.Series.Add(throttleSeries);
+        }
+
+        private void Graph_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

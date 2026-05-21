@@ -104,13 +104,14 @@ namespace DataManager
                     string imagesPath = Path.Combine(dataPath, "images");
                     if (Directory.Exists(imagesPath))
                     {
-                        // string[] 제거 → 클래스 필드에 저장
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                               .OrderBy(f => f)
                                               .ToArray();
                         if (imageFiles.Length > 0)
                         {
                             currentIndex = 0;
+                            Imagebar.Minimum = 0;
+                            Imagebar.Maximum = imageFiles.Length - 1;
                             ShowImage(currentIndex);
                             LoadGraph();
                         }
@@ -132,10 +133,17 @@ namespace DataManager
         private void ShowImage(int index)   // 이미지 재생 버튼을 위함
         {
             if (imageFiles.Length == 0) return;
+
+            // 기존 이미지 점유 해제
+            if (Imagepic.Image != null)
+            {
+                Imagepic.Image.Dispose();
+                Imagepic.Image = null;
+            }
+
             Imagepic.Image = Image.FromFile(imageFiles[index]);
             Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
 
-            // trackBar 설정
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
@@ -148,14 +156,22 @@ namespace DataManager
                 if (currentIndex < imageFiles.Length - 1)
                     currentIndex++;
                 else
+                {
                     playTimer.Stop();
+                    isPlaying = false;
+                    PlayAndStopbtn.Text = "재생";
+                }
             }
             else
             {
                 if (currentIndex > 0)
                     currentIndex--;
                 else
+                {
                     playTimer.Stop();
+                    isPlaying = false;
+                    PlayAndStopbtn.Text = "재생";
+                }
             }
             ShowImage(currentIndex);
         }
@@ -163,6 +179,9 @@ namespace DataManager
         private void PreviousImgbtn_Click(object sender, EventArgs e)   // < 버튼
         {
             if (imageFiles.Length == 0) return;
+            playTimer.Stop();
+            isPlaying = false;
+            PlayAndStopbtn.Text = "재생";
             if (currentIndex > 0)
             {
                 currentIndex--;
@@ -181,7 +200,10 @@ namespace DataManager
 
         private void NextImgbtn_Click(object sender, EventArgs e)   // > 버튼
         {
-            if (imageFiles.Length == 0) return;
+            if(imageFiles.Length == 0) return;
+            playTimer.Stop();
+            isPlaying = false;
+            PlayAndStopbtn.Text = "재생";
             if (currentIndex < imageFiles.Length - 1)
             {
                 currentIndex++;
@@ -247,23 +269,27 @@ namespace DataManager
 
             if (confirm == DialogResult.Yes)
             {
-                // 파일 삭제
+                // 이미지 점유 해제
+                if (Imagepic.Image != null)
+                {
+                    Imagepic.Image.Dispose();
+                    Imagepic.Image = null;
+                }
+
                 File.Delete(fileToDelete);
 
-                // imageFiles 배열에서 제거
                 imageFiles = imageFiles.Where(f => f != fileToDelete).ToArray();
 
                 if (imageFiles.Length == 0)
                 {
-                    Imagepic.Image = null;
                     Imagebar.Value = 0;
                     return;
                 }
 
-                // 삭제 후 인덱스 조정
                 if (currentIndex >= imageFiles.Length)
                     currentIndex = imageFiles.Length - 1;
 
+                Imagebar.Maximum = imageFiles.Length - 1;
                 ShowImage(currentIndex);
             }
         }

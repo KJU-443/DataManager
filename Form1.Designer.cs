@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -198,7 +198,7 @@
             this.OpenGraphBrowserbtn.Name = "OpenGraphBrowserbtn";
             this.OpenGraphBrowserbtn.Size = new System.Drawing.Size(346, 51);
             this.OpenGraphBrowserbtn.TabIndex = 12;
-            this.OpenGraphBrowserbtn.Text = "브라우저로 그래프 열기";
+            this.OpenGraphBrowserbtn.Text = "   ";
             this.OpenGraphBrowserbtn.UseVisualStyleBackColor = true;
             this.OpenGraphBrowserbtn.Click += new System.EventHandler(this.OpenGraphBrowserbtn_Click);
             // 
@@ -215,18 +215,18 @@
             // 
             // Graph
             // 
-            chartArea3.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.Graph.Legends.Add(legend3);
+            chartArea5.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.Graph.Legends.Add(legend5);
             this.Graph.Location = new System.Drawing.Point(0, 0);
             this.Graph.Name = "Graph";
-            series3.BorderWidth = 3;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.Graph.Series.Add(series3);
+            series5.BorderWidth = 3;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.Graph.Series.Add(series5);
             this.Graph.Size = new System.Drawing.Size(1036, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";

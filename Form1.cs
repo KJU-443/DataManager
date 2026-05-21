@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataManager_2;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,14 @@ namespace DataManager
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void GoTrainbtn_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+
+            this.Hide();
         }
     }
 }

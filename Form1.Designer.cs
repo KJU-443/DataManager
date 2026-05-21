@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.Imagebar = new System.Windows.Forms.TrackBar();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.OpenGraphBrowserbtn = new System.Windows.Forms.Button();
             this.RefreshGraphbtn = new System.Windows.Forms.Button();
             this.Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.GoTrainbtn = new System.Windows.Forms.Button();
+            this.Imagebar = new System.Windows.Forms.TrackBar();
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Reversebtn = new System.Windows.Forms.Button();
@@ -55,14 +55,14 @@
             this.Imagepic = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Foldertxt = new System.Windows.Forms.TextBox();
-            this.SelectFolderbtn = new System.Windows.Forms.Button();
             this.Imgtxt = new System.Windows.Forms.TextBox();
             this.SelectImgbtn = new System.Windows.Forms.Button();
+            this.SelectFolderbtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).BeginInit();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Graph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).BeginInit();
             this.panel4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).BeginInit();
@@ -92,15 +92,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1023);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // Imagebar
-            // 
-            this.Imagebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Imagebar.Location = new System.Drawing.Point(3, 668);
-            this.Imagebar.Name = "Imagebar";
-            this.Imagebar.Size = new System.Drawing.Size(1412, 32);
-            this.Imagebar.TabIndex = 1;
-            // 
             // panel3
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -118,7 +109,7 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.OpenGraphBrowserbtn);
             this.groupBox2.Controls.Add(this.RefreshGraphbtn);
-            this.groupBox2.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.Black;
             this.groupBox2.Location = new System.Drawing.Point(1042, 2);
             this.groupBox2.Name = "groupBox2";
@@ -130,7 +121,7 @@
             // OpenGraphBrowserbtn
             // 
             this.OpenGraphBrowserbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.OpenGraphBrowserbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OpenGraphBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenGraphBrowserbtn.ForeColor = System.Drawing.Color.Black;
             this.OpenGraphBrowserbtn.Location = new System.Drawing.Point(13, 118);
             this.OpenGraphBrowserbtn.Name = "OpenGraphBrowserbtn";
@@ -138,11 +129,12 @@
             this.OpenGraphBrowserbtn.TabIndex = 12;
             this.OpenGraphBrowserbtn.Text = "브라우저로 그래프 열기";
             this.OpenGraphBrowserbtn.UseVisualStyleBackColor = false;
+            this.OpenGraphBrowserbtn.Click += new System.EventHandler(this.OpenGraphBrowserbtn_Click);
             // 
             // RefreshGraphbtn
             // 
             this.RefreshGraphbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.RefreshGraphbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.RefreshGraphbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.RefreshGraphbtn.ForeColor = System.Drawing.Color.Black;
             this.RefreshGraphbtn.Location = new System.Drawing.Point(13, 52);
             this.RefreshGraphbtn.Name = "RefreshGraphbtn";
@@ -150,24 +142,25 @@
             this.RefreshGraphbtn.TabIndex = 11;
             this.RefreshGraphbtn.Text = "그래프 새로고침";
             this.RefreshGraphbtn.UseVisualStyleBackColor = false;
+            this.RefreshGraphbtn.Click += new System.EventHandler(this.RefreshGraphbtn_Click_1);
             // 
             // Graph
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.Graph.Legends.Add(legend3);
+            chartArea5.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea5);
+            legend5.Name = "Legend1";
+            this.Graph.Legends.Add(legend5);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series3.BorderWidth = 3;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.Graph.Series.Add(series3);
+            series5.BorderWidth = 3;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.Graph.Series.Add(series5);
             this.Graph.Size = new System.Drawing.Size(1036, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -175,7 +168,7 @@
             // GoTrainbtn
             // 
             this.GoTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoTrainbtn.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoTrainbtn.ForeColor = System.Drawing.Color.Black;
             this.GoTrainbtn.Location = new System.Drawing.Point(3, 3);
             this.GoTrainbtn.Name = "GoTrainbtn";
@@ -184,6 +177,16 @@
             this.GoTrainbtn.Text = "훈련";
             this.GoTrainbtn.UseVisualStyleBackColor = false;
             this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
+            // 
+            // Imagebar
+            // 
+            this.Imagebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Imagebar.Location = new System.Drawing.Point(3, 668);
+            this.Imagebar.Name = "Imagebar";
+            this.Imagebar.Size = new System.Drawing.Size(1412, 32);
+            this.Imagebar.TabIndex = 1;
+            this.Imagebar.Scroll += new System.EventHandler(this.Imagebar_Scroll_1);
             // 
             // panel4
             // 
@@ -212,7 +215,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.DoubleSpeedbtn);
             this.groupBox1.Controls.Add(this.DoubleSpeedtxt);
-            this.groupBox1.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
             this.groupBox1.Location = new System.Drawing.Point(1042, 2);
             this.groupBox1.Name = "groupBox1";
@@ -224,7 +227,7 @@
             // Reversebtn
             // 
             this.Reversebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.Reversebtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
             this.Reversebtn.Location = new System.Drawing.Point(13, 375);
             this.Reversebtn.Name = "Reversebtn";
@@ -232,23 +235,25 @@
             this.Reversebtn.TabIndex = 14;
             this.Reversebtn.Text = "<<";
             this.Reversebtn.UseVisualStyleBackColor = false;
+            this.Reversebtn.Click += new System.EventHandler(this.Reversebtn_Click);
             // 
             // Plsybtn
             // 
             this.Plsybtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.Plsybtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
             this.Plsybtn.Location = new System.Drawing.Point(188, 375);
             this.Plsybtn.Name = "Plsybtn";
             this.Plsybtn.Size = new System.Drawing.Size(171, 51);
             this.Plsybtn.TabIndex = 13;
-            this.Plsybtn.Text = ">";
+            this.Plsybtn.Text = ">>";
             this.Plsybtn.UseVisualStyleBackColor = false;
+            this.Plsybtn.Click += new System.EventHandler(this.Plsybtn_Click);
             // 
             // NextImgbtn
             // 
             this.NextImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.NextImgbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
             this.NextImgbtn.Location = new System.Drawing.Point(188, 293);
             this.NextImgbtn.Name = "NextImgbtn";
@@ -256,34 +261,37 @@
             this.NextImgbtn.TabIndex = 12;
             this.NextImgbtn.Text = ">";
             this.NextImgbtn.UseVisualStyleBackColor = false;
+            this.NextImgbtn.Click += new System.EventHandler(this.NextImgbtn_Click);
             // 
             // PreviousImgbtn
             // 
             this.PreviousImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.PreviousImgbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
             this.PreviousImgbtn.Location = new System.Drawing.Point(13, 293);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
             this.PreviousImgbtn.Size = new System.Drawing.Size(171, 51);
             this.PreviousImgbtn.TabIndex = 11;
-            this.PreviousImgbtn.Text = "<<";
+            this.PreviousImgbtn.Text = "<";
             this.PreviousImgbtn.UseVisualStyleBackColor = false;
+            this.PreviousImgbtn.Click += new System.EventHandler(this.PreviousImgbtn_Click);
             // 
             // PlayAndStopbtn
             // 
             this.PlayAndStopbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.PlayAndStopbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.PlayAndStopbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PlayAndStopbtn.Location = new System.Drawing.Point(13, 457);
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
             this.PlayAndStopbtn.Size = new System.Drawing.Size(346, 51);
             this.PlayAndStopbtn.TabIndex = 10;
             this.PlayAndStopbtn.Text = "재생";
             this.PlayAndStopbtn.UseVisualStyleBackColor = false;
+            this.PlayAndStopbtn.Click += new System.EventHandler(this.PlayAndStopbtn_Click);
             // 
             // OpenImgBrowserbtn
             // 
             this.OpenImgBrowserbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.OpenImgBrowserbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.OpenImgBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenImgBrowserbtn.ForeColor = System.Drawing.Color.Black;
             this.OpenImgBrowserbtn.Location = new System.Drawing.Point(13, 47);
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
@@ -291,11 +299,12 @@
             this.OpenImgBrowserbtn.TabIndex = 1;
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
             this.OpenImgBrowserbtn.UseVisualStyleBackColor = false;
+            this.OpenImgBrowserbtn.Click += new System.EventHandler(this.OpenImgBrowserbtn_Click);
             // 
             // ImgAddbtn
             // 
             this.ImgAddbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.ImgAddbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
             this.ImgAddbtn.Location = new System.Drawing.Point(239, 129);
             this.ImgAddbtn.Name = "ImgAddbtn";
@@ -303,11 +312,12 @@
             this.ImgAddbtn.TabIndex = 2;
             this.ImgAddbtn.Text = "추가";
             this.ImgAddbtn.UseVisualStyleBackColor = false;
+            this.ImgAddbtn.Click += new System.EventHandler(this.ImgAddbtn_Click);
             // 
             // ImgDeletebtn
             // 
             this.ImgDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
-            this.ImgDeletebtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
             this.ImgDeletebtn.Location = new System.Drawing.Point(113, 129);
             this.ImgDeletebtn.Name = "ImgDeletebtn";
@@ -315,22 +325,23 @@
             this.ImgDeletebtn.TabIndex = 4;
             this.ImgDeletebtn.Text = "삭제";
             this.ImgDeletebtn.UseVisualStyleBackColor = false;
+            this.ImgDeletebtn.Click += new System.EventHandler(this.ImgDeletebtn_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.Black;
             this.label2.Location = new System.Drawing.Point(8, 137);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 36);
+            this.label2.Size = new System.Drawing.Size(77, 32);
             this.label2.TabIndex = 3;
             this.label2.Text = "이미지";
             // 
             // DoubleSpeedbtn
             // 
             this.DoubleSpeedbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.DoubleSpeedbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
             this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 211);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
@@ -338,15 +349,16 @@
             this.DoubleSpeedbtn.TabIndex = 5;
             this.DoubleSpeedbtn.Text = "배속";
             this.DoubleSpeedbtn.UseVisualStyleBackColor = false;
+            this.DoubleSpeedbtn.Click += new System.EventHandler(this.DoubleSpeedbtn_Click);
             // 
             // DoubleSpeedtxt
             // 
             this.DoubleSpeedtxt.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.DoubleSpeedtxt.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
             this.DoubleSpeedtxt.Location = new System.Drawing.Point(13, 213);
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
-            this.DoubleSpeedtxt.Size = new System.Drawing.Size(171, 44);
+            this.DoubleSpeedtxt.Size = new System.Drawing.Size(171, 39);
             this.DoubleSpeedtxt.TabIndex = 2;
             // 
             // Imagepic
@@ -376,39 +388,27 @@
             // Foldertxt
             // 
             this.Foldertxt.BackColor = System.Drawing.Color.White;
-            this.Foldertxt.Font = new System.Drawing.Font("한컴 고딕", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Foldertxt.ForeColor = System.Drawing.Color.White;
-            this.Foldertxt.Location = new System.Drawing.Point(284, 4);
+            this.Foldertxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Foldertxt.ForeColor = System.Drawing.Color.Black;
+            this.Foldertxt.Location = new System.Drawing.Point(284, 15);
             this.Foldertxt.Name = "Foldertxt";
-            this.Foldertxt.Size = new System.Drawing.Size(413, 49);
+            this.Foldertxt.Size = new System.Drawing.Size(413, 26);
             this.Foldertxt.TabIndex = 4;
-            // 
-            // SelectFolderbtn
-            // 
-            this.SelectFolderbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.SelectFolderbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SelectFolderbtn.ForeColor = System.Drawing.Color.Black;
-            this.SelectFolderbtn.Location = new System.Drawing.Point(3, 0);
-            this.SelectFolderbtn.Name = "SelectFolderbtn";
-            this.SelectFolderbtn.Size = new System.Drawing.Size(275, 55);
-            this.SelectFolderbtn.TabIndex = 2;
-            this.SelectFolderbtn.Text = "폴더 지정";
-            this.SelectFolderbtn.UseVisualStyleBackColor = false;
             // 
             // Imgtxt
             // 
             this.Imgtxt.BackColor = System.Drawing.Color.White;
-            this.Imgtxt.Font = new System.Drawing.Font("한컴 고딕", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Imgtxt.ForeColor = System.Drawing.Color.White;
-            this.Imgtxt.Location = new System.Drawing.Point(988, 4);
+            this.Imgtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Imgtxt.ForeColor = System.Drawing.Color.Black;
+            this.Imgtxt.Location = new System.Drawing.Point(988, 16);
             this.Imgtxt.Name = "Imgtxt";
-            this.Imgtxt.Size = new System.Drawing.Size(413, 49);
+            this.Imgtxt.Size = new System.Drawing.Size(413, 26);
             this.Imgtxt.TabIndex = 5;
             // 
             // SelectImgbtn
             // 
             this.SelectImgbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.SelectImgbtn.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SelectImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SelectImgbtn.ForeColor = System.Drawing.Color.Black;
             this.SelectImgbtn.Location = new System.Drawing.Point(707, 0);
             this.SelectImgbtn.Name = "SelectImgbtn";
@@ -416,6 +416,20 @@
             this.SelectImgbtn.TabIndex = 3;
             this.SelectImgbtn.Text = "이미지 폴더 선택";
             this.SelectImgbtn.UseVisualStyleBackColor = false;
+            this.SelectImgbtn.Click += new System.EventHandler(this.SelectImgbtn_Click);
+            // 
+            // SelectFolderbtn
+            // 
+            this.SelectFolderbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.SelectFolderbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SelectFolderbtn.ForeColor = System.Drawing.Color.Black;
+            this.SelectFolderbtn.Location = new System.Drawing.Point(3, 0);
+            this.SelectFolderbtn.Name = "SelectFolderbtn";
+            this.SelectFolderbtn.Size = new System.Drawing.Size(275, 55);
+            this.SelectFolderbtn.TabIndex = 2;
+            this.SelectFolderbtn.Text = "폴더 지정";
+            this.SelectFolderbtn.UseVisualStyleBackColor = false;
+            this.SelectFolderbtn.Click += new System.EventHandler(this.SelectFolderbtn_Click_1);
             // 
             // Form1
             // 
@@ -426,13 +440,12 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form1";
             this.Text = "DataManager V1.0";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).EndInit();
             this.panel3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Graph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).EndInit();
             this.panel4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

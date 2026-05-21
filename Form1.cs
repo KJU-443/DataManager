@@ -301,5 +301,60 @@ namespace DataManager
                 }
             }
         }
+
+        private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
+        {
+            if (imageFiles.Length == 0) return;
+
+            // 임시 HTML 파일 생성
+            string tempHtmlPath = Path.Combine(Path.GetTempPath(), "donkey_viewer.html");
+
+            // 이미지 경로 리스트를 JS 배열로 변환
+            string jsArray = string.Join(",\n", imageFiles.Select(f => $"\"{f.Replace("\\", "\\\\")}\""));
+
+            string html = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Viewer</title>
+    <style>
+        body {{ background: #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; font-family: Arial; }}
+        img {{ width: 95vw; height: 90vh; object-fit: contain; }}
+        #info {{ margin-top: 10px; font-size: 16px; }}
+        #controls {{ margin-top: 10px; font-size: 13px; color: #aaa; }}
+    </style>
+</head>
+<body>
+    <img id='imgView' src='' />
+    <div id='info'></div>
+    <div id='controls'>← → 방향키로 이미지 넘기기</div>
+    <script>
+        const images = [{jsArray}];
+        let index = {currentIndex};
+
+        function showImage(i) {{
+            document.getElementById('imgView').src = 'file:///' + images[i].replace(/\\\\/g, '/');
+            document.getElementById('info').innerText = (i + 1) + ' / ' + images.length;
+        }}
+
+        document.addEventListener('keydown', function(e) {{
+            if (e.key === 'ArrowRight' && index < images.length - 1) {{ index++; showImage(index); }}
+            if (e.key === 'ArrowLeft' && index > 0) {{ index--; showImage(index); }}
+        }});
+
+        showImage(index);
+    </script>
+</body>
+</html>";
+
+            File.WriteAllText(tempHtmlPath, html);
+
+            // 기본 브라우저로 열기
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = tempHtmlPath,
+                UseShellExecute = true
+            });
+        }
     }
 }

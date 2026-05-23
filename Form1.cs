@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Xml.Linq;
+
 
 namespace DataManager
 {
@@ -29,7 +29,7 @@ namespace DataManager
 
         // 복구(Restore) 기능을 위한 메모리 백업 저장소
         private List<string> originalCatalogLines = new List<string>();
-        private HashSet<string> deletedFiles = new HashSet<string>();
+        private List<string> deletedFiles = new List<string>();
 
         public Form1()
         {
@@ -53,8 +53,6 @@ namespace DataManager
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
         }
-
-        // 1. [폴더 지정] 버튼 - 리눅스 경로가 다 보이게 파일을 띄운 후 상위 'mycar' 폴더 경로를 추출합니다.
         private void SelectFolderbtn_Click_1(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;
@@ -62,8 +60,8 @@ namespace DataManager
 
             using (OpenFileDialog folderDialog = new OpenFileDialog())
             {
-                folderDialog.Title = "mycar 폴더 안의 'manage.py' 또는 아무 파일이나 하나 선택하세요 (폴더 경로 자동 추출)";
-                folderDialog.Filter = "Donkeycar 실행 파일 (manage.py)|manage.py|모든 파일 (*.*)|*.*";
+                folderDialog.Title = "mycar 폴더 안의 아무 파일이나 하나 선택하세요";
+                folderDialog.Filter = "모든 파일 (*.*)|*.*";
                 folderDialog.CheckFileExists = false;
 
                 if (Directory.Exists(wslBasePath))
@@ -105,40 +103,17 @@ namespace DataManager
                 }
             }
 
-            Form2 form2 = new Form2(selectedFolderPath);
-            form2.Show();
+            Form2 form2 = new Form2(selectedFolderPath, Imgtxt.Text); form2.Show();
             this.Hide();
         }
-
-        // 2. [이미지 폴더 선택] 버튼 - 리눅스 파일이 다 보이게 창을 띄우고 선택한 파일의 상위 'data' 폴더 경로를 추출합니다.
         private void SelectImgbtn_Click(object sender, EventArgs e)
         {
-            string wslTubPath = @"C:\";
-            try
-            {
-                string wslBase = @"\\wsl.localhost";
-                if (Directory.Exists(wslBase))
-                {
-                    string[] wslDistros = Directory.GetDirectories(wslBase);
-                    if (wslDistros.Length > 0)
-                    {
-                        string homeRoot = Path.Combine(wslDistros[0], "home");
-                        if (Directory.Exists(homeRoot))
-                        {
-                            string[] userDirs = Directory.GetDirectories(homeRoot);
-                            if (userDirs.Length > 0)
-                            {
-                                wslTubPath = Path.Combine(userDirs[0], "mycar", "data");
-                            }
-                        }
-                    }
-                }
-            }
-            catch { }
+            string windowsUser = Environment.UserName;
+            string wslTubPath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
 
             using (OpenFileDialog folderDialog = new OpenFileDialog())
             {
-                folderDialog.Title = "Tub 폴더 안의 '아무 파일'이나 하나 선택하세요 (images 폴더 확인용)";
+                folderDialog.Title = "지정할 data 폴더 안의 파일을 아무거나 클릭하고 열기를 누르세요";
                 folderDialog.Filter = "모든 파일 (*.*)|*.*";
                 folderDialog.CheckFileExists = false;
 
@@ -147,23 +122,28 @@ namespace DataManager
 
                 if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string dataPath = Path.GetDirectoryName(folderDialog.FileName);
+                    string selectedDir = Path.GetDirectoryName(folderDialog.FileName);
+                    string dirName = Path.GetFileName(selectedDir);
+
+                    string dataPath = dirName.Equals("images", StringComparison.OrdinalIgnoreCase)
+                        ? Path.GetDirectoryName(selectedDir)
+                        : selectedDir;
+
                     Imgtxt.Text = dataPath;
 
-                    string imagesPath = Path.Combine(dataPath, "images");
                     string catalogPath = Path.Combine(dataPath, "catalog_0.catalog");
-
                     if (File.Exists(catalogPath))
                     {
                         originalCatalogLines = File.ReadAllLines(catalogPath).ToList();
                         deletedFiles.Clear();
                     }
 
+                    string imagesPath = Path.Combine(dataPath, "images");
                     if (Directory.Exists(imagesPath))
                     {
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
-                                             .OrderBy(f => f)
-                                             .ToArray();
+                                              .OrderBy(f => f)
+                                              .ToArray();
                         if (imageFiles.Length > 0)
                         {
                             currentIndex = 0;
@@ -174,12 +154,14 @@ namespace DataManager
                         }
                         else
                         {
-                            MessageBox.Show("images 폴더에 이미지가 없어요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("images 폴더에 이미지가 없어요.", "알림",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("images 폴더를 찾을 수 없어요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("images 폴더를 찾을 수 없어요.", "오류",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -339,7 +321,8 @@ namespace DataManager
                     Imagepic.Image = null;
                 }
 
-                deletedFiles.Add(fileNameOnly);
+                if (!deletedFiles.Contains(fileNameOnly))
+                    deletedFiles.Add(fileNameOnly);
                 imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
 
                 if (imageFiles.Length == 0)
@@ -597,8 +580,8 @@ namespace DataManager
                 return;
             }
 
-            string lastExcludedFile = deletedFiles.Last();
-            deletedFiles.Remove(lastExcludedFile);
+            string lastExcludedFile = deletedFiles[deletedFiles.Count - 1];
+            deletedFiles.RemoveAt(deletedFiles.Count - 1);
 
             string dataPath = Imgtxt.Text;
             string imagesPath = Path.Combine(dataPath, "images");
@@ -613,7 +596,9 @@ namespace DataManager
                 Imagebar.Maximum = imageFiles.Length - 1;
                 MessageBox.Show($"[{lastExcludedFile}] 주행 프레임이 성공적으로 복구되었습니다.", "복구 완료");
 
-                if (currentIndex >= imageFiles.Length) currentIndex = imageFiles.Length - 1;
+                if (currentIndex >= imageFiles.Length)
+                    currentIndex = imageFiles.Length - 1;
+
                 ShowImage(currentIndex);
             }
         }

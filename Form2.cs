@@ -109,7 +109,7 @@ namespace DataManager_2
                 {
                     FileName = "wsl",
                     // ★ [최종 완성 구문] 전단계에서 완벽히 검증된 가상환경 주소를 기반으로 진짜 주행 데이터(--tubs)가 적재된 경로와 생성될 인공지능 모델 파일의 위치를 매핑했습니다.
-                    Arguments = "-d Ubuntu-22.04 -u tutu bash -c \"/home/tutu/miniconda3/envs/e2e_env/bin/python3 /home/tutu/mycar/manage.py train --tubs=~/mycar/data --model=~/mycar/models/model.h5\"",
+                    Arguments = "-d Ubuntu-22.04 -u tutu bash -c \"cd ~/mycar && /home/tutu/miniconda3/envs/e2e_env/bin/python3 /home/tutu/mycar/train.py --tub=~/mycar/data --model=~/mycar/models/mypilot.h5\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

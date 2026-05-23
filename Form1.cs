@@ -1,34 +1,35 @@
 ﻿using DataManager_2;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.IO;    // 추가1
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json.Linq; // 추가
-using System.Windows.Forms.DataVisualization.Charting;  //추가
-
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml.Linq;
 
 namespace DataManager
 {
     public partial class Form1 : Form
     {
-        //추가
         private string selectedFolderPath = "";
         private string[] imageFiles = Array.Empty<string>();
         private int currentIndex = 0;
         private Timer playTimer = new Timer();
         private bool isReverse = false;
-
         private bool isPlaying = false;
         private double currentSpeed = 1.0;
         private double[] speedLevels = { 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0 };
         private int speedIndex = 2;
-        //
+
+        // 복구(Restore) 기능을 위한 메모리 백업 저장소
+        private List<string> originalCatalogLines = new List<string>();
+        private HashSet<string> deletedFiles = new HashSet<string>();
 
         public Form1()
         {
@@ -38,7 +39,6 @@ namespace DataManager
 
             DoubleSpeedtxt.Text = "1.0x";
 
-            // 배속 드롭다운 메뉴 생성
             ContextMenuStrip speedMenu = new ContextMenuStrip();
             foreach (double speed in speedLevels)
             {
@@ -52,63 +52,118 @@ namespace DataManager
                 speedMenu.Items.Add(item);
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
-
         }
 
+        // 1. [폴더 지정] 버튼 - 리눅스 경로가 다 보이게 파일을 띄운 후 상위 'mycar' 폴더 경로를 추출합니다.
         private void SelectFolderbtn_Click_1(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;
             string wslBasePath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
 
-            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            using (OpenFileDialog folderDialog = new OpenFileDialog())
             {
-                folderDialog.Description = "Config 폴더를 선택하세요 (mycar 경로)";
-                folderDialog.ShowNewFolderButton = false;
+                folderDialog.Title = "mycar 폴더 안의 'manage.py' 또는 아무 파일이나 하나 선택하세요 (폴더 경로 자동 추출)";
+                folderDialog.Filter = "Donkeycar 실행 파일 (manage.py)|manage.py|모든 파일 (*.*)|*.*";
+                folderDialog.CheckFileExists = false;
 
                 if (Directory.Exists(wslBasePath))
-                    folderDialog.SelectedPath = wslBasePath;
+                    folderDialog.InitialDirectory = wslBasePath;
 
                 if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
-                    selectedFolderPath = folderDialog.SelectedPath;
+                    selectedFolderPath = Path.GetDirectoryName(folderDialog.FileName);
                     Foldertxt.Text = selectedFolderPath;
                 }
             }
-
         }
 
         private void GoTrainbtn_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
-            form2.Show();
+            if (string.IsNullOrEmpty(Imgtxt.Text))
+            {
+                MessageBox.Show("먼저 Tub 폴더를 지정하여 데이터를 로드해 주세요.", "알림");
+                return;
+            }
 
+            string dataPath = Imgtxt.Text;
+            string catalogPath = Path.Combine(dataPath, "catalog_0.catalog");
+
+            if (File.Exists(catalogPath) && originalCatalogLines.Count > 0)
+            {
+                try
+                {
+                    var finalLines = originalCatalogLines
+                        .Where(line => !deletedFiles.Any(deletedFile => line.Contains(deletedFile)))
+                        .ToList();
+
+                    File.WriteAllLines(catalogPath, finalLines);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"카탈로그 데이터셋 저장 중 오류 발생: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            Form2 form2 = new Form2(selectedFolderPath);
+            form2.Show();
             this.Hide();
         }
 
+        // 2. [이미지 폴더 선택] 버튼 - 리눅스 파일이 다 보이게 창을 띄우고 선택한 파일의 상위 'data' 폴더 경로를 추출합니다.
         private void SelectImgbtn_Click(object sender, EventArgs e)
         {
-            string windowsUser = Environment.UserName;
-            string wslTubPath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar\data";
-
-            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+            string wslTubPath = @"C:\";
+            try
             {
-                folderDialog.Description = "Tub 폴더를 선택하세요 (data 경로)";
-                folderDialog.ShowNewFolderButton = false;
+                string wslBase = @"\\wsl.localhost";
+                if (Directory.Exists(wslBase))
+                {
+                    string[] wslDistros = Directory.GetDirectories(wslBase);
+                    if (wslDistros.Length > 0)
+                    {
+                        string homeRoot = Path.Combine(wslDistros[0], "home");
+                        if (Directory.Exists(homeRoot))
+                        {
+                            string[] userDirs = Directory.GetDirectories(homeRoot);
+                            if (userDirs.Length > 0)
+                            {
+                                wslTubPath = Path.Combine(userDirs[0], "mycar", "data");
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            using (OpenFileDialog folderDialog = new OpenFileDialog())
+            {
+                folderDialog.Title = "Tub 폴더 안의 '아무 파일'이나 하나 선택하세요 (images 폴더 확인용)";
+                folderDialog.Filter = "모든 파일 (*.*)|*.*";
+                folderDialog.CheckFileExists = false;
 
                 if (Directory.Exists(wslTubPath))
-                    folderDialog.SelectedPath = wslTubPath;
+                    folderDialog.InitialDirectory = wslTubPath;
 
                 if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string dataPath = folderDialog.SelectedPath;
+                    string dataPath = Path.GetDirectoryName(folderDialog.FileName);
                     Imgtxt.Text = dataPath;
 
                     string imagesPath = Path.Combine(dataPath, "images");
+                    string catalogPath = Path.Combine(dataPath, "catalog_0.catalog");
+
+                    if (File.Exists(catalogPath))
+                    {
+                        originalCatalogLines = File.ReadAllLines(catalogPath).ToList();
+                        deletedFiles.Clear();
+                    }
+
                     if (Directory.Exists(imagesPath))
                     {
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
-                                              .OrderBy(f => f)
-                                              .ToArray();
+                                             .OrderBy(f => f)
+                                             .ToArray();
                         if (imageFiles.Length > 0)
                         {
                             currentIndex = 0;
@@ -119,20 +174,18 @@ namespace DataManager
                         }
                         else
                         {
-                            MessageBox.Show("images 폴더에 이미지가 없어요.", "알림",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("images 폴더에 이미지가 없어요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("images 폴더를 찾을 수 없어요.", "오류",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("images 폴더를 찾을 수 없어요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
-        private void ShowImage(int index)   // 이미지 재생 버튼을 위함
+        private void ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
 
@@ -142,9 +195,19 @@ namespace DataManager
                 Imagepic.Image = null;
             }
 
-            Imagepic.Image = Image.FromFile(imageFiles[index]);
-            Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
+            string currentImagePath = imageFiles[index];
+            if (File.Exists(currentImagePath))
+            {
+                using (FileStream fs = new FileStream(currentImagePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (Image tempImg = Image.FromStream(fs))
+                    {
+                        Imagepic.Image = new Bitmap(tempImg);
+                    }
+                }
+            }
 
+            Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
@@ -227,20 +290,17 @@ namespace DataManager
 
             if (isPlaying)
             {
-                // 재생 중이면 정지
                 playTimer.Stop();
                 isPlaying = false;
                 PlayAndStopbtn.Text = "재생";
             }
             else
             {
-                // 정지 중이면 앞으로 연속재생
                 isReverse = false;
                 playTimer.Start();
                 isPlaying = true;
                 PlayAndStopbtn.Text = "정지";
             }
-
         }
 
         private void Imagebar_Scroll(object sender, EventArgs e)
@@ -258,18 +318,18 @@ namespace DataManager
         {
             currentIndex = Imagebar.Value;
             ShowImage(currentIndex);
-
         }
 
         private void ImgDeletebtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
 
-            string fileToDelete = imageFiles[currentIndex];
+            string currentFilePath = imageFiles[currentIndex];
+            string fileNameOnly = Path.GetFileName(currentFilePath);
 
             DialogResult confirm = MessageBox.Show(
-                $"현재 이미지를 삭제할까요?\n{fileToDelete}",
-                "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                "현재 프레임을 화면 및 학습 데이터셋에서 제외할까요?\n(실물 이미지 파일은 삭제되지 않습니다.)",
+                "데이터 제외", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
@@ -279,13 +339,13 @@ namespace DataManager
                     Imagepic.Image = null;
                 }
 
-                File.Delete(fileToDelete);
-
-                imageFiles = imageFiles.Where(f => f != fileToDelete).ToArray();
+                deletedFiles.Add(fileNameOnly);
+                imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
 
                 if (imageFiles.Length == 0)
                 {
                     Imagebar.Value = 0;
+                    MessageBox.Show("데이터셋 내에 남은 프레임이 없습니다.", "알림");
                     return;
                 }
 
@@ -295,7 +355,6 @@ namespace DataManager
                 Imagebar.Maximum = imageFiles.Length - 1;
                 ShowImage(currentIndex);
             }
-
         }
 
         private void ImgAddbtn_Click(object sender, EventArgs e)
@@ -312,41 +371,27 @@ namespace DataManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string selectedFile = openFileDialog.FileName;
-
-                    // 현재 images 폴더 경로
                     string imagesPath = Path.GetDirectoryName(imageFiles[0]);
-
-                    // 새 파일명 생성 (현재 인덱스 바로 뒤 순서로)
                     string newFileName = Path.Combine(imagesPath, Path.GetFileName(selectedFile));
 
-                    // 같은 폴더가 아니면 복사
                     if (selectedFile != newFileName)
                         File.Copy(selectedFile, newFileName, overwrite: true);
 
-                    // imageFiles 배열 재정렬 (현재 인덱스 바로 뒤에 삽입)
                     List<string> fileList = imageFiles.ToList();
                     fileList.Insert(currentIndex + 1, newFileName);
                     imageFiles = fileList.ToArray();
 
-                    // 추가한 이미지로 이동
                     currentIndex = currentIndex + 1;
                     ShowImage(currentIndex);
                 }
             }
-
-
-
-
         }
 
         private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
 
-            // 임시 HTML 파일 생성
             string tempHtmlPath = Path.Combine(Path.GetTempPath(), "donkey_viewer.html");
-
-            // 이미지 경로 리스트를 JS 배열로 변환
             string jsArray = string.Join(",\n", imageFiles.Select(f => $"\"{f.Replace("\\", "\\\\")}\""));
 
             string html = $@"
@@ -364,7 +409,7 @@ namespace DataManager
 <body>
     <img id='imgView' src='' />
     <div id='info'></div>
-    <div id='controls'>← → 방향키로 이미지 넘기기</div>
+    <div id='controls'>&larr; &rarr; 방향키로 이미지 넘기기</div>
     <script>
         const images = [{jsArray}];
         let index = {currentIndex};
@@ -386,7 +431,6 @@ namespace DataManager
 
             File.WriteAllText(tempHtmlPath, html);
 
-            // 기본 브라우저로 열기
             System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
             {
                 FileName = tempHtmlPath,
@@ -419,21 +463,18 @@ namespace DataManager
                 }
             }
 
-            // 그래프 초기화
             Graph.Series.Clear();
             Graph.ChartAreas[0].AxisX.Title = "Index";
             Graph.ChartAreas[0].AxisY.Title = "Value";
             Graph.ChartAreas[0].AxisY.Minimum = -1.0;
             Graph.ChartAreas[0].AxisY.Maximum = 1.0;
 
-            // Angle 시리즈
             Series angleSeries = new Series("Angle");
             angleSeries.ChartType = SeriesChartType.Line;
             angleSeries.Color = Color.CornflowerBlue;
             for (int i = 0; i < angles.Count; i++)
                 angleSeries.Points.AddXY(i, angles[i]);
 
-            // Throttle 시리즈
             Series throttleSeries = new Series("Throttle");
             throttleSeries.ChartType = SeriesChartType.Line;
             throttleSeries.Color = Color.OrangeRed;
@@ -548,6 +589,33 @@ namespace DataManager
             });
         }
 
+        private void Restorebtn_Click_1(object sender, EventArgs e)
+        {
+            if (deletedFiles.Count == 0)
+            {
+                MessageBox.Show("복구할 데이터(제외된 프레임)가 존재하지 않습니다.", "알림");
+                return;
+            }
+
+            string lastExcludedFile = deletedFiles.Last();
+            deletedFiles.Remove(lastExcludedFile);
+
+            string dataPath = Imgtxt.Text;
+            string imagesPath = Path.Combine(dataPath, "images");
+
+            if (Directory.Exists(imagesPath))
+            {
+                imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
+                                      .OrderBy(f => f)
+                                      .Where(f => !deletedFiles.Contains(Path.GetFileName(f)))
+                                      .ToArray();
+
+                Imagebar.Maximum = imageFiles.Length - 1;
+                MessageBox.Show($"[{lastExcludedFile}] 주행 프레임이 성공적으로 복구되었습니다.", "복구 완료");
+
+                if (currentIndex >= imageFiles.Length) currentIndex = imageFiles.Length - 1;
+                ShowImage(currentIndex);
+            }
+        }
     }
 }
-

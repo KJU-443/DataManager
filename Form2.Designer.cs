@@ -34,8 +34,8 @@
             this.SortMethodcom = new System.Windows.Forms.ComboBox();
             this.TrainingStartbtn = new System.Windows.Forms.Button();
             this.GoDatabtn = new System.Windows.Forms.Button();
-            this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
+            this.Traninglst = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +69,7 @@
             this.panel2.Controls.Add(this.SortMethodlbl);
             this.panel2.Controls.Add(this.SortMethodcom);
             this.panel2.Controls.Add(this.TrainingStartbtn);
-            this.panel2.Location = new System.Drawing.Point(3, 47);
+            this.panel2.Location = new System.Drawing.Point(3, 51);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1412, 72);
             this.panel2.TabIndex = 7;
@@ -77,17 +77,17 @@
             // SortMethodlbl
             // 
             this.SortMethodlbl.AutoSize = true;
-            this.SortMethodlbl.Font = new System.Drawing.Font("한컴 고딕", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SortMethodlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SortMethodlbl.Location = new System.Drawing.Point(13, 11);
             this.SortMethodlbl.Name = "SortMethodlbl";
-            this.SortMethodlbl.Size = new System.Drawing.Size(244, 47);
+            this.SortMethodlbl.Size = new System.Drawing.Size(213, 40);
             this.SortMethodlbl.TabIndex = 10;
             this.SortMethodlbl.Text = "보기 방법 변경";
             this.SortMethodlbl.Click += new System.EventHandler(this.SortMethodlbl_Click);
             // 
             // SortMethodcom
             // 
-            this.SortMethodcom.Font = new System.Drawing.Font("한컴 고딕", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SortMethodcom.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SortMethodcom.FormattingEnabled = true;
             this.SortMethodcom.Items.AddRange(new object[] {
             "Tabel",
@@ -95,7 +95,7 @@
             "Card"});
             this.SortMethodcom.Location = new System.Drawing.Point(263, 16);
             this.SortMethodcom.Name = "SortMethodcom";
-            this.SortMethodcom.Size = new System.Drawing.Size(384, 44);
+            this.SortMethodcom.Size = new System.Drawing.Size(384, 40);
             this.SortMethodcom.TabIndex = 9;
             // 
             // TrainingStartbtn
@@ -103,7 +103,7 @@
             this.TrainingStartbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TrainingStartbtn.BackColor = System.Drawing.Color.DarkSalmon;
-            this.TrainingStartbtn.Font = new System.Drawing.Font("한컴 고딕", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrainingStartbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrainingStartbtn.Location = new System.Drawing.Point(783, 2);
             this.TrainingStartbtn.Name = "TrainingStartbtn";
             this.TrainingStartbtn.Size = new System.Drawing.Size(626, 69);
@@ -114,7 +114,7 @@
             // GoDatabtn
             // 
             this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoDatabtn.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoDatabtn.Location = new System.Drawing.Point(3, 3);
             this.GoDatabtn.Name = "GoDatabtn";
             this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
@@ -123,25 +123,26 @@
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
+            // Massagelbl
+            // 
+            this.Massagelbl.AutoSize = true;
+            this.Massagelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Massagelbl.Location = new System.Drawing.Point(3, 966);
+            this.Massagelbl.Name = "Massagelbl";
+            this.Massagelbl.Size = new System.Drawing.Size(93, 25);
+            this.Massagelbl.TabIndex = 9;
+            this.Massagelbl.Text = "경고 텍스트";
+            // 
             // Traninglst
             // 
             this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Traninglst.FormattingEnabled = true;
             this.Traninglst.ItemHeight = 18;
-            this.Traninglst.Location = new System.Drawing.Point(3, 125);
+            this.Traninglst.Location = new System.Drawing.Point(3, 129);
             this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(1412, 837);
+            this.Traninglst.Size = new System.Drawing.Size(1412, 834);
             this.Traninglst.TabIndex = 8;
-            // 
-            // Massagelbl
-            // 
-            this.Massagelbl.AutoSize = true;
-            this.Massagelbl.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Massagelbl.Location = new System.Drawing.Point(3, 965);
-            this.Massagelbl.Name = "Massagelbl";
-            this.Massagelbl.Size = new System.Drawing.Size(112, 26);
-            this.Massagelbl.TabIndex = 9;
-            this.Massagelbl.Text = "경고 텍스트";
+            this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
             // Form2
             // 
@@ -167,9 +168,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox SortMethodcom;
         private System.Windows.Forms.Button TrainingStartbtn;
-        private System.Windows.Forms.ListBox Traninglst;
         private System.Windows.Forms.Label Massagelbl;
         private System.Windows.Forms.Label SortMethodlbl;
+        private System.Windows.Forms.ListBox Traninglst;
     }
 }
-

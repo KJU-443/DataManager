@@ -101,8 +101,7 @@
             // 
             // ImageDeletebtn
             // 
-            this.ImageDeletebtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImageDeletebtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ImageDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
             this.ImageDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImageDeletebtn.Location = new System.Drawing.Point(1204, 2);
@@ -123,6 +122,7 @@
             this.GoDatabtn.TabIndex = 3;
             this.GoDatabtn.Text = "데이터";
             this.GoDatabtn.UseVisualStyleBackColor = false;
+            this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
             // Massagelbl
             // 
@@ -136,8 +136,7 @@
             // 
             // ImageRestorebtn
             // 
-            this.ImageRestorebtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImageRestorebtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ImageRestorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ImageRestorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImageRestorebtn.Location = new System.Drawing.Point(993, 2);
@@ -160,8 +159,7 @@
             // 
             // SellectAllbtn
             // 
-            this.SellectAllbtn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SellectAllbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SellectAllbtn.BackColor = System.Drawing.Color.LightGray;
             this.SellectAllbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SellectAllbtn.Location = new System.Drawing.Point(782, 2);

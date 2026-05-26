@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,6 +59,7 @@
             this.Imgtxt = new System.Windows.Forms.TextBox();
             this.SelectImgbtn = new System.Windows.Forms.Button();
             this.SelectFolderbtn = new System.Windows.Forms.Button();
+            this.GoToImage = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -149,19 +150,19 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.Graph.Legends.Add(legend1);
+            chartArea3.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.Graph.Legends.Add(legend3);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.Graph.Series.Add(series1);
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.Graph.Series.Add(series3);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -205,6 +206,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.GoToImage);
             this.groupBox1.Controls.Add(this.Restorebtn);
             this.groupBox1.Controls.Add(this.Reversebtn);
             this.groupBox1.Controls.Add(this.Plsybtn);
@@ -231,7 +233,7 @@
             this.Restorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.Restorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Restorebtn.ForeColor = System.Drawing.Color.Black;
-            this.Restorebtn.Location = new System.Drawing.Point(14, 133);
+            this.Restorebtn.Location = new System.Drawing.Point(13, 220);
             this.Restorebtn.Name = "Restorebtn";
             this.Restorebtn.Size = new System.Drawing.Size(111, 51);
             this.Restorebtn.TabIndex = 15;
@@ -244,7 +246,7 @@
             this.Reversebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
-            this.Reversebtn.Location = new System.Drawing.Point(13, 375);
+            this.Reversebtn.Location = new System.Drawing.Point(14, 413);
             this.Reversebtn.Name = "Reversebtn";
             this.Reversebtn.Size = new System.Drawing.Size(171, 51);
             this.Reversebtn.TabIndex = 14;
@@ -257,7 +259,7 @@
             this.Plsybtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
-            this.Plsybtn.Location = new System.Drawing.Point(188, 375);
+            this.Plsybtn.Location = new System.Drawing.Point(188, 413);
             this.Plsybtn.Name = "Plsybtn";
             this.Plsybtn.Size = new System.Drawing.Size(171, 51);
             this.Plsybtn.TabIndex = 13;
@@ -270,7 +272,7 @@
             this.NextImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.NextImgbtn.Location = new System.Drawing.Point(188, 293);
+            this.NextImgbtn.Location = new System.Drawing.Point(188, 349);
             this.NextImgbtn.Name = "NextImgbtn";
             this.NextImgbtn.Size = new System.Drawing.Size(171, 51);
             this.NextImgbtn.TabIndex = 12;
@@ -283,7 +285,7 @@
             this.PreviousImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.PreviousImgbtn.Location = new System.Drawing.Point(13, 293);
+            this.PreviousImgbtn.Location = new System.Drawing.Point(14, 349);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
             this.PreviousImgbtn.Size = new System.Drawing.Size(171, 51);
             this.PreviousImgbtn.TabIndex = 11;
@@ -295,7 +297,7 @@
             // 
             this.PlayAndStopbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.PlayAndStopbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.PlayAndStopbtn.Location = new System.Drawing.Point(13, 457);
+            this.PlayAndStopbtn.Location = new System.Drawing.Point(13, 477);
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
             this.PlayAndStopbtn.Size = new System.Drawing.Size(346, 51);
             this.PlayAndStopbtn.TabIndex = 10;
@@ -321,7 +323,7 @@
             this.ImgAddbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgAddbtn.Location = new System.Drawing.Point(239, 134);
+            this.ImgAddbtn.Location = new System.Drawing.Point(239, 221);
             this.ImgAddbtn.Name = "ImgAddbtn";
             this.ImgAddbtn.Size = new System.Drawing.Size(120, 51);
             this.ImgAddbtn.TabIndex = 2;
@@ -334,7 +336,7 @@
             this.ImgDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
             this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgDeletebtn.Location = new System.Drawing.Point(126, 134);
+            this.ImgDeletebtn.Location = new System.Drawing.Point(125, 221);
             this.ImgDeletebtn.Name = "ImgDeletebtn";
             this.ImgDeletebtn.Size = new System.Drawing.Size(113, 51);
             this.ImgDeletebtn.TabIndex = 4;
@@ -347,7 +349,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(8, 99);
+            this.label2.Location = new System.Drawing.Point(8, 179);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 32);
             this.label2.TabIndex = 3;
@@ -358,7 +360,7 @@
             this.DoubleSpeedbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 211);
+            this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 285);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
             this.DoubleSpeedbtn.Size = new System.Drawing.Size(171, 51);
             this.DoubleSpeedbtn.TabIndex = 5;
@@ -371,7 +373,7 @@
             this.DoubleSpeedtxt.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedtxt.Location = new System.Drawing.Point(13, 213);
+            this.DoubleSpeedtxt.Location = new System.Drawing.Point(14, 291);
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
             this.DoubleSpeedtxt.Size = new System.Drawing.Size(171, 39);
             this.DoubleSpeedtxt.TabIndex = 2;
@@ -446,6 +448,19 @@
             this.SelectFolderbtn.UseVisualStyleBackColor = false;
             this.SelectFolderbtn.Click += new System.EventHandler(this.SelectFolderbtn_Click_1);
             // 
+            // GoToImage
+            // 
+            this.GoToImage.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoToImage.ForeColor = System.Drawing.Color.Black;
+            this.GoToImage.Location = new System.Drawing.Point(13, 119);
+            this.GoToImage.Name = "GoToImage";
+            this.GoToImage.Size = new System.Drawing.Size(346, 51);
+            this.GoToImage.TabIndex = 16;
+            this.GoToImage.Text = "이미지 리스트 보기";
+            this.GoToImage.UseVisualStyleBackColor = false;
+            this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -501,5 +516,6 @@
         private System.Windows.Forms.TextBox Imgtxt;
         private System.Windows.Forms.Button SelectImgbtn;
         private System.Windows.Forms.Button Restorebtn;
+        private System.Windows.Forms.Button GoToImage;
     }
 }

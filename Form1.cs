@@ -503,6 +503,10 @@ namespace DataManager
 
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
+
+                if (currentIndex < catalogRecords.Count)
+                    catalogRecords.RemoveAt(currentIndex);
+
                 imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
                 RefreshImageList();
 
@@ -641,25 +645,10 @@ namespace DataManager
             if (string.IsNullOrEmpty(Imgtxt.Text)) return;
 
             string dataPath = Imgtxt.Text;
-            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                                             .OrderBy(f => f)
-                                             .ToArray();
+            if (catalogRecords.Count == 0) return;
 
-            List<double> angles = new List<double>();
-            List<double> throttles = new List<double>();
-
-            foreach (string catalogFile in catalogFiles)
-            {
-                string[] lines = File.ReadAllLines(catalogFile);
-                foreach (string line in lines)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    JObject json = JObject.Parse(line);
-                    angles.Add((double)json["user/angle"]);
-                    throttles.Add((double)json["user/throttle"]);
-                }
-            }
+            var angles = catalogRecords.Select(r => r.Angle).ToList();
+            var throttles = catalogRecords.Select(r => r.Throttle).ToList();
 
             string anglesJs = string.Join(",", angles);
             string throttlesJs = string.Join(",", throttles);

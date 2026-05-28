@@ -31,7 +31,6 @@
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -73,6 +72,7 @@
             this.Imgtxt = new System.Windows.Forms.TextBox();
             this.SelectImgbtn = new System.Windows.Forms.Button();
             this.SelectFolderbtn = new System.Windows.Forms.Button();
+            this.ImageNumberlbl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -165,7 +165,6 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-
             chartArea1.Name = "ChartArea1";
             this.Graph.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
@@ -179,7 +178,6 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.Graph.Series.Add(series1);
-
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -234,6 +232,7 @@
             // 
             // ImageFilteringbtn
             // 
+            this.ImageFilteringbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
@@ -241,34 +240,38 @@
             this.ImageFilteringbtn.Name = "ImageFilteringbtn";
             this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
             this.ImageFilteringbtn.TabIndex = 17;
+            this.ImageFilteringbtn.Tag = "noTheme";
             this.ImageFilteringbtn.Text = "이미지 필터링 하기";
             this.ImageFilteringbtn.UseVisualStyleBackColor = false;
             this.ImageFilteringbtn.Click += new System.EventHandler(this.ImageFilteringbtn_Click);
             // 
             // TrottleDowntxt
             // 
-            this.TrottleDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TrottleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
             this.TrottleDowntxt.Name = "TrottleDowntxt";
-            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 35);
+            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 39);
             this.TrottleDowntxt.TabIndex = 17;
             // 
             // None1lbl
             // 
+            this.None1lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.None1lbl.AutoSize = true;
-            this.None1lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.None1lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.None1lbl.Location = new System.Drawing.Point(170, 357);
             this.None1lbl.Name = "None1lbl";
-            this.None1lbl.Size = new System.Drawing.Size(28, 29);
+            this.None1lbl.Size = new System.Drawing.Size(30, 31);
             this.None1lbl.TabIndex = 16;
             this.None1lbl.Text = "~";
             // 
             // TrottleUptxt
             // 
-            this.TrottleUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TrottleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
             this.TrottleUptxt.Name = "TrottleUptxt";
-            this.TrottleUptxt.Size = new System.Drawing.Size(67, 35);
+            this.TrottleUptxt.Size = new System.Drawing.Size(67, 39);
             this.TrottleUptxt.TabIndex = 15;
             // 
             // TrottleTextlbl
@@ -284,13 +287,11 @@
             // 
             // AngleDowntxt
             // 
-
             this.AngleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-
             this.AngleDowntxt.Location = new System.Drawing.Point(201, 310);
             this.AngleDowntxt.Name = "AngleDowntxt";
-            this.AngleDowntxt.Size = new System.Drawing.Size(67, 35);
+            this.AngleDowntxt.Size = new System.Drawing.Size(67, 39);
             this.AngleDowntxt.TabIndex = 12;
             // 
             // None2lbl
@@ -317,13 +318,11 @@
             // 
             // AngleUptxt
             // 
-
             this.AngleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-
             this.AngleUptxt.Location = new System.Drawing.Point(102, 310);
             this.AngleUptxt.Name = "AngleUptxt";
-            this.AngleUptxt.Size = new System.Drawing.Size(67, 35);
+            this.AngleUptxt.Size = new System.Drawing.Size(67, 39);
             this.AngleUptxt.TabIndex = 9;
             // 
             // TrottleFigurelbl
@@ -352,16 +351,14 @@
             // 
             // Imagelst
             // 
-
             this.Imagelst.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.Imagelst.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-
             this.Imagelst.FormattingEnabled = true;
-            this.Imagelst.ItemHeight = 25;
+            this.Imagelst.ItemHeight = 26;
             this.Imagelst.Location = new System.Drawing.Point(3, 6);
             this.Imagelst.Name = "Imagelst";
-            this.Imagelst.Size = new System.Drawing.Size(265, 279);
+            this.Imagelst.Size = new System.Drawing.Size(265, 264);
             this.Imagelst.TabIndex = 6;
             this.Imagelst.SelectedIndexChanged += new System.EventHandler(this.Imagelst_SelectedIndexChanged);
             // 
@@ -369,6 +366,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.ImageNumberlbl);
             this.groupBox1.Controls.Add(this.GoToImage);
             this.groupBox1.Controls.Add(this.Restorebtn);
             this.groupBox1.Controls.Add(this.Reversebtn);
@@ -631,51 +629,17 @@
             this.SelectFolderbtn.UseVisualStyleBackColor = false;
             this.SelectFolderbtn.Click += new System.EventHandler(this.SelectFolderbtn_Click_1);
             // 
-
-            // TrottleDowntxt
+            // ImageNumberlbl
             // 
-            this.TrottleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.TrottleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
-            this.TrottleDowntxt.Name = "TrottleDowntxt";
-            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 39);
-            this.TrottleDowntxt.TabIndex = 17;
+            this.ImageNumberlbl.AutoSize = true;
+            this.ImageNumberlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
+            this.ImageNumberlbl.Location = new System.Drawing.Point(82, 181);
+            this.ImageNumberlbl.Name = "ImageNumberlbl";
+            this.ImageNumberlbl.Size = new System.Drawing.Size(159, 31);
+            this.ImageNumberlbl.TabIndex = 17;
+            this.ImageNumberlbl.Text = "(1000/1000)";
             // 
-            // None1lbl
-            // 
-            this.None1lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.None1lbl.AutoSize = true;
-            this.None1lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.None1lbl.Location = new System.Drawing.Point(170, 357);
-            this.None1lbl.Name = "None1lbl";
-            this.None1lbl.Size = new System.Drawing.Size(30, 31);
-            this.None1lbl.TabIndex = 16;
-            this.None1lbl.Text = "~";
-            // 
-            // TrottleUptxt
-            // 
-            this.TrottleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.TrottleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
-            this.TrottleUptxt.Name = "TrottleUptxt";
-            this.TrottleUptxt.Size = new System.Drawing.Size(67, 39);
-            this.TrottleUptxt.TabIndex = 15;
-            // 
-            // ImageFilteringbtn
-            // 
-            this.ImageFilteringbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
-            this.ImageFilteringbtn.Location = new System.Drawing.Point(9, 405);
-            this.ImageFilteringbtn.Name = "ImageFilteringbtn";
-            this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
-            this.ImageFilteringbtn.TabIndex = 17;
-            this.ImageFilteringbtn.Tag = "noTheme";
-            this.ImageFilteringbtn.Text = "이미지 필터링 하기";
-            this.ImageFilteringbtn.UseVisualStyleBackColor = false;
-            // 
-
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -745,5 +709,6 @@
         private System.Windows.Forms.TextBox TrottleDowntxt;
         private System.Windows.Forms.Label None1lbl;
         private System.Windows.Forms.TextBox TrottleUptxt;
+        private System.Windows.Forms.Label ImageNumberlbl;
     }
 }

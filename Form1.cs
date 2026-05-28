@@ -8,10 +8,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-
 
 namespace DataManager
 {
@@ -20,12 +20,14 @@ namespace DataManager
         private string selectedFolderPath = "";
         private string[] imageFiles = Array.Empty<string>();
         private int currentIndex = 0;
-        private Timer playTimer = new Timer();
+        private System.Windows.Forms.Timer playTimer = new System.Windows.Forms.Timer();
         private bool isReverse = false;
         private bool isPlaying = false;
         private double currentSpeed = 1.0;
         private double[] speedLevels = { 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0 };
         private int speedIndex = 2;
+
+        private CancellationTokenSource imageCts = new CancellationTokenSource();
 
         // 복구(Restore) 기능을 위한 메모리 백업 저장소
         private List<string> originalCatalogLines = new List<string>();
@@ -84,29 +86,62 @@ namespace DataManager
             }
 
             string dataPath = Imgtxt.Text;
-            string catalogPath = Path.Combine(dataPath, "catalog_0.catalog");
 
-            if (File.Exists(catalogPath) && originalCatalogLines.Count > 0)
+            // 전체 catalog 파일 가져오기
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            if (catalogFiles.Length > 0 && originalCatalogLines.Count > 0)
             {
                 try
                 {
+                    // 삭제된 파일 목록 기준으로 필터링
                     var finalLines = originalCatalogLines
                         .Where(line => !deletedFiles.Any(deletedFile => line.Contains(deletedFile)))
                         .ToList();
 
-                    File.WriteAllLines(catalogPath, finalLines);
+                    // 각 catalog 파일에 해당하는 라인만 분배해서 저장
+                    foreach (string catalogFile in catalogFiles)
+                    {
+                        string catalogFileName = Path.GetFileNameWithoutExtension(catalogFile);
+
+                        // 해당 catalog 번호 추출 (예: catalog_0 → 0)
+                        int catalogIndex = int.Parse(catalogFileName.Split('_')[1]);
+
+                        // 해당 catalog에 속하는 라인만 필터링 (_index 기준)
+                        var linesForThisCatalog = finalLines
+                            .Where(line =>
+                            {
+                                if (string.IsNullOrWhiteSpace(line)) return false;
+                                try
+                                {
+                                    JObject json = JObject.Parse(line);
+                                    int index = (int)json["_index"];
+                                    // catalog당 1000개 기준 (동키카 기본값)
+                                    return index / 1000 == catalogIndex;
+                                }
+                                catch { return false; }
+                            })
+                            .ToList();
+
+                        File.WriteAllLines(catalogFile, linesForThisCatalog);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"카탈로그 데이터셋 저장 중 오류 발생: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"카탈로그 데이터셋 저장 중 오류 발생: {ex.Message}", "오류",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
 
-            Form2 form2 = new Form2(selectedFolderPath, Imgtxt.Text); form2.Show();
+            Form2 form2 = new Form2(selectedFolderPath, Imgtxt.Text);
+            form2.Show();
             this.Hide();
         }
-        private void SelectImgbtn_Click(object sender, EventArgs e)
+        private async void SelectImgbtn_Click(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;
             string wslTubPath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
@@ -131,11 +166,16 @@ namespace DataManager
 
                     Imgtxt.Text = dataPath;
 
-                    string catalogPath = Path.Combine(dataPath, "catalog_0.catalog");
-                    if (File.Exists(catalogPath))
+                    string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                 .OrderBy(f => f)
+                                 .ToArray();
+
+                    originalCatalogLines.Clear();
+                    deletedFiles.Clear();
+                    foreach (string catalogFile in catalogFiles)
                     {
-                        originalCatalogLines = File.ReadAllLines(catalogPath).ToList();
-                        deletedFiles.Clear();
+                        originalCatalogLines.AddRange(File.ReadAllLines(catalogFile));
                     }
 
                     string imagesPath = Path.Combine(dataPath, "images");
@@ -149,7 +189,7 @@ namespace DataManager
                             currentIndex = 0;
                             Imagebar.Minimum = 0;
                             Imagebar.Maximum = imageFiles.Length - 1;
-                            ShowImage(currentIndex);
+                            await ShowImage(currentIndex);
                             LoadGraph();
                         }
                         else
@@ -167,35 +207,43 @@ namespace DataManager
             }
         }
 
-        private void ShowImage(int index)
+        private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
 
-            if (Imagepic.Image != null)
-            {
-                Imagepic.Image.Dispose();
-                Imagepic.Image = null;
-            }
+            imageCts.Cancel();
+            imageCts = new CancellationTokenSource();
+            CancellationToken token = imageCts.Token;
 
-            string currentImagePath = imageFiles[index];
-            if (File.Exists(currentImagePath))
-            {
-                using (FileStream fs = new FileStream(currentImagePath, FileMode.Open, FileAccess.Read))
-                {
-                    using (Image tempImg = Image.FromStream(fs))
-                    {
-                        Imagepic.Image = new Bitmap(tempImg);
-                    }
-                }
-            }
-
-            Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
+
+            string currentImagePath = imageFiles[index];
+
+            try
+            {
+                Bitmap bmp = await Task.Run(() =>
+                {
+                    if (!File.Exists(currentImagePath)) return null;
+                    using (FileStream fs = new FileStream(currentImagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (System.Drawing.Image tempImg = System.Drawing.Image.FromStream(fs))
+                        return new Bitmap(tempImg);
+                }, token);
+
+                if (token.IsCancellationRequested) return;
+
+                // 새 이미지 로드 완료 후 한 번에 교체
+                var oldImage = Imagepic.Image;
+                Imagepic.Image = bmp;
+                Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
+                oldImage?.Dispose(); // 교체 후 기존 이미지 해제
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception) { }
         }
 
-        private void PlayTimer_Tick(object sender, EventArgs e)
+        private async void PlayTimer_Tick(object sender, EventArgs e)
         {
             if (!isReverse)
             {
@@ -219,33 +267,25 @@ namespace DataManager
                     PlayAndStopbtn.Text = "재생";
                 }
             }
-            ShowImage(currentIndex);
+            await ShowImage(currentIndex);
         }
 
-        private void PreviousImgbtn_Click(object sender, EventArgs e)
+        private async void PreviousImgbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
             playTimer.Stop();
             isPlaying = false;
             PlayAndStopbtn.Text = "재생";
-            if (currentIndex > 0)
-            {
-                currentIndex--;
-                ShowImage(currentIndex);
-            }
+            if (currentIndex > 0) { currentIndex--; await ShowImage(currentIndex); }
         }
 
-        private void NextImgbtn_Click(object sender, EventArgs e)
+        private async void NextImgbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
             playTimer.Stop();
             isPlaying = false;
             PlayAndStopbtn.Text = "재생";
-            if (currentIndex < imageFiles.Length - 1)
-            {
-                currentIndex++;
-                ShowImage(currentIndex);
-            }
+            if (currentIndex < imageFiles.Length - 1) { currentIndex++; await ShowImage(currentIndex); }
         }
 
         private void Reversebtn_Click(object sender, EventArgs e)
@@ -285,24 +325,18 @@ namespace DataManager
             }
         }
 
-        private void Imagebar_Scroll(object sender, EventArgs e)
-        {
-            currentIndex = Imagebar.Value;
-            ShowImage(currentIndex);
-        }
-
         private void DoubleSpeedbtn_Click(object sender, EventArgs e)
         {
             DoubleSpeedbtn.ContextMenuStrip.Show(DoubleSpeedbtn, new Point(0, DoubleSpeedbtn.Height));
         }
 
-        private void Imagebar_Scroll_1(object sender, EventArgs e)
+        private async void Imagebar_Scroll_1(object sender, EventArgs e)
         {
             currentIndex = Imagebar.Value;
-            ShowImage(currentIndex);
+            await ShowImage(currentIndex);
         }
 
-        private void ImgDeletebtn_Click(object sender, EventArgs e)
+        private async void ImgDeletebtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
 
@@ -336,11 +370,11 @@ namespace DataManager
                     currentIndex = imageFiles.Length - 1;
 
                 Imagebar.Maximum = imageFiles.Length - 1;
-                ShowImage(currentIndex);
+                await ShowImage(currentIndex);
             }
         }
 
-        private void ImgAddbtn_Click(object sender, EventArgs e)
+        private async void ImgAddbtn_Click(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;
             string wslBasePath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
@@ -365,7 +399,7 @@ namespace DataManager
                     imageFiles = fileList.ToArray();
 
                     currentIndex = currentIndex + 1;
-                    ShowImage(currentIndex);
+                    await ShowImage(currentIndex);
                 }
             }
         }
@@ -572,7 +606,7 @@ namespace DataManager
             });
         }
 
-        private void Restorebtn_Click_1(object sender, EventArgs e)
+        private async void Restorebtn_Click_1(object sender, EventArgs e)
         {
             if (deletedFiles.Count == 0)
             {
@@ -599,20 +633,27 @@ namespace DataManager
                 if (currentIndex >= imageFiles.Length)
                     currentIndex = imageFiles.Length - 1;
 
-                ShowImage(currentIndex);
+                await ShowImage(currentIndex);
             }
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
         {
-            // 1. 새 창(Form3) 생성
-            Form3 form3 = new Form3();
-
-            // 3. Form3 열기 (이제 창 크기 마구 늘렸다 줄였다 테스트 가능!)
+            Form3 form3 = new Form3(imageFiles, deletedFiles, this);
             form3.Show();
-
-            // 4. 현재 창은 잠시 숨기기
             this.Hide();
         }
+
+        public void RestoreImage(string imgPath)
+        {
+            if (!imageFiles.Contains(imgPath))
+            {
+                imageFiles = imageFiles.Concat(new[] { imgPath })
+                                       .OrderBy(f => f)
+                                       .ToArray();
+                Imagebar.Maximum = imageFiles.Length - 1;
+            }
+        }
+
     } 
 }

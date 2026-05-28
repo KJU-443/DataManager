@@ -30,14 +30,12 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SellectAllbtn = new System.Windows.Forms.Button();
+            this.ImageRestorebtn = new System.Windows.Forms.Button();
             this.TypeChoicelbl = new System.Windows.Forms.Label();
-            this.SortMethodcom = new System.Windows.Forms.ComboBox();
-            this.ImageDeletebtn = new System.Windows.Forms.Button();
             this.GoDatabtn = new System.Windows.Forms.Button();
             this.Massagelbl = new System.Windows.Forms.Label();
-            this.ImageRestorebtn = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.SellectAllbtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -70,12 +68,36 @@
             this.panel2.Controls.Add(this.SellectAllbtn);
             this.panel2.Controls.Add(this.ImageRestorebtn);
             this.panel2.Controls.Add(this.TypeChoicelbl);
-            this.panel2.Controls.Add(this.SortMethodcom);
-            this.panel2.Controls.Add(this.ImageDeletebtn);
             this.panel2.Location = new System.Drawing.Point(3, 51);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1412, 72);
             this.panel2.TabIndex = 7;
+            // 
+            // SellectAllbtn
+            // 
+            this.SellectAllbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.SellectAllbtn.BackColor = System.Drawing.Color.LightGray;
+            this.SellectAllbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.SellectAllbtn.Location = new System.Drawing.Point(972, 2);
+            this.SellectAllbtn.Name = "SellectAllbtn";
+            this.SellectAllbtn.Size = new System.Drawing.Size(205, 69);
+            this.SellectAllbtn.TabIndex = 12;
+            this.SellectAllbtn.Text = "전체 선택";
+            this.SellectAllbtn.UseVisualStyleBackColor = false;
+            this.SellectAllbtn.Click += new System.EventHandler(this.SellectAllbtn_Click);
+            // 
+            // ImageRestorebtn
+            // 
+            this.ImageRestorebtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImageRestorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.ImageRestorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ImageRestorebtn.Location = new System.Drawing.Point(1186, 2);
+            this.ImageRestorebtn.Name = "ImageRestorebtn";
+            this.ImageRestorebtn.Size = new System.Drawing.Size(205, 69);
+            this.ImageRestorebtn.TabIndex = 11;
+            this.ImageRestorebtn.Text = "이미지 복구";
+            this.ImageRestorebtn.UseVisualStyleBackColor = false;
+            this.ImageRestorebtn.Click += new System.EventHandler(this.ImageRestorebtn_Click);
             // 
             // TypeChoicelbl
             // 
@@ -85,32 +107,8 @@
             this.TypeChoicelbl.Name = "TypeChoicelbl";
             this.TypeChoicelbl.Size = new System.Drawing.Size(271, 40);
             this.TypeChoicelbl.TabIndex = 10;
-            this.TypeChoicelbl.Text = "이미지 리스트 선택";
-            // 
-            // SortMethodcom
-            // 
-            this.SortMethodcom.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SortMethodcom.FormattingEnabled = true;
-            this.SortMethodcom.Items.AddRange(new object[] {
-            "이미지 삭제",
-            "이미지 복구"});
-            this.SortMethodcom.Location = new System.Drawing.Point(290, 15);
-            this.SortMethodcom.Name = "SortMethodcom";
-            this.SortMethodcom.Size = new System.Drawing.Size(384, 40);
-            this.SortMethodcom.TabIndex = 9;
-            // 
-            // ImageDeletebtn
-            // 
-            this.ImageDeletebtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImageDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
-            this.ImageDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImageDeletebtn.Location = new System.Drawing.Point(1204, 2);
-            this.ImageDeletebtn.Name = "ImageDeletebtn";
-            this.ImageDeletebtn.Size = new System.Drawing.Size(205, 69);
-            this.ImageDeletebtn.TabIndex = 7;
-            this.ImageDeletebtn.Text = "이미지 삭제";
-            this.ImageDeletebtn.UseVisualStyleBackColor = false;
-            this.ImageDeletebtn.Click += new System.EventHandler(this.TrainingStartbtn_Click);
+            this.TypeChoicelbl.Text = "복구할 이미지 선택";
+            this.TypeChoicelbl.Click += new System.EventHandler(this.TypeChoicelbl_Click);
             // 
             // GoDatabtn
             // 
@@ -133,18 +131,7 @@
             this.Massagelbl.Size = new System.Drawing.Size(93, 25);
             this.Massagelbl.TabIndex = 9;
             this.Massagelbl.Text = "경고 텍스트";
-            // 
-            // ImageRestorebtn
-            // 
-            this.ImageRestorebtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImageRestorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.ImageRestorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImageRestorebtn.Location = new System.Drawing.Point(993, 2);
-            this.ImageRestorebtn.Name = "ImageRestorebtn";
-            this.ImageRestorebtn.Size = new System.Drawing.Size(205, 69);
-            this.ImageRestorebtn.TabIndex = 11;
-            this.ImageRestorebtn.Text = "이미지 복구";
-            this.ImageRestorebtn.UseVisualStyleBackColor = false;
+            this.Massagelbl.Click += new System.EventHandler(this.Massagelbl_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -156,18 +143,6 @@
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1412, 834);
             this.flowLayoutPanel1.TabIndex = 10;
-            // 
-            // SellectAllbtn
-            // 
-            this.SellectAllbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SellectAllbtn.BackColor = System.Drawing.Color.LightGray;
-            this.SellectAllbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SellectAllbtn.Location = new System.Drawing.Point(782, 2);
-            this.SellectAllbtn.Name = "SellectAllbtn";
-            this.SellectAllbtn.Size = new System.Drawing.Size(205, 69);
-            this.SellectAllbtn.TabIndex = 12;
-            this.SellectAllbtn.Text = "전체 선택";
-            this.SellectAllbtn.UseVisualStyleBackColor = false;
             // 
             // Form3
             // 
@@ -190,12 +165,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button ImageRestorebtn;
-        private System.Windows.Forms.Label TypeChoicelbl;
-        private System.Windows.Forms.ComboBox SortMethodcom;
-        private System.Windows.Forms.Button ImageDeletebtn;
         private System.Windows.Forms.Button GoDatabtn;
         private System.Windows.Forms.Label Massagelbl;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button SellectAllbtn;
+        private System.Windows.Forms.Label TypeChoicelbl;
     }
 }

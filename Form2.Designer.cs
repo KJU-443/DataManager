@@ -34,8 +34,8 @@
             this.SortMethodcom = new System.Windows.Forms.ComboBox();
             this.TrainingStartbtn = new System.Windows.Forms.Button();
             this.GoDatabtn = new System.Windows.Forms.Button();
-            this.Massagelbl = new System.Windows.Forms.Label();
             this.Traninglst = new System.Windows.Forms.ListBox();
+            this.Massagelbl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -110,6 +110,7 @@
             this.TrainingStartbtn.TabIndex = 7;
             this.TrainingStartbtn.Text = "훈련 시작";
             this.TrainingStartbtn.UseVisualStyleBackColor = false;
+            this.TrainingStartbtn.Click += new System.EventHandler(this.TrainingStartbtn_Click);
             // 
             // GoDatabtn
             // 
@@ -123,16 +124,6 @@
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
-            // Massagelbl
-            // 
-            this.Massagelbl.AutoSize = true;
-            this.Massagelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Massagelbl.Location = new System.Drawing.Point(3, 966);
-            this.Massagelbl.Name = "Massagelbl";
-            this.Massagelbl.Size = new System.Drawing.Size(93, 25);
-            this.Massagelbl.TabIndex = 9;
-            this.Massagelbl.Text = "경고 텍스트";
-            // 
             // Traninglst
             // 
             this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -143,6 +134,16 @@
             this.Traninglst.Size = new System.Drawing.Size(1412, 834);
             this.Traninglst.TabIndex = 8;
             this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
+            // 
+            // Massagelbl
+            // 
+            this.Massagelbl.AutoSize = true;
+            this.Massagelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Massagelbl.Location = new System.Drawing.Point(3, 966);
+            this.Massagelbl.Name = "Massagelbl";
+            this.Massagelbl.Size = new System.Drawing.Size(93, 25);
+            this.Massagelbl.TabIndex = 9;
+            this.Massagelbl.Text = "경고 텍스트";
             // 
             // Form2
             // 

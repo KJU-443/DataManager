@@ -36,8 +36,12 @@
             this.GoDatabtn = new System.Windows.Forms.Button();
             this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.TrainWronglbl = new System.Windows.Forms.Label();
+            this.TrainFigurelbl = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -48,9 +52,9 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.GoDatabtn, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.Traninglst, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.Massagelbl, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
@@ -58,6 +62,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1006);
             this.tableLayoutPanel1.TabIndex = 1;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
@@ -117,7 +122,7 @@
             // 
             this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoDatabtn.Location = new System.Drawing.Point(3, 3);
+            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
             this.GoDatabtn.Name = "GoDatabtn";
             this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
             this.GoDatabtn.TabIndex = 3;
@@ -147,6 +152,38 @@
             this.Massagelbl.TabIndex = 9;
             this.Massagelbl.Text = "경고 텍스트";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.TrainFigurelbl);
+            this.panel1.Controls.Add(this.TrainWronglbl);
+            this.panel1.Controls.Add(this.GoDatabtn);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1412, 42);
+            this.panel1.TabIndex = 10;
+            // 
+            // TrainWronglbl
+            // 
+            this.TrainWronglbl.AutoSize = true;
+            this.TrainWronglbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrainWronglbl.ForeColor = System.Drawing.Color.Black;
+            this.TrainWronglbl.Location = new System.Drawing.Point(911, 7);
+            this.TrainWronglbl.Name = "TrainWronglbl";
+            this.TrainWronglbl.Size = new System.Drawing.Size(184, 31);
+            this.TrainWronglbl.TabIndex = 18;
+            this.TrainWronglbl.Text = "훈련 오답률 : 0%";
+            // 
+            // TrainFigurelbl
+            // 
+            this.TrainFigurelbl.AutoSize = true;
+            this.TrainFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrainFigurelbl.ForeColor = System.Drawing.Color.Black;
+            this.TrainFigurelbl.Location = new System.Drawing.Point(521, 7);
+            this.TrainFigurelbl.Name = "TrainFigurelbl";
+            this.TrainFigurelbl.Size = new System.Drawing.Size(184, 31);
+            this.TrainFigurelbl.TabIndex = 19;
+            this.TrainFigurelbl.Text = "훈련 진행률 : 0%";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -160,6 +197,8 @@
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -174,5 +213,8 @@
         private System.Windows.Forms.Label Massagelbl;
         private System.Windows.Forms.Label SortMethodlbl;
         private System.Windows.Forms.ListBox Traninglst;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label TrainFigurelbl;
+        private System.Windows.Forms.Label TrainWronglbl;
     }
 }

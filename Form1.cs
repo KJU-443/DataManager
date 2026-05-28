@@ -50,6 +50,8 @@ namespace DataManager
         public Form1()
         {
             InitializeComponent();
+            this.KeyPreview = true;
+            this.KeyDown += Form1_KeyDown;
             playTimer.Interval = 100;
             playTimer.Tick += new EventHandler(PlayTimer_Tick);
 
@@ -245,8 +247,9 @@ namespace DataManager
             }
 
             Form2 form2 = new Form2(selectedFolderPath, Imgtxt.Text);
-            form2.Show();
+            form2.ApplyWindowState(this);
             this.Hide();
+            form2.Show();
         }
         private async void SelectImgbtn_Click(object sender, EventArgs e)
         {
@@ -766,9 +769,12 @@ namespace DataManager
 
         private void GoToImage_Click(object sender, EventArgs e)
         {
+            playTimer.Stop();
             Form3 form3 = new Form3(imageFiles, deletedFiles, this);
-            form3.Show();
+            form3.ApplyWindowState(this);
             this.Hide();
+            form3.Show();
+
         }
 
         public void RestoreImage(string imgPath)
@@ -891,6 +897,35 @@ namespace DataManager
             else
             {
                 MessageBox.Show("조건에 맞는 이미지가 없습니다.");
+            }
+        }
+
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            // 텍스트박스 입력 중이면 무시
+            if (this.ActiveControl is TextBox)
+                return;
+
+            // 오른쪽 방향키
+            if (e.KeyCode == Keys.Right)
+            {
+                e.SuppressKeyPress = true;
+                NextImgbtn.PerformClick();
+            }
+
+            // 왼쪽 방향키
+            else if (e.KeyCode == Keys.Left)
+            {
+                e.SuppressKeyPress = true;
+                PreviousImgbtn.PerformClick();
+            }
+
+            // Delete 키
+            else if (e.KeyCode == Keys.Delete)
+            {
+                e.SuppressKeyPress = true;
+                ImgDeletebtn.PerformClick();
             }
         }
     } 

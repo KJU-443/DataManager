@@ -25,7 +25,6 @@ namespace DataManager
         private bool isPlaying = false;
         private double currentSpeed = 1.0;
         private double[] speedLevels = { 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0 };
-        private int speedIndex = 2;
 
         private CancellationTokenSource imageCts = new CancellationTokenSource();
 
@@ -490,23 +489,71 @@ namespace DataManager
             string fileNameOnly = Path.GetFileName(currentFilePath);
 
             DialogResult confirm = MessageBox.Show(
-                "현재 프레임을 화면 및 학습 데이터셋에서 제외할까요?\n(실물 이미지 파일은 삭제되지 않습니다.)",
-                "데이터 제외", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                "현재 프레임을 삭제할까요?\n(이미지는 image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)",
+                "데이터 삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirm == DialogResult.Yes)
             {
+                // image_trash 폴더 생성
+                string dataPath = Imgtxt.Text;
+                string trashPath = Path.Combine(dataPath, "image_trash");
+                if (!Directory.Exists(trashPath))
+                    Directory.CreateDirectory(trashPath);
+
+                // 이미지 image_trash로 이동
+                string destPath = Path.Combine(trashPath, fileNameOnly);
                 if (Imagepic.Image != null)
                 {
                     Imagepic.Image.Dispose();
                     Imagepic.Image = null;
                 }
+                File.Move(currentFilePath, destPath);
 
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
 
+                // catalog에서 해당 레코드 삭제
+                string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                 .OrderBy(f => f)
+                                                 .ToArray();
+
+                foreach (string catalogFile in catalogFiles)
+                {
+                    var lines = File.ReadAllLines(catalogFile)
+                                    .Where(line =>
+                                    {
+                                        if (string.IsNullOrWhiteSpace(line)) return false;
+                                        try
+                                        {
+                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                            return json?.ImageArray != fileNameOnly;
+                                        }
+                                        catch { return true; }
+                                    })
+                                    .ToList();
+                    File.WriteAllLines(catalogFile, lines);
+                }
+
+                // originalCatalogLines에서도 삭제
+                originalCatalogLines = originalCatalogLines
+                    .Where(line =>
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) return false;
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            return json?.ImageArray != fileNameOnly;
+                        }
+                        catch { return true; }
+                    })
+                    .ToList();
+
+                // catalogRecords에서도 삭제
                 if (currentIndex < catalogRecords.Count)
                     catalogRecords.RemoveAt(currentIndex);
 
+                // deletedFiles는 이제 실제 삭제니까 추가 안 해도 됨
                 imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
                 RefreshImageList();
 
@@ -726,54 +773,90 @@ namespace DataManager
 
         private async void Restorebtn_Click_1(object sender, EventArgs e)
         {
-            if (deletedFiles.Count == 0)
+            string dataPath = Imgtxt.Text;
+            string trashPath = Path.Combine(dataPath, "image_trash");
+
+            if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
             {
-                MessageBox.Show("복구할 데이터(제외된 프레임)가 존재하지 않습니다.", "알림");
+                MessageBox.Show("복구할 데이터가 존재하지 않습니다.", "알림");
                 return;
             }
 
-            string lastExcludedFile = deletedFiles[deletedFiles.Count - 1];
-            deletedFiles.RemoveAt(deletedFiles.Count - 1);
+            // image_trash에서 가장 마지막 파일 복구
+            string lastTrashFile = Directory.GetFiles(trashPath, "*.jpg")
+                                            .OrderBy(f => f)
+                                            .Last();
+            string fileName = Path.GetFileName(lastTrashFile);
 
-            string dataPath = Imgtxt.Text;
             string imagesPath = Path.Combine(dataPath, "images");
+            string restorePath = Path.Combine(imagesPath, fileName);
 
-            if (Directory.Exists(imagesPath))
+            File.Move(lastTrashFile, restorePath);
+
+            // imageFiles 재구성
+            imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
+                                  .OrderBy(f => f)
+                                  .ToArray();
+
+            // catalogRecords 재구성
+            originalCatalogLines.Clear();
+            catalogRecords.Clear();
+
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            foreach (string catalogFile in catalogFiles)
             {
-                imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
-                                      .OrderBy(f => f)
-                                      .Where(f => !deletedFiles.Contains(Path.GetFileName(f)))
-                                      .ToArray();
-                RefreshImageList();
-
-                Imagebar.Maximum = imageFiles.Length - 1;
-                MessageBox.Show($"[{lastExcludedFile}] 주행 프레임이 성공적으로 복구되었습니다.", "복구 완료");
-
-                if (currentIndex >= imageFiles.Length)
-                    currentIndex = imageFiles.Length - 1;
-
-                await ShowImage(currentIndex);
+                foreach (string line in File.ReadLines(catalogFile))
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    originalCatalogLines.Add(line);
+                    CatalogRecord record = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                    if (record != null) catalogRecords.Add(record);
+                }
             }
+
+            RefreshImageList();
+            Imagebar.Maximum = imageFiles.Length - 1;
+            LoadGraph();
+
+            if (currentIndex >= imageFiles.Length)
+                currentIndex = imageFiles.Length - 1;
+
+            await ShowImage(currentIndex);
+            MessageBox.Show($"[{fileName}] 복구 완료!", "복구 완료");
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
         {
             playTimer.Stop();
-            Form3 form3 = new Form3(imageFiles, deletedFiles, this);
+            Form3 form3 = new Form3(imageFiles, deletedFiles, this, Imgtxt.Text);
             form3.ApplyWindowState(this);
             this.Hide();
             form3.Show();
-
         }
 
-        public void RestoreImage(string imgPath)
+        public void RestoreImage(string fileName)
         {
-            if (!imageFiles.Contains(imgPath))
+            string dataPath = Imgtxt.Text;
+            string trashPath = Path.Combine(dataPath, "image_trash");
+            string imagesPath = Path.Combine(dataPath, "images");
+
+            string trashFilePath = Path.Combine(trashPath, fileName);
+            string restorePath = Path.Combine(imagesPath, fileName);
+
+            if (File.Exists(trashFilePath))
             {
-                imageFiles = imageFiles.Concat(new[] { imgPath })
-                                       .OrderBy(f => f)
-                                       .ToArray();
+                File.Move(trashFilePath, restorePath);
+
+                imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
+                                      .OrderBy(f => f)
+                                      .ToArray();
+
                 Imagebar.Maximum = imageFiles.Length - 1;
+                RefreshImageList();
             }
         }
 

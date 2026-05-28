@@ -19,12 +19,15 @@ namespace DataManager
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
 
-        public Form3(string[] images, List<string> deleted, Form1 parent)
+        private string dataPath = "";
+
+        public Form3(string[] images, List<string> deleted, Form1 parent, string data)
         {
             InitializeComponent();
             imageFiles = images;
             deletedFiles = deleted;
             parentForm = parent;
+            dataPath = data;
 
             // ImageRestorebtn.Click += new EventHandler(ImageRestorebtn_Click);
             // SellectAllbtn.Click += new EventHandler(SellectAllbtn_Click);
@@ -123,21 +126,21 @@ namespace DataManager
             flowLayoutPanel1.Controls.Clear();
             selectedCards.Clear();
 
-            if (deletedFiles.Count == 0)
+            string dataPath = parentForm.Imgtxt.Text;
+            string trashPath = Path.Combine(dataPath, "image_trash");
+
+            if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
             {
                 Massagelbl.Text = "복구할 이미지가 없어요.";
                 Massagelbl.ForeColor = Color.Gray;
                 return;
             }
 
-            string imagesFolder = imageFiles.Length > 0
-                ? Path.GetDirectoryName(imageFiles[0])
-                : "";
+            string[] trashFiles = Directory.GetFiles(trashPath, "*.jpg").OrderBy(f => f).ToArray();
 
-            foreach (string fileName in deletedFiles)
+            foreach (string imgPath in trashFiles)
             {
-                string fullPath = Path.Combine(imagesFolder, fileName);
-                flowLayoutPanel1.Controls.Add(CreateCard(fullPath));
+                flowLayoutPanel1.Controls.Add(CreateCard(imgPath));
             }
 
             Massagelbl.Text = "복구할 이미지를 선택하세요.";
@@ -305,11 +308,10 @@ namespace DataManager
             foreach (Panel card in selectedCards.ToList())
             {
                 string imgPath = card.Tag?.ToString();
-                string fileName = Path.GetFileName(imgPath);
+                if (string.IsNullOrEmpty(imgPath)) continue;
 
-                deletedFiles.Remove(fileName);
-                parentForm.RestoreImage(imgPath); // Form1에 직접 반영
-
+                string fileName = Path.GetFileName(imgPath); // 여기서 선언
+                parentForm.RestoreImage(fileName);
                 flowLayoutPanel1.Controls.Remove(card);
             }
 
@@ -336,6 +338,8 @@ namespace DataManager
             this.Size = previousForm.Size;
             this.WindowState = previousForm.WindowState;
         }
+
+        
 
     }
 }

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -40,7 +40,16 @@
             this.GoTrainbtn = new System.Windows.Forms.Button();
             this.Imagebar = new System.Windows.Forms.TrackBar();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.TrottleTextlbl = new System.Windows.Forms.Label();
+            this.AngleDowntxt = new System.Windows.Forms.TextBox();
+            this.None2lbl = new System.Windows.Forms.Label();
+            this.AngleTextlbl = new System.Windows.Forms.Label();
+            this.AngleUptxt = new System.Windows.Forms.TextBox();
+            this.TrottleFigurelbl = new System.Windows.Forms.Label();
+            this.AngleFigurelbl = new System.Windows.Forms.Label();
+            this.Imagelst = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.GoToImage = new System.Windows.Forms.Button();
             this.Restorebtn = new System.Windows.Forms.Button();
             this.Reversebtn = new System.Windows.Forms.Button();
             this.Plsybtn = new System.Windows.Forms.Button();
@@ -59,7 +68,10 @@
             this.Imgtxt = new System.Windows.Forms.TextBox();
             this.SelectImgbtn = new System.Windows.Forms.Button();
             this.SelectFolderbtn = new System.Windows.Forms.Button();
-            this.GoToImage = new System.Windows.Forms.Button();
+            this.TrottleDowntxt = new System.Windows.Forms.TextBox();
+            this.None1lbl = new System.Windows.Forms.Label();
+            this.TrottleUptxt = new System.Windows.Forms.TextBox();
+            this.ImageFilteringbtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -150,19 +162,19 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea3.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.Graph.Legends.Add(legend3);
+            chartArea2.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.Graph.Legends.Add(legend2);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series3.BorderWidth = 3;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.Graph.Series.Add(series3);
+            series2.BorderWidth = 3;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.Graph.Series.Add(series2);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -195,12 +207,102 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.Controls.Add(this.ImageFilteringbtn);
+            this.panel4.Controls.Add(this.TrottleDowntxt);
+            this.panel4.Controls.Add(this.None1lbl);
+            this.panel4.Controls.Add(this.TrottleUptxt);
+            this.panel4.Controls.Add(this.TrottleTextlbl);
+            this.panel4.Controls.Add(this.AngleDowntxt);
+            this.panel4.Controls.Add(this.None2lbl);
+            this.panel4.Controls.Add(this.AngleTextlbl);
+            this.panel4.Controls.Add(this.AngleUptxt);
+            this.panel4.Controls.Add(this.TrottleFigurelbl);
+            this.panel4.Controls.Add(this.AngleFigurelbl);
+            this.panel4.Controls.Add(this.Imagelst);
             this.panel4.Controls.Add(this.groupBox1);
             this.panel4.Controls.Add(this.Imagepic);
             this.panel4.Location = new System.Drawing.Point(3, 111);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1412, 551);
             this.panel4.TabIndex = 4;
+            // 
+            // TrottleTextlbl
+            // 
+            this.TrottleTextlbl.AutoSize = true;
+            this.TrottleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleTextlbl.Location = new System.Drawing.Point(3, 357);
+            this.TrottleTextlbl.Name = "TrottleTextlbl";
+            this.TrottleTextlbl.Size = new System.Drawing.Size(97, 31);
+            this.TrottleTextlbl.TabIndex = 14;
+            this.TrottleTextlbl.Text = "throttle";
+            // 
+            // AngleDowntxt
+            // 
+            this.AngleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleDowntxt.Location = new System.Drawing.Point(201, 310);
+            this.AngleDowntxt.Name = "AngleDowntxt";
+            this.AngleDowntxt.Size = new System.Drawing.Size(67, 39);
+            this.AngleDowntxt.TabIndex = 12;
+            // 
+            // None2lbl
+            // 
+            this.None2lbl.AutoSize = true;
+            this.None2lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.None2lbl.Location = new System.Drawing.Point(170, 313);
+            this.None2lbl.Name = "None2lbl";
+            this.None2lbl.Size = new System.Drawing.Size(30, 31);
+            this.None2lbl.TabIndex = 11;
+            this.None2lbl.Text = "~";
+            // 
+            // AngleTextlbl
+            // 
+            this.AngleTextlbl.AutoSize = true;
+            this.AngleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleTextlbl.Location = new System.Drawing.Point(26, 313);
+            this.AngleTextlbl.Name = "AngleTextlbl";
+            this.AngleTextlbl.Size = new System.Drawing.Size(74, 31);
+            this.AngleTextlbl.TabIndex = 10;
+            this.AngleTextlbl.Text = "angle";
+            // 
+            // AngleUptxt
+            // 
+            this.AngleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleUptxt.Location = new System.Drawing.Point(102, 310);
+            this.AngleUptxt.Name = "AngleUptxt";
+            this.AngleUptxt.Size = new System.Drawing.Size(67, 39);
+            this.AngleUptxt.TabIndex = 9;
+            // 
+            // TrottleFigurelbl
+            // 
+            this.TrottleFigurelbl.AutoSize = true;
+            this.TrottleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleFigurelbl.Location = new System.Drawing.Point(3, 509);
+            this.TrottleFigurelbl.Name = "TrottleFigurelbl";
+            this.TrottleFigurelbl.Size = new System.Drawing.Size(130, 31);
+            this.TrottleFigurelbl.TabIndex = 8;
+            this.TrottleFigurelbl.Text = "throttle : 0";
+            // 
+            // AngleFigurelbl
+            // 
+            this.AngleFigurelbl.AutoSize = true;
+            this.AngleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleFigurelbl.Location = new System.Drawing.Point(26, 465);
+            this.AngleFigurelbl.Name = "AngleFigurelbl";
+            this.AngleFigurelbl.Size = new System.Drawing.Size(107, 31);
+            this.AngleFigurelbl.TabIndex = 7;
+            this.AngleFigurelbl.Text = "angle : 0";
+            this.AngleFigurelbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.AngleFigurelbl.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // Imagelst
+            // 
+            this.Imagelst.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Imagelst.FormattingEnabled = true;
+            this.Imagelst.ItemHeight = 26;
+            this.Imagelst.Location = new System.Drawing.Point(3, 6);
+            this.Imagelst.Name = "Imagelst";
+            this.Imagelst.Size = new System.Drawing.Size(265, 290);
+            this.Imagelst.TabIndex = 6;
             // 
             // groupBox1
             // 
@@ -227,6 +329,19 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "이미지 관련 설정";
+            // 
+            // GoToImage
+            // 
+            this.GoToImage.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoToImage.ForeColor = System.Drawing.Color.Black;
+            this.GoToImage.Location = new System.Drawing.Point(13, 119);
+            this.GoToImage.Name = "GoToImage";
+            this.GoToImage.Size = new System.Drawing.Size(346, 51);
+            this.GoToImage.TabIndex = 16;
+            this.GoToImage.Text = "복구 이미지 리스트 보기";
+            this.GoToImage.UseVisualStyleBackColor = false;
+            this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
             // 
             // Restorebtn
             // 
@@ -384,9 +499,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
-            this.Imagepic.Location = new System.Drawing.Point(0, 3);
+            this.Imagepic.Location = new System.Drawing.Point(274, 3);
             this.Imagepic.Name = "Imagepic";
-            this.Imagepic.Size = new System.Drawing.Size(1035, 546);
+            this.Imagepic.Size = new System.Drawing.Size(761, 546);
             this.Imagepic.TabIndex = 5;
             this.Imagepic.TabStop = false;
             // 
@@ -448,18 +563,43 @@
             this.SelectFolderbtn.UseVisualStyleBackColor = false;
             this.SelectFolderbtn.Click += new System.EventHandler(this.SelectFolderbtn_Click_1);
             // 
-            // GoToImage
+            // TrottleDowntxt
             // 
-            this.GoToImage.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoToImage.ForeColor = System.Drawing.Color.Black;
-            this.GoToImage.Location = new System.Drawing.Point(13, 119);
-            this.GoToImage.Name = "GoToImage";
-            this.GoToImage.Size = new System.Drawing.Size(346, 51);
-            this.GoToImage.TabIndex = 16;
-            this.GoToImage.Text = "이미지 리스트 보기";
-            this.GoToImage.UseVisualStyleBackColor = false;
-            this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
+            this.TrottleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
+            this.TrottleDowntxt.Name = "TrottleDowntxt";
+            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 39);
+            this.TrottleDowntxt.TabIndex = 17;
+            // 
+            // None1lbl
+            // 
+            this.None1lbl.AutoSize = true;
+            this.None1lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.None1lbl.Location = new System.Drawing.Point(170, 357);
+            this.None1lbl.Name = "None1lbl";
+            this.None1lbl.Size = new System.Drawing.Size(30, 31);
+            this.None1lbl.TabIndex = 16;
+            this.None1lbl.Text = "~";
+            // 
+            // TrottleUptxt
+            // 
+            this.TrottleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
+            this.TrottleUptxt.Name = "TrottleUptxt";
+            this.TrottleUptxt.Size = new System.Drawing.Size(67, 39);
+            this.TrottleUptxt.TabIndex = 15;
+            // 
+            // ImageFilteringbtn
+            // 
+            this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
+            this.ImageFilteringbtn.Location = new System.Drawing.Point(9, 405);
+            this.ImageFilteringbtn.Name = "ImageFilteringbtn";
+            this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
+            this.ImageFilteringbtn.TabIndex = 17;
+            this.ImageFilteringbtn.Text = "이미지 필터링 하기";
+            this.ImageFilteringbtn.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -477,6 +617,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Graph)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).EndInit();
             this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).EndInit();
@@ -517,5 +658,17 @@
         private System.Windows.Forms.Button SelectImgbtn;
         private System.Windows.Forms.Button Restorebtn;
         private System.Windows.Forms.Button GoToImage;
+        private System.Windows.Forms.Label AngleFigurelbl;
+        private System.Windows.Forms.ListBox Imagelst;
+        private System.Windows.Forms.TextBox AngleDowntxt;
+        private System.Windows.Forms.Label None2lbl;
+        private System.Windows.Forms.Label AngleTextlbl;
+        private System.Windows.Forms.TextBox AngleUptxt;
+        private System.Windows.Forms.Label TrottleFigurelbl;
+        private System.Windows.Forms.Label TrottleTextlbl;
+        private System.Windows.Forms.Button ImageFilteringbtn;
+        private System.Windows.Forms.TextBox TrottleDowntxt;
+        private System.Windows.Forms.Label None1lbl;
+        private System.Windows.Forms.TextBox TrottleUptxt;
     }
 }

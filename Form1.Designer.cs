@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -162,19 +162,19 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.Graph.Legends.Add(legend2);
+            chartArea3.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.Graph.Legends.Add(legend3);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.Graph.Series.Add(series2);
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.Graph.Series.Add(series3);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -237,6 +237,7 @@
             this.ImageFilteringbtn.TabIndex = 17;
             this.ImageFilteringbtn.Text = "이미지 필터링 하기";
             this.ImageFilteringbtn.UseVisualStyleBackColor = false;
+            this.ImageFilteringbtn.Click += new System.EventHandler(this.ImageFilteringbtn_Click);
             // 
             // TrottleDowntxt
             // 

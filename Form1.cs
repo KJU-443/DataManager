@@ -34,6 +34,11 @@ namespace DataManager
 
         private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
 
+        //필터링용
+        private string[] originalImageFiles = Array.Empty<string>();
+        private List<CatalogRecord> originalCatalogRecords = new List<CatalogRecord>();
+        private bool isFiltering = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -193,6 +198,8 @@ namespace DataManager
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                               .OrderBy(f => f)
                                               .ToArray();
+                        originalImageFiles = imageFiles.ToArray();
+                        originalCatalogRecords = catalogRecords.ToList();
 
                         RefreshImageList();
 
@@ -691,6 +698,99 @@ namespace DataManager
             currentIndex = Imagelst.SelectedIndex;
 
             await ShowImage(currentIndex);
+        }
+
+        private async void ImageFilteringbtn_Click(object sender, EventArgs e)
+        {
+            // 필터 해제 모드
+            if (isFiltering)
+            {
+                imageFiles = originalImageFiles.ToArray();
+                catalogRecords = originalCatalogRecords.ToList();
+
+                RefreshImageList();
+                LoadGraph();
+
+                if (imageFiles.Length > 0)
+                {
+                    currentIndex = 0;
+
+                    Imagebar.Minimum = 0;
+                    Imagebar.Maximum = imageFiles.Length - 1;
+
+                    await ShowImage(currentIndex);
+                }
+
+                AngleUptxt.Text = "";
+                AngleDowntxt.Text = "";
+
+                TrottleUptxt.Text = "";
+                TrottleDowntxt.Text = "";
+
+                ImageFilteringbtn.Text = "이미지 필터링 하기";
+                isFiltering = false;
+
+                return;
+            }
+
+            // 필터 적용 모드
+            double angleMin = -999;
+            double angleMax = 999;
+            double throttleMin = -999;
+            double throttleMax = 999;
+
+            double.TryParse(AngleUptxt.Text, out angleMin);
+            double.TryParse(AngleDowntxt.Text, out angleMax);
+
+            double.TryParse(TrottleUptxt.Text, out throttleMin);
+            double.TryParse(TrottleDowntxt.Text, out throttleMax);
+
+            List<string> filteredImages = new List<string>();
+            List<CatalogRecord> filteredRecords = new List<CatalogRecord>();
+
+            for (int i = 0; i < originalCatalogRecords.Count; i++)
+            {
+                CatalogRecord record = originalCatalogRecords[i];
+
+                bool angleMatch =
+                    record.Angle >= angleMin &&
+                    record.Angle <= angleMax;
+
+                bool throttleMatch =
+                    record.Throttle >= throttleMin &&
+                    record.Throttle <= throttleMax;
+
+                if (angleMatch && throttleMatch)
+                {
+                    filteredRecords.Add(record);
+
+                    if (i < originalImageFiles.Length)
+                        filteredImages.Add(originalImageFiles[i]);
+                }
+            }
+
+            catalogRecords = filteredRecords;
+            imageFiles = filteredImages.ToArray();
+
+            RefreshImageList();
+            LoadGraph();
+
+            if (imageFiles.Length > 0)
+            {
+                currentIndex = 0;
+
+                Imagebar.Minimum = 0;
+                Imagebar.Maximum = imageFiles.Length - 1;
+
+                await ShowImage(currentIndex);
+
+                ImageFilteringbtn.Text = "이미지 필터링 해제";
+                isFiltering = true;
+            }
+            else
+            {
+                MessageBox.Show("조건에 맞는 이미지가 없습니다.");
+            }
         }
     } 
 }

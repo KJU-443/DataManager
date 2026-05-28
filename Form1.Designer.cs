@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -141,6 +141,7 @@
             this.OpenGraphBrowserbtn.Name = "OpenGraphBrowserbtn";
             this.OpenGraphBrowserbtn.Size = new System.Drawing.Size(346, 51);
             this.OpenGraphBrowserbtn.TabIndex = 12;
+            this.OpenGraphBrowserbtn.Tag = "noTheme";
             this.OpenGraphBrowserbtn.Text = "브라우저로 그래프 열기";
             this.OpenGraphBrowserbtn.UseVisualStyleBackColor = false;
             this.OpenGraphBrowserbtn.Click += new System.EventHandler(this.OpenGraphBrowserbtn_Click);
@@ -154,6 +155,7 @@
             this.RefreshGraphbtn.Name = "RefreshGraphbtn";
             this.RefreshGraphbtn.Size = new System.Drawing.Size(346, 51);
             this.RefreshGraphbtn.TabIndex = 11;
+            this.RefreshGraphbtn.Tag = "noTheme";
             this.RefreshGraphbtn.Text = "그래프 새로고침";
             this.RefreshGraphbtn.UseVisualStyleBackColor = false;
             this.RefreshGraphbtn.Click += new System.EventHandler(this.RefreshGraphbtn_Click_1);
@@ -162,19 +164,19 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.Graph.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.Graph.Legends.Add(legend1);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.Graph.Series.Add(series2);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Graph.Series.Add(series1);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -188,6 +190,7 @@
             this.GoTrainbtn.Name = "GoTrainbtn";
             this.GoTrainbtn.Size = new System.Drawing.Size(173, 36);
             this.GoTrainbtn.TabIndex = 3;
+            this.GoTrainbtn.Tag = "noTheme";
             this.GoTrainbtn.Text = "훈련";
             this.GoTrainbtn.UseVisualStyleBackColor = false;
             this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
@@ -228,6 +231,7 @@
             // 
             // TrottleTextlbl
             // 
+            this.TrottleTextlbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleTextlbl.AutoSize = true;
             this.TrottleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleTextlbl.Location = new System.Drawing.Point(3, 357);
@@ -238,6 +242,7 @@
             // 
             // AngleDowntxt
             // 
+            this.AngleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleDowntxt.Location = new System.Drawing.Point(201, 310);
             this.AngleDowntxt.Name = "AngleDowntxt";
@@ -246,6 +251,7 @@
             // 
             // None2lbl
             // 
+            this.None2lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.None2lbl.AutoSize = true;
             this.None2lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.None2lbl.Location = new System.Drawing.Point(170, 313);
@@ -256,6 +262,7 @@
             // 
             // AngleTextlbl
             // 
+            this.AngleTextlbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleTextlbl.AutoSize = true;
             this.AngleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleTextlbl.Location = new System.Drawing.Point(26, 313);
@@ -266,6 +273,7 @@
             // 
             // AngleUptxt
             // 
+            this.AngleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleUptxt.Location = new System.Drawing.Point(102, 310);
             this.AngleUptxt.Name = "AngleUptxt";
@@ -274,6 +282,7 @@
             // 
             // TrottleFigurelbl
             // 
+            this.TrottleFigurelbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleFigurelbl.AutoSize = true;
             this.TrottleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleFigurelbl.Location = new System.Drawing.Point(3, 509);
@@ -284,6 +293,7 @@
             // 
             // AngleFigurelbl
             // 
+            this.AngleFigurelbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleFigurelbl.AutoSize = true;
             this.AngleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleFigurelbl.Location = new System.Drawing.Point(26, 465);
@@ -296,6 +306,8 @@
             // 
             // Imagelst
             // 
+            this.Imagelst.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.Imagelst.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Imagelst.FormattingEnabled = true;
             this.Imagelst.ItemHeight = 26;
@@ -339,6 +351,7 @@
             this.GoToImage.Name = "GoToImage";
             this.GoToImage.Size = new System.Drawing.Size(346, 51);
             this.GoToImage.TabIndex = 16;
+            this.GoToImage.Tag = "noTheme";
             this.GoToImage.Text = "복구 이미지 리스트 보기";
             this.GoToImage.UseVisualStyleBackColor = false;
             this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
@@ -352,6 +365,7 @@
             this.Restorebtn.Name = "Restorebtn";
             this.Restorebtn.Size = new System.Drawing.Size(111, 51);
             this.Restorebtn.TabIndex = 15;
+            this.Restorebtn.Tag = "noTheme";
             this.Restorebtn.Text = "복구";
             this.Restorebtn.UseVisualStyleBackColor = false;
             this.Restorebtn.Click += new System.EventHandler(this.Restorebtn_Click_1);
@@ -416,6 +430,7 @@
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
             this.PlayAndStopbtn.Size = new System.Drawing.Size(346, 51);
             this.PlayAndStopbtn.TabIndex = 10;
+            this.PlayAndStopbtn.Tag = "noTheme";
             this.PlayAndStopbtn.Text = "재생";
             this.PlayAndStopbtn.UseVisualStyleBackColor = false;
             this.PlayAndStopbtn.Click += new System.EventHandler(this.PlayAndStopbtn_Click);
@@ -429,6 +444,7 @@
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
             this.OpenImgBrowserbtn.Size = new System.Drawing.Size(346, 51);
             this.OpenImgBrowserbtn.TabIndex = 1;
+            this.OpenImgBrowserbtn.Tag = "noTheme";
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
             this.OpenImgBrowserbtn.UseVisualStyleBackColor = false;
             this.OpenImgBrowserbtn.Click += new System.EventHandler(this.OpenImgBrowserbtn_Click);
@@ -442,6 +458,7 @@
             this.ImgAddbtn.Name = "ImgAddbtn";
             this.ImgAddbtn.Size = new System.Drawing.Size(120, 51);
             this.ImgAddbtn.TabIndex = 2;
+            this.ImgAddbtn.Tag = "noTheme";
             this.ImgAddbtn.Text = "추가";
             this.ImgAddbtn.UseVisualStyleBackColor = false;
             this.ImgAddbtn.Click += new System.EventHandler(this.ImgAddbtn_Click);
@@ -455,6 +472,7 @@
             this.ImgDeletebtn.Name = "ImgDeletebtn";
             this.ImgDeletebtn.Size = new System.Drawing.Size(113, 51);
             this.ImgDeletebtn.TabIndex = 4;
+            this.ImgDeletebtn.Tag = "noTheme";
             this.ImgDeletebtn.Text = "삭제";
             this.ImgDeletebtn.UseVisualStyleBackColor = false;
             this.ImgDeletebtn.Click += new System.EventHandler(this.ImgDeletebtn_Click);
@@ -565,6 +583,7 @@
             // 
             // TrottleDowntxt
             // 
+            this.TrottleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
             this.TrottleDowntxt.Name = "TrottleDowntxt";
@@ -573,6 +592,7 @@
             // 
             // None1lbl
             // 
+            this.None1lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.None1lbl.AutoSize = true;
             this.None1lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.None1lbl.Location = new System.Drawing.Point(170, 357);
@@ -583,6 +603,7 @@
             // 
             // TrottleUptxt
             // 
+            this.TrottleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
             this.TrottleUptxt.Name = "TrottleUptxt";
@@ -591,6 +612,7 @@
             // 
             // ImageFilteringbtn
             // 
+            this.ImageFilteringbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
@@ -598,6 +620,7 @@
             this.ImageFilteringbtn.Name = "ImageFilteringbtn";
             this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
             this.ImageFilteringbtn.TabIndex = 17;
+            this.ImageFilteringbtn.Tag = "noTheme";
             this.ImageFilteringbtn.Text = "이미지 필터링 하기";
             this.ImageFilteringbtn.UseVisualStyleBackColor = false;
             // 

@@ -95,6 +95,7 @@
             this.ImageRestorebtn.Name = "ImageRestorebtn";
             this.ImageRestorebtn.Size = new System.Drawing.Size(205, 69);
             this.ImageRestorebtn.TabIndex = 11;
+            this.ImageRestorebtn.Tag = "noTheme";
             this.ImageRestorebtn.Text = "이미지 복구";
             this.ImageRestorebtn.UseVisualStyleBackColor = false;
             this.ImageRestorebtn.Click += new System.EventHandler(this.ImageRestorebtn_Click);
@@ -118,6 +119,7 @@
             this.GoDatabtn.Name = "GoDatabtn";
             this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
             this.GoDatabtn.TabIndex = 3;
+            this.GoDatabtn.Tag = "noTheme";
             this.GoDatabtn.Text = "데이터";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);

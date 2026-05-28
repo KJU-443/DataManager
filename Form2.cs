@@ -21,6 +21,11 @@ namespace DataManager_2
     = new List<(string, string, string)>();
         private string dataPath = ""; // 추가
 
+        // 테마 전환 시 원래 색상 복원용 딕셔너리
+        private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
+        private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
+        private bool colorssaved = false;
+
 
         public Form2(string path, string data)
         {
@@ -50,7 +55,93 @@ namespace DataManager_2
                 }
                 Traninglst.TopIndex = Traninglst.Items.Count - 1;
             }
+
+            if (Form1.isDarkMode) ApplyTheme(this);
         }
+
+        // 표시용
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.D))
+            {
+                Form1.isDarkMode = !Form1.isDarkMode;
+                ApplyTheme(this);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void ApplyTheme(Form form)
+        {
+            if (!colorssaved)
+            {
+                SaveOriginalColors(form.Controls);
+                colorssaved = true;
+            }
+
+            if (Form1.isDarkMode)
+            {
+                form.BackColor = Color.FromArgb(30, 30, 30);
+                ApplyThemeToControls(form.Controls,
+                    Color.FromArgb(30, 30, 30), Color.White, Color.FromArgb(60, 60, 60));
+            }
+            else
+            {
+                form.BackColor = SystemColors.Control;
+                RestoreOriginalColors(form.Controls);
+            }
+        }
+
+        private void SaveOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                originalBackColors[ctrl] = ctrl.BackColor;
+                originalForeColors[ctrl] = ctrl.ForeColor;
+                if (ctrl.Controls.Count > 0)
+                    SaveOriginalColors(ctrl.Controls);
+            }
+        }
+
+        private void RestoreOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                if (originalBackColors.ContainsKey(ctrl))
+                    ctrl.BackColor = originalBackColors[ctrl];
+                if (originalForeColors.ContainsKey(ctrl))
+                    ctrl.ForeColor = originalForeColors[ctrl];
+                if (ctrl.Controls.Count > 0)
+                    RestoreOriginalColors(ctrl.Controls);
+            }
+        }
+
+        private void ApplyThemeToControls(Control.ControlCollection controls,
+            Color backColor, Color foreColor, Color buttonBack)
+        {
+            foreach (Control ctrl in controls)
+            {
+                // Tag가 "noTheme"이면 건드리지 않음
+                if (ctrl.Tag?.ToString() == "noTheme")
+                {
+                    if (ctrl.Controls.Count > 0)
+                        ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+                    continue;
+                }
+
+                ctrl.ForeColor = foreColor;
+                if (ctrl is Button)
+                    ctrl.BackColor = buttonBack;
+                else if (ctrl is PictureBox)
+                { }
+                else
+                    ctrl.BackColor = backColor;
+
+                if (ctrl.Controls.Count > 0)
+                    ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+            }
+        }
+        // 표시용
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
@@ -76,8 +167,18 @@ namespace DataManager_2
             {
             }
 
-            Form1 form1 = new Form1();
-            form1.Show();
+            Form1 existingForm1 = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+            if (existingForm1 != null)
+            {
+                existingForm1.Show();
+                if (Form1.isDarkMode) existingForm1.ApplyThemePublic();
+            }
+            else
+            {
+                Form1 form1 = new Form1();
+                form1.Show();
+                if (Form1.isDarkMode) form1.ApplyThemePublic();
+            }
 
             this.Close();
         }

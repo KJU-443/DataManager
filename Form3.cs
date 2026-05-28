@@ -328,5 +328,14 @@ namespace DataManager
         {
 
         }
+
+        public void ApplyWindowState(Form previousForm)
+        {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = previousForm.Location;
+            this.Size = previousForm.Size;
+            this.WindowState = previousForm.WindowState;
+        }
+
     }
 }

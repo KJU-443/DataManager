@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -40,6 +40,10 @@
             this.GoTrainbtn = new System.Windows.Forms.Button();
             this.Imagebar = new System.Windows.Forms.TrackBar();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.ImageFilteringbtn = new System.Windows.Forms.Button();
+            this.TrottleDowntxt = new System.Windows.Forms.TextBox();
+            this.None1lbl = new System.Windows.Forms.Label();
+            this.TrottleUptxt = new System.Windows.Forms.TextBox();
             this.TrottleTextlbl = new System.Windows.Forms.Label();
             this.AngleDowntxt = new System.Windows.Forms.TextBox();
             this.None2lbl = new System.Windows.Forms.Label();
@@ -68,10 +72,6 @@
             this.Imgtxt = new System.Windows.Forms.TextBox();
             this.SelectImgbtn = new System.Windows.Forms.Button();
             this.SelectFolderbtn = new System.Windows.Forms.Button();
-            this.TrottleDowntxt = new System.Windows.Forms.TextBox();
-            this.None1lbl = new System.Windows.Forms.Label();
-            this.TrottleUptxt = new System.Windows.Forms.TextBox();
-            this.ImageFilteringbtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -162,19 +162,19 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea2.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.Graph.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.Graph.Legends.Add(legend1);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.Graph.Series.Add(series2);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Graph.Series.Add(series1);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -226,69 +226,107 @@
             this.panel4.Size = new System.Drawing.Size(1412, 551);
             this.panel4.TabIndex = 4;
             // 
+            // ImageFilteringbtn
+            // 
+            this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
+            this.ImageFilteringbtn.Location = new System.Drawing.Point(9, 405);
+            this.ImageFilteringbtn.Name = "ImageFilteringbtn";
+            this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
+            this.ImageFilteringbtn.TabIndex = 17;
+            this.ImageFilteringbtn.Text = "이미지 필터링 하기";
+            this.ImageFilteringbtn.UseVisualStyleBackColor = false;
+            // 
+            // TrottleDowntxt
+            // 
+            this.TrottleDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
+            this.TrottleDowntxt.Name = "TrottleDowntxt";
+            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 35);
+            this.TrottleDowntxt.TabIndex = 17;
+            // 
+            // None1lbl
+            // 
+            this.None1lbl.AutoSize = true;
+            this.None1lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.None1lbl.Location = new System.Drawing.Point(170, 357);
+            this.None1lbl.Name = "None1lbl";
+            this.None1lbl.Size = new System.Drawing.Size(28, 29);
+            this.None1lbl.TabIndex = 16;
+            this.None1lbl.Text = "~";
+            // 
+            // TrottleUptxt
+            // 
+            this.TrottleUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
+            this.TrottleUptxt.Name = "TrottleUptxt";
+            this.TrottleUptxt.Size = new System.Drawing.Size(67, 35);
+            this.TrottleUptxt.TabIndex = 15;
+            // 
             // TrottleTextlbl
             // 
             this.TrottleTextlbl.AutoSize = true;
-            this.TrottleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleTextlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleTextlbl.Location = new System.Drawing.Point(3, 357);
             this.TrottleTextlbl.Name = "TrottleTextlbl";
-            this.TrottleTextlbl.Size = new System.Drawing.Size(97, 31);
+            this.TrottleTextlbl.Size = new System.Drawing.Size(94, 29);
             this.TrottleTextlbl.TabIndex = 14;
             this.TrottleTextlbl.Text = "throttle";
             // 
             // AngleDowntxt
             // 
-            this.AngleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleDowntxt.Location = new System.Drawing.Point(201, 310);
             this.AngleDowntxt.Name = "AngleDowntxt";
-            this.AngleDowntxt.Size = new System.Drawing.Size(67, 39);
+            this.AngleDowntxt.Size = new System.Drawing.Size(67, 35);
             this.AngleDowntxt.TabIndex = 12;
             // 
             // None2lbl
             // 
             this.None2lbl.AutoSize = true;
-            this.None2lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.None2lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.None2lbl.Location = new System.Drawing.Point(170, 313);
             this.None2lbl.Name = "None2lbl";
-            this.None2lbl.Size = new System.Drawing.Size(30, 31);
+            this.None2lbl.Size = new System.Drawing.Size(28, 29);
             this.None2lbl.TabIndex = 11;
             this.None2lbl.Text = "~";
             // 
             // AngleTextlbl
             // 
             this.AngleTextlbl.AutoSize = true;
-            this.AngleTextlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleTextlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleTextlbl.Location = new System.Drawing.Point(26, 313);
             this.AngleTextlbl.Name = "AngleTextlbl";
-            this.AngleTextlbl.Size = new System.Drawing.Size(74, 31);
+            this.AngleTextlbl.Size = new System.Drawing.Size(78, 29);
             this.AngleTextlbl.TabIndex = 10;
             this.AngleTextlbl.Text = "angle";
             // 
             // AngleUptxt
             // 
-            this.AngleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleUptxt.Location = new System.Drawing.Point(102, 310);
             this.AngleUptxt.Name = "AngleUptxt";
-            this.AngleUptxt.Size = new System.Drawing.Size(67, 39);
+            this.AngleUptxt.Size = new System.Drawing.Size(67, 35);
             this.AngleUptxt.TabIndex = 9;
             // 
             // TrottleFigurelbl
             // 
             this.TrottleFigurelbl.AutoSize = true;
-            this.TrottleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.TrottleFigurelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleFigurelbl.Location = new System.Drawing.Point(3, 509);
             this.TrottleFigurelbl.Name = "TrottleFigurelbl";
-            this.TrottleFigurelbl.Size = new System.Drawing.Size(130, 31);
+            this.TrottleFigurelbl.Size = new System.Drawing.Size(129, 29);
             this.TrottleFigurelbl.TabIndex = 8;
             this.TrottleFigurelbl.Text = "throttle : 0";
             // 
             // AngleFigurelbl
             // 
             this.AngleFigurelbl.AutoSize = true;
-            this.AngleFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.AngleFigurelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleFigurelbl.Location = new System.Drawing.Point(26, 465);
             this.AngleFigurelbl.Name = "AngleFigurelbl";
-            this.AngleFigurelbl.Size = new System.Drawing.Size(107, 31);
+            this.AngleFigurelbl.Size = new System.Drawing.Size(113, 29);
             this.AngleFigurelbl.TabIndex = 7;
             this.AngleFigurelbl.Text = "angle : 0";
             this.AngleFigurelbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -296,12 +334,12 @@
             // 
             // Imagelst
             // 
-            this.Imagelst.Font = new System.Drawing.Font("한컴 고딕", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Imagelst.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Imagelst.FormattingEnabled = true;
-            this.Imagelst.ItemHeight = 26;
+            this.Imagelst.ItemHeight = 25;
             this.Imagelst.Location = new System.Drawing.Point(3, 6);
             this.Imagelst.Name = "Imagelst";
-            this.Imagelst.Size = new System.Drawing.Size(265, 290);
+            this.Imagelst.Size = new System.Drawing.Size(265, 279);
             this.Imagelst.TabIndex = 6;
             // 
             // groupBox1
@@ -504,6 +542,7 @@
             this.Imagepic.Size = new System.Drawing.Size(761, 546);
             this.Imagepic.TabIndex = 5;
             this.Imagepic.TabStop = false;
+            this.Imagepic.Click += new System.EventHandler(this.Imagepic_Click);
             // 
             // panel1
             // 
@@ -562,44 +601,6 @@
             this.SelectFolderbtn.Text = "폴더 지정";
             this.SelectFolderbtn.UseVisualStyleBackColor = false;
             this.SelectFolderbtn.Click += new System.EventHandler(this.SelectFolderbtn_Click_1);
-            // 
-            // TrottleDowntxt
-            // 
-            this.TrottleDowntxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrottleDowntxt.Location = new System.Drawing.Point(201, 354);
-            this.TrottleDowntxt.Name = "TrottleDowntxt";
-            this.TrottleDowntxt.Size = new System.Drawing.Size(67, 39);
-            this.TrottleDowntxt.TabIndex = 17;
-            // 
-            // None1lbl
-            // 
-            this.None1lbl.AutoSize = true;
-            this.None1lbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.None1lbl.Location = new System.Drawing.Point(170, 357);
-            this.None1lbl.Name = "None1lbl";
-            this.None1lbl.Size = new System.Drawing.Size(30, 31);
-            this.None1lbl.TabIndex = 16;
-            this.None1lbl.Text = "~";
-            // 
-            // TrottleUptxt
-            // 
-            this.TrottleUptxt.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrottleUptxt.Location = new System.Drawing.Point(102, 354);
-            this.TrottleUptxt.Name = "TrottleUptxt";
-            this.TrottleUptxt.Size = new System.Drawing.Size(67, 39);
-            this.TrottleUptxt.TabIndex = 15;
-            // 
-            // ImageFilteringbtn
-            // 
-            this.ImageFilteringbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
-            this.ImageFilteringbtn.Location = new System.Drawing.Point(9, 405);
-            this.ImageFilteringbtn.Name = "ImageFilteringbtn";
-            this.ImageFilteringbtn.Size = new System.Drawing.Size(259, 51);
-            this.ImageFilteringbtn.TabIndex = 17;
-            this.ImageFilteringbtn.Text = "이미지 필터링 하기";
-            this.ImageFilteringbtn.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 

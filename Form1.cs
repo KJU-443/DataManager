@@ -12,28 +12,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-
 namespace DataManager
 {
-    public class CatalogRecord
-    {
-        public int _index { get; set; }
-        public string _session_id { get; set; }
-        public long _timestamp_ms { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("cam/image_array")]
-        public string ImageArray { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("user/angle")]
-        public double Angle { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("user/throttle")]
-        public double Throttle { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("user/mode")]
-        public string Mode { get; set; }
-    }
-
     public partial class Form1 : Form
     {
         private string selectedFolderPath = "";
@@ -673,6 +653,11 @@ namespace DataManager
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Imagepic_Click(object sender, EventArgs e)
         {
 
         }

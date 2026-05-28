@@ -334,8 +334,9 @@ namespace DataManager_2
             }
         }
 
+        private void TrainingStartbtn_Click(object sender, EventArgs e)
+        {
 
-
-
+        }
     }
 }

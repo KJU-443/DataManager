@@ -193,6 +193,9 @@ namespace DataManager
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                               .OrderBy(f => f)
                                               .ToArray();
+
+                        RefreshImageList();
+
                         if (imageFiles.Length > 0)
                         {
                             currentIndex = 0;
@@ -216,6 +219,21 @@ namespace DataManager
             }
         }
 
+        private void RefreshImageList()
+        {
+            Imagelst.Items.Clear();
+
+            foreach (string file in imageFiles)
+            {
+                Imagelst.Items.Add(Path.GetFileName(file));
+            }
+
+            if (imageFiles.Length > 0 && currentIndex >= 0)
+            {
+                Imagelst.SelectedIndex = currentIndex;
+            }
+        }
+
         private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
@@ -227,6 +245,7 @@ namespace DataManager
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
+            Imagelst.SelectedIndex = index;
 
             string currentImagePath = imageFiles[index];
 
@@ -374,6 +393,7 @@ namespace DataManager
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
                 imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
+                RefreshImageList();
 
                 if (imageFiles.Length == 0)
                 {
@@ -413,6 +433,7 @@ namespace DataManager
                     List<string> fileList = imageFiles.ToList();
                     fileList.Insert(currentIndex + 1, newFileName);
                     imageFiles = fileList.ToArray();
+                    RefreshImageList();
 
                     currentIndex = currentIndex + 1;
                     await ShowImage(currentIndex);
@@ -623,6 +644,7 @@ namespace DataManager
                                       .OrderBy(f => f)
                                       .Where(f => !deletedFiles.Contains(Path.GetFileName(f)))
                                       .ToArray();
+                RefreshImageList();
 
                 Imagebar.Maximum = imageFiles.Length - 1;
                 MessageBox.Show($"[{lastExcludedFile}] 주행 프레임이 성공적으로 복구되었습니다.", "복구 완료");
@@ -660,6 +682,15 @@ namespace DataManager
         private void Imagepic_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private async void Imagelst_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Imagelst.SelectedIndex < 0) return;
+
+            currentIndex = Imagelst.SelectedIndex;
+
+            await ShowImage(currentIndex);
         }
     } 
 }

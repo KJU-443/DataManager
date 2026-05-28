@@ -108,6 +108,7 @@
             this.TrainingStartbtn.Name = "TrainingStartbtn";
             this.TrainingStartbtn.Size = new System.Drawing.Size(626, 69);
             this.TrainingStartbtn.TabIndex = 7;
+            this.TrainingStartbtn.Tag = "noTheme";
             this.TrainingStartbtn.Text = "훈련 시작";
             this.TrainingStartbtn.UseVisualStyleBackColor = false;
             this.TrainingStartbtn.Click += new System.EventHandler(this.TrainingStartbtn_Click);
@@ -120,6 +121,7 @@
             this.GoDatabtn.Name = "GoDatabtn";
             this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
             this.GoDatabtn.TabIndex = 3;
+            this.GoDatabtn.Tag = "noTheme";
             this.GoDatabtn.Text = "데이터";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);

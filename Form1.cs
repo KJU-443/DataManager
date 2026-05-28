@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
 namespace DataManager
 {
     public partial class Form1 : Form
@@ -39,6 +40,13 @@ namespace DataManager
         private List<CatalogRecord> originalCatalogRecords = new List<CatalogRecord>();
         private bool isFiltering = false;
 
+        // 필드 추가 (class 상단)
+        private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
+        private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
+        private bool colorssaved = false;
+        public static bool isDarkMode = false;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -61,6 +69,99 @@ namespace DataManager
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
         }
+        // 표시용 주석
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.D))
+            {
+                isDarkMode = !isDarkMode;
+                ApplyTheme(this);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void ApplyTheme(Form form)
+        {
+            // 처음 한 번만 원래 색 저장
+            if (!colorssaved)
+            {
+                SaveOriginalColors(form.Controls);
+                colorssaved = true;
+            }
+
+            Color backColor = isDarkMode ? Color.FromArgb(30, 30, 30) : SystemColors.Control;
+            Color foreColor = isDarkMode ? Color.White : Color.Black;
+            Color buttonBack = isDarkMode ? Color.FromArgb(60, 60, 60) : SystemColors.ButtonFace;
+
+            if (isDarkMode)
+            {
+                form.BackColor = backColor;
+                ApplyThemeToControls(form.Controls, backColor, foreColor, buttonBack);
+            }
+            else
+            {
+                // 원래 색으로 복구
+                form.BackColor = SystemColors.Control;
+                RestoreOriginalColors(form.Controls);
+            }
+        }
+
+        private void SaveOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                originalBackColors[ctrl] = ctrl.BackColor;
+                originalForeColors[ctrl] = ctrl.ForeColor;
+                if (ctrl.Controls.Count > 0)
+                    SaveOriginalColors(ctrl.Controls);
+            }
+        }
+        private void RestoreOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                if (originalBackColors.ContainsKey(ctrl))
+                    ctrl.BackColor = originalBackColors[ctrl];
+                if (originalForeColors.ContainsKey(ctrl))
+                    ctrl.ForeColor = originalForeColors[ctrl];
+                if (ctrl.Controls.Count > 0)
+                    RestoreOriginalColors(ctrl.Controls);
+            }
+        }
+
+        private void ApplyThemeToControls(Control.ControlCollection controls,
+            Color backColor, Color foreColor, Color buttonBack)
+        {
+            foreach (Control ctrl in controls)
+            {
+                // Tag가 "noTheme"이면 건드리지 않음
+                if (ctrl.Tag?.ToString() == "noTheme")
+                {
+                    if (ctrl.Controls.Count > 0)
+                        ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+                    continue;
+                }
+
+                ctrl.ForeColor = foreColor;
+                if (ctrl is Button)
+                    ctrl.BackColor = buttonBack;
+                else if (ctrl is PictureBox)
+                { }
+                else
+                    ctrl.BackColor = backColor;
+
+                if (ctrl.Controls.Count > 0)
+                    ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+            }
+        }
+        public void ApplyThemePublic()
+        {
+            ApplyTheme(this);
+        }
+        // 표시용 주석
+
+
         private void SelectFolderbtn_Click_1(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;

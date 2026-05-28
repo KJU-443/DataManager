@@ -15,6 +15,25 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace DataManager
 {
+    public class CatalogRecord
+    {
+        public int _index { get; set; }
+        public string _session_id { get; set; }
+        public long _timestamp_ms { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("cam/image_array")]
+        public string ImageArray { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("user/angle")]
+        public double Angle { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("user/throttle")]
+        public double Throttle { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("user/mode")]
+        public string Mode { get; set; }
+    }
+
     public partial class Form1 : Form
     {
         private string selectedFolderPath = "";
@@ -32,6 +51,8 @@ namespace DataManager
         // 복구(Restore) 기능을 위한 메모리 백업 저장소
         private List<string> originalCatalogLines = new List<string>();
         private List<string> deletedFiles = new List<string>();
+
+        private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
 
         public Form1()
         {
@@ -173,9 +194,17 @@ namespace DataManager
 
                     originalCatalogLines.Clear();
                     deletedFiles.Clear();
+                    catalogRecords.Clear();
+
                     foreach (string catalogFile in catalogFiles)
                     {
-                        originalCatalogLines.AddRange(File.ReadAllLines(catalogFile));
+                        foreach (string line in File.ReadLines(catalogFile))
+                        {
+                            if (string.IsNullOrWhiteSpace(line)) continue;
+                            originalCatalogLines.Add(line);
+                            CatalogRecord record = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            if (record != null) catalogRecords.Add(record);
+                        }
                     }
 
                     string imagesPath = Path.Combine(dataPath, "images");
@@ -241,6 +270,13 @@ namespace DataManager
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
+
+            // angle/throttle 라벨 표시
+            if (index < catalogRecords.Count)
+            {
+                AngleFigurelbl.Text = $"angle : {catalogRecords[index].Angle:F3}";
+                TrottleFigurelbl.Text = $"throttle : {catalogRecords[index].Throttle:F3}";
+            }
         }
 
         private async void PlayTimer_Tick(object sender, EventArgs e)
@@ -457,28 +493,7 @@ namespace DataManager
 
         private void LoadGraph()
         {
-            if (string.IsNullOrEmpty(Imgtxt.Text)) return;
-
-            string dataPath = Imgtxt.Text;
-            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                                             .OrderBy(f => f)
-                                             .ToArray();
-
-            List<double> angles = new List<double>();
-            List<double> throttles = new List<double>();
-
-            foreach (string catalogFile in catalogFiles)
-            {
-                string[] lines = File.ReadAllLines(catalogFile);
-                foreach (string line in lines)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    JObject json = JObject.Parse(line);
-                    angles.Add((double)json["user/angle"]);
-                    throttles.Add((double)json["user/throttle"]);
-                }
-            }
+            if (catalogRecords.Count == 0) return;
 
             Graph.Series.Clear();
             Graph.ChartAreas[0].AxisX.Title = "Index";
@@ -489,14 +504,16 @@ namespace DataManager
             Series angleSeries = new Series("Angle");
             angleSeries.ChartType = SeriesChartType.Line;
             angleSeries.Color = Color.CornflowerBlue;
-            for (int i = 0; i < angles.Count; i++)
-                angleSeries.Points.AddXY(i, angles[i]);
 
             Series throttleSeries = new Series("Throttle");
             throttleSeries.ChartType = SeriesChartType.Line;
             throttleSeries.Color = Color.OrangeRed;
-            for (int i = 0; i < throttles.Count; i++)
-                throttleSeries.Points.AddXY(i, throttles[i]);
+
+            for (int i = 0; i < catalogRecords.Count; i++)
+            {
+                angleSeries.Points.AddXY(i, catalogRecords[i].Angle);
+                throttleSeries.Points.AddXY(i, catalogRecords[i].Throttle);
+            }
 
             Graph.Series.Add(angleSeries);
             Graph.Series.Add(throttleSeries);
@@ -661,3 +678,4 @@ namespace DataManager
         }
     } 
 }
+

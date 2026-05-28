@@ -13,8 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
-
-
 namespace DataManager
 {
     public partial class Form1 : Form
@@ -35,11 +33,19 @@ namespace DataManager
         private List<string> originalCatalogLines = new List<string>();
         private List<string> deletedFiles = new List<string>();
 
+        private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
+
+        //필터링용
+        private string[] originalImageFiles = Array.Empty<string>();
+        private List<CatalogRecord> originalCatalogRecords = new List<CatalogRecord>();
+        private bool isFiltering = false;
+
         // 필드 추가 (class 상단)
         private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
         public static bool isDarkMode = false;
+
 
         public Form1()
         {
@@ -274,9 +280,17 @@ namespace DataManager
 
                     originalCatalogLines.Clear();
                     deletedFiles.Clear();
+                    catalogRecords.Clear();
+
                     foreach (string catalogFile in catalogFiles)
                     {
-                        originalCatalogLines.AddRange(File.ReadAllLines(catalogFile));
+                        foreach (string line in File.ReadLines(catalogFile))
+                        {
+                            if (string.IsNullOrWhiteSpace(line)) continue;
+                            originalCatalogLines.Add(line);
+                            CatalogRecord record = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            if (record != null) catalogRecords.Add(record);
+                        }
                     }
 
                     string imagesPath = Path.Combine(dataPath, "images");
@@ -285,6 +299,11 @@ namespace DataManager
                         imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                               .OrderBy(f => f)
                                               .ToArray();
+                        originalImageFiles = imageFiles.ToArray();
+                        originalCatalogRecords = catalogRecords.ToList();
+
+                        RefreshImageList();
+
                         if (imageFiles.Length > 0)
                         {
                             currentIndex = 0;
@@ -308,6 +327,21 @@ namespace DataManager
             }
         }
 
+        private void RefreshImageList()
+        {
+            Imagelst.Items.Clear();
+
+            foreach (string file in imageFiles)
+            {
+                Imagelst.Items.Add(Path.GetFileName(file));
+            }
+
+            if (imageFiles.Length > 0 && currentIndex >= 0)
+            {
+                Imagelst.SelectedIndex = currentIndex;
+            }
+        }
+
         private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
@@ -319,6 +353,7 @@ namespace DataManager
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
+            Imagelst.SelectedIndex = index;
 
             string currentImagePath = imageFiles[index];
 
@@ -342,6 +377,13 @@ namespace DataManager
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
+
+            // angle/throttle 라벨 표시
+            if (index < catalogRecords.Count)
+            {
+                AngleFigurelbl.Text = $"angle : {catalogRecords[index].Angle:F3}";
+                TrottleFigurelbl.Text = $"throttle : {catalogRecords[index].Throttle:F3}";
+            }
         }
 
         private async void PlayTimer_Tick(object sender, EventArgs e)
@@ -459,6 +501,7 @@ namespace DataManager
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
                 imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
+                RefreshImageList();
 
                 if (imageFiles.Length == 0)
                 {
@@ -498,6 +541,7 @@ namespace DataManager
                     List<string> fileList = imageFiles.ToList();
                     fileList.Insert(currentIndex + 1, newFileName);
                     imageFiles = fileList.ToArray();
+                    RefreshImageList();
 
                     currentIndex = currentIndex + 1;
                     await ShowImage(currentIndex);
@@ -558,28 +602,7 @@ namespace DataManager
 
         private void LoadGraph()
         {
-            if (string.IsNullOrEmpty(Imgtxt.Text)) return;
-
-            string dataPath = Imgtxt.Text;
-            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                                             .OrderBy(f => f)
-                                             .ToArray();
-
-            List<double> angles = new List<double>();
-            List<double> throttles = new List<double>();
-
-            foreach (string catalogFile in catalogFiles)
-            {
-                string[] lines = File.ReadAllLines(catalogFile);
-                foreach (string line in lines)
-                {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
-                    JObject json = JObject.Parse(line);
-                    angles.Add((double)json["user/angle"]);
-                    throttles.Add((double)json["user/throttle"]);
-                }
-            }
+            if (catalogRecords.Count == 0) return;
 
             Graph.Series.Clear();
             Graph.ChartAreas[0].AxisX.Title = "Index";
@@ -590,14 +613,16 @@ namespace DataManager
             Series angleSeries = new Series("Angle");
             angleSeries.ChartType = SeriesChartType.Line;
             angleSeries.Color = Color.CornflowerBlue;
-            for (int i = 0; i < angles.Count; i++)
-                angleSeries.Points.AddXY(i, angles[i]);
 
             Series throttleSeries = new Series("Throttle");
             throttleSeries.ChartType = SeriesChartType.Line;
             throttleSeries.Color = Color.OrangeRed;
-            for (int i = 0; i < throttles.Count; i++)
-                throttleSeries.Points.AddXY(i, throttles[i]);
+
+            for (int i = 0; i < catalogRecords.Count; i++)
+            {
+                angleSeries.Points.AddXY(i, catalogRecords[i].Angle);
+                throttleSeries.Points.AddXY(i, catalogRecords[i].Throttle);
+            }
 
             Graph.Series.Add(angleSeries);
             Graph.Series.Add(throttleSeries);
@@ -727,6 +752,7 @@ namespace DataManager
                                       .OrderBy(f => f)
                                       .Where(f => !deletedFiles.Contains(Path.GetFileName(f)))
                                       .ToArray();
+                RefreshImageList();
 
                 Imagebar.Maximum = imageFiles.Length - 1;
                 MessageBox.Show($"[{lastExcludedFile}] 주행 프레임이 성공적으로 복구되었습니다.", "복구 완료");
@@ -760,5 +786,113 @@ namespace DataManager
         {
 
         }
+
+        private void Imagepic_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void Imagelst_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Imagelst.SelectedIndex < 0) return;
+
+            currentIndex = Imagelst.SelectedIndex;
+
+            await ShowImage(currentIndex);
+        }
+
+        private async void ImageFilteringbtn_Click(object sender, EventArgs e)
+        {
+            // 필터 해제 모드
+            if (isFiltering)
+            {
+                imageFiles = originalImageFiles.ToArray();
+                catalogRecords = originalCatalogRecords.ToList();
+
+                RefreshImageList();
+                LoadGraph();
+
+                if (imageFiles.Length > 0)
+                {
+                    currentIndex = 0;
+
+                    Imagebar.Minimum = 0;
+                    Imagebar.Maximum = imageFiles.Length - 1;
+
+                    await ShowImage(currentIndex);
+                }
+
+                AngleUptxt.Text = "";
+                AngleDowntxt.Text = "";
+
+                TrottleUptxt.Text = "";
+                TrottleDowntxt.Text = "";
+
+                ImageFilteringbtn.Text = "이미지 필터링 하기";
+                isFiltering = false;
+
+                return;
+            }
+
+            // 필터 적용 모드
+            double angleMin = -999;
+            double angleMax = 999;
+            double throttleMin = -999;
+            double throttleMax = 999;
+
+            double.TryParse(AngleUptxt.Text, out angleMin);
+            double.TryParse(AngleDowntxt.Text, out angleMax);
+
+            double.TryParse(TrottleUptxt.Text, out throttleMin);
+            double.TryParse(TrottleDowntxt.Text, out throttleMax);
+
+            List<string> filteredImages = new List<string>();
+            List<CatalogRecord> filteredRecords = new List<CatalogRecord>();
+
+            for (int i = 0; i < originalCatalogRecords.Count; i++)
+            {
+                CatalogRecord record = originalCatalogRecords[i];
+
+                bool angleMatch =
+                    record.Angle >= angleMin &&
+                    record.Angle <= angleMax;
+
+                bool throttleMatch =
+                    record.Throttle >= throttleMin &&
+                    record.Throttle <= throttleMax;
+
+                if (angleMatch && throttleMatch)
+                {
+                    filteredRecords.Add(record);
+
+                    if (i < originalImageFiles.Length)
+                        filteredImages.Add(originalImageFiles[i]);
+                }
+            }
+
+            catalogRecords = filteredRecords;
+            imageFiles = filteredImages.ToArray();
+
+            RefreshImageList();
+            LoadGraph();
+
+            if (imageFiles.Length > 0)
+            {
+                currentIndex = 0;
+
+                Imagebar.Minimum = 0;
+                Imagebar.Maximum = imageFiles.Length - 1;
+
+                await ShowImage(currentIndex);
+
+                ImageFilteringbtn.Text = "이미지 필터링 해제";
+                isFiltering = true;
+            }
+            else
+            {
+                MessageBox.Show("조건에 맞는 이미지가 없습니다.");
+            }
+        }
     } 
 }
+

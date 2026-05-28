@@ -120,11 +120,13 @@ namespace DataManager_2
                     return;
                 }
 
+                // 💡 [핵심 보완] 특정 유저 이름 대신 물결표(~)와 기본 계정 설정을 활용해 경로를 동적으로 구성합니다.
+                // -u tutu 옵션을 제거하여 WSL이 기본 사용자로 로그인하게 만듭니다.
+                // /home/tutu/... 주소 대신 가상환경과 스크립트 위치를 현재 로그인된 유저의 홈 디렉터리(~/) 기준으로 통일합니다.
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = "wsl",
-                    // ★ [최종 완성 구문] 전단계에서 완벽히 검증된 가상환경 주소를 기반으로 진짜 주행 데이터(--tubs)가 적재된 경로와 생성될 인공지능 모델 파일의 위치를 매핑했습니다.
-                    Arguments = "-d Ubuntu-22.04 -u tutu bash -c \"cd ~/mycar && /home/tutu/miniconda3/envs/e2e_env/bin/python3 /home/tutu/mycar/train.py --tub=~/mycar/data --model=~/mycar/models/mypilot.h5\"",
+                    Arguments = "-d Ubuntu-22.04 bash -c \"cd ~/mycar && ~/miniconda3/envs/e2e_env/bin/python3 ~/mycar/train.py --tub=~/mycar/data --model=~/mycar/models/mypilot.h5\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -138,11 +140,15 @@ namespace DataManager_2
                 {
                     if (args.Data != null)
                     {
-                        this.BeginInvoke(new Action(() =>
+                        // 🔥 [핸들 에러 방지] UI 도화지(핸들)가 정상적으로 살아있을 때만 안전하게 화면을 갱신합니다.
+                        if (this.IsHandleCreated && !this.IsDisposed)
                         {
-                            Traninglst.Items.Add(args.Data);
-                            Traninglst.TopIndex = Traninglst.Items.Count - 1;
-                        }));
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                Traninglst.Items.Add(args.Data);
+                                Traninglst.TopIndex = Traninglst.Items.Count - 1;
+                            }));
+                        }
                     }
                 };
 
@@ -150,36 +156,43 @@ namespace DataManager_2
                 {
                     if (args.Data != null)
                     {
-                        this.BeginInvoke(new Action(() =>
+                        // 🔥 [핸들 에러 방지] 에러 로그 출력 시에도 동일한 안전장치를 적용합니다.
+                        if (this.IsHandleCreated && !this.IsDisposed)
                         {
-                            Traninglst.Items.Add($"[파이썬 예외 발생]: {args.Data}");
-                            Traninglst.TopIndex = Traninglst.Items.Count - 1;
-                        }));
+                            this.BeginInvoke(new Action(() =>
+                            {
+                                Traninglst.Items.Add($"[파이썬 예외 발생]: {args.Data}");
+                                Traninglst.TopIndex = Traninglst.Items.Count - 1;
+                            }));
+                        }
                     }
                 };
 
                 donkeyTrainProcess.Exited += (s, args) =>
                 {
-                    this.BeginInvoke(new Action(() =>
+                    // 🔥 [핸들 에러 방지] 훈련이 끝난 시점에 프로그램 창이 켜져 있는지 체크합니다.
+                    if (this.IsHandleCreated && !this.IsDisposed)
                     {
-                        Massagelbl.Text = "AI 시스템 훈련 성공!";
-                        Massagelbl.ForeColor = Color.Green;
-
-                        string firstImagePath = "";
-                        string imagesFolder = System.IO.Path.Combine(dataPath, "images");
-                        if (System.IO.Directory.Exists(imagesFolder))
+                        this.BeginInvoke(new Action(() =>
                         {
-                            var imgs = System.IO.Directory.GetFiles(imagesFolder, "*.jpg").OrderBy(f => f).ToArray();
-                            if (imgs.Length > 0) firstImagePath = imgs[0];
-                        }
+                            Massagelbl.Text = "AI 시스템 훈련 성공!";
+                            Massagelbl.ForeColor = Color.Green;
 
-                        trainingHistory.Add((DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dataPath, firstImagePath));
+                            string firstImagePath = "";
+                            string imagesFolder = System.IO.Path.Combine(dataPath, "images");
+                            if (System.IO.Directory.Exists(imagesFolder))
+                            {
+                                var imgs = System.IO.Directory.GetFiles(imagesFolder, "*.jpg").OrderBy(f => f).ToArray();
+                                if (imgs.Length > 0) firstImagePath = imgs[0];
+                            }
 
-                        MessageBox.Show("자율주행 AI 학습이 성공적으로 완료되었습니다!", "훈련 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            trainingHistory.Add((DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dataPath, firstImagePath));
 
-                        // 이걸로 교체
-                        RefreshListBox();
-                    }));
+                            MessageBox.Show("자율주행 AI 학습이 성공적으로 완료되었습니다!", "훈련 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            RefreshListBox();
+                        }));
+                    }
                 };
 
                 donkeyTrainProcess.Start();

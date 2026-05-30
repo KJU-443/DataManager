@@ -342,6 +342,8 @@ namespace DataManager
             {
                 Imagelst.SelectedIndex = currentIndex;
             }
+
+            ImageNumberlbl.Text = $"({imageFiles.Length}/{originalImageFiles.Length})";
         }
 
         private async Task ShowImage(int index)
@@ -973,7 +975,7 @@ namespace DataManager
         }
 
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private async void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             // 텍스트박스 입력 중이면 무시
             if (this.ActiveControl is TextBox)
@@ -999,6 +1001,127 @@ namespace DataManager
                 e.SuppressKeyPress = true;
                 ImgDeletebtn.PerformClick();
             }
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (imageFiles.Length == 0) return;
+
+            if (!isFiltering)
+            {
+                MessageBox.Show("먼저 필터링을 적용해주세요.", "알림");
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                $"필터링된 {imageFiles.Length}개의 이미지를 삭제할까요?\n(image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)",
+                "일괄 삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                string dataPath = Imgtxt.Text;
+                string trashPath = Path.Combine(dataPath, "image_trash");
+                if (!Directory.Exists(trashPath))
+                    Directory.CreateDirectory(trashPath);
+
+                foreach (string filePath in imageFiles)
+                {
+                    string fileNameOnly = Path.GetFileName(filePath);
+                    string destPath = Path.Combine(trashPath, fileNameOnly);
+
+                    if (Imagepic.Image != null)
+                    {
+                        Imagepic.Image.Dispose();
+                        Imagepic.Image = null;
+                    }
+
+                    if (File.Exists(filePath))
+                        File.Move(filePath, destPath);
+
+                    if (!deletedFiles.Contains(fileNameOnly))
+                        deletedFiles.Add(fileNameOnly);
+                }
+
+                // catalog에서 삭제된 파일들 일괄 제거
+                string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                 .OrderBy(f => f)
+                                                 .ToArray();
+
+                var deletedFileNames = imageFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+
+                foreach (string catalogFile in catalogFiles)
+                {
+                    var lines = File.ReadAllLines(catalogFile)
+                                    .Where(line =>
+                                    {
+                                        if (string.IsNullOrWhiteSpace(line)) return false;
+                                        try
+                                        {
+                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                            return !deletedFileNames.Contains(json?.ImageArray);
+                                        }
+                                        catch { return true; }
+                                    })
+                                    .ToList();
+                    File.WriteAllLines(catalogFile, lines);
+                }
+
+                // originalCatalogLines에서도 삭제
+                originalCatalogLines = originalCatalogLines
+                    .Where(line =>
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) return false;
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            return !deletedFileNames.Contains(json?.ImageArray);
+                        }
+                        catch { return true; }
+                    })
+                    .ToList();
+
+                // 필터 해제 후 원본으로 복귀
+                originalImageFiles = originalImageFiles
+                    .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
+                    .ToArray();
+                originalCatalogRecords = originalCatalogRecords
+                    .Where(r => !deletedFileNames.Contains(r.ImageArray))
+                    .ToList();
+
+                imageFiles = originalImageFiles.ToArray();
+                catalogRecords = originalCatalogRecords.ToList();
+
+                isFiltering = false;
+                DelImageFilteringbtn.Text = "이미지 필터링 하기";
+
+                AngleUptxt.Text = "";
+                AngleDowntxt.Text = "";
+                TrottleUptxt.Text = "";
+                TrottleDowntxt.Text = "";
+
+                RefreshImageList();
+                LoadGraph();
+
+                if (imageFiles.Length > 0)
+                {
+                    currentIndex = 0;
+                    Imagebar.Minimum = 0;
+                    Imagebar.Maximum = imageFiles.Length - 1;
+                    await ShowImage(currentIndex);
+                }
+                else
+                {
+                    Imagepic.Image = null;
+                    Imagebar.Value = 0;
+                    MessageBox.Show("모든 이미지가 삭제되었습니다.", "알림");
+                }
+            }
+        }
+
+        private void ImageNumberlbl_Click(object sender, EventArgs e)
+        {
+
         }
     } 
 }

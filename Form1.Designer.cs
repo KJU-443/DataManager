@@ -709,7 +709,7 @@
         private System.Windows.Forms.TextBox Foldertxt;
         private System.Windows.Forms.Button SelectFolderbtn;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox Imgtxt;
+        public System.Windows.Forms.TextBox Imgtxt;
         private System.Windows.Forms.Button SelectImgbtn;
         private System.Windows.Forms.Button Restorebtn;
         private System.Windows.Forms.Button GoToImage;

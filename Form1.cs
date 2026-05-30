@@ -170,15 +170,22 @@ namespace DataManager
 
             using (OpenFileDialog folderDialog = new OpenFileDialog())
             {
-                folderDialog.Title = "mycar 폴더 안의 아무 파일이나 하나 선택하세요";
-                folderDialog.Filter = "모든 파일 (*.*)|*.*";
-                folderDialog.CheckFileExists = false;
+                folderDialog.Title = "mycar 폴더에 들어가서 열기 버튼을 누르세요";
+
+                // 💡 핵심 3줄: 파일이 아니라 폴더를 선택할 수 있도록 속임수를 씁니다.
+                folderDialog.ValidateNames = false;       // 파일 이름 검증 안 함
+                folderDialog.CheckFileExists = false;     // 파일 존재 체크 안 함
+                folderDialog.CheckPathExists = true;      // 폴더 경로만 체크함
+
+                // 💡 [열기] 버튼 누르는 칸에 폴더 이름을 강제로 채워 넣는 설정입니다.
+                folderDialog.FileName = "폴더 선택 완료";
 
                 if (Directory.Exists(wslBasePath))
                     folderDialog.InitialDirectory = wslBasePath;
 
                 if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
+                    // 💡 사용자가 선택한 '폴더 자체'의 경로를 정확하게 추출해 줍니다.
                     selectedFolderPath = Path.GetDirectoryName(folderDialog.FileName);
                     Foldertxt.Text = selectedFolderPath;
                 }
@@ -257,24 +264,64 @@ namespace DataManager
 
             using (OpenFileDialog folderDialog = new OpenFileDialog())
             {
-                folderDialog.Title = "지정할 data 폴더 안의 파일을 아무거나 클릭하고 열기를 누르세요";
-                folderDialog.Filter = "모든 파일 (*.*)|*.*";
-                folderDialog.CheckFileExists = false;
+                folderDialog.Title = "images 폴더 안으로 들어가서 [열기]를 누르세요";
+                folderDialog.ValidateNames = false;       // 파일 이름 검증 안 함
+                folderDialog.CheckFileExists = false;     // 파일 존재 체크 안 함
+                folderDialog.CheckPathExists = true;      // 폴더 경로만 체크함
+
+                // 💡 가짜 파일명을 주어 버튼을 활성화시킵니다.
+                folderDialog.FileName = "폴더 선택 완료";
 
                 if (Directory.Exists(wslTubPath))
                     folderDialog.InitialDirectory = wslTubPath;
 
                 if (folderDialog.ShowDialog() == DialogResult.OK)
                 {
+                    // 윈도우가 가짜 파일을 생성한 위치(현재 탐색기가 위치한 폴더 경로)를 가져옵니다.
                     string selectedDir = Path.GetDirectoryName(folderDialog.FileName);
-                    string dirName = Path.GetFileName(selectedDir);
 
-                    string dataPath = dirName.Equals("images", StringComparison.OrdinalIgnoreCase)
-                        ? Path.GetDirectoryName(selectedDir)
-                        : selectedDir;
+                    if (string.IsNullOrEmpty(selectedDir))
+                    {
+                        selectedDir = folderDialog.FileName;
+                    }
 
+                    string dataPath = selectedDir;
+
+                    // 🔥 [완벽 차단 핵심] 
+                    // 윈도우 버그 때문에 images 폴더 안으로 빨려 들어갔거나, 
+                    // 사용자가 images 폴더를 더블클릭해서 들어간 상태에서 [열기]를 눌렀더라도!
+                    // 전체 경로 중 "\images" 글자가 발견되면 무조건 그 앞까지만 잘라내서 
+                    // 우리가 진짜로 필요로 하는 '데이터 폴더' 경로를 강제로 만들어 냅니다.
+                    int index = dataPath.IndexOf(@"\images", StringComparison.OrdinalIgnoreCase);
+
+                    if (index >= 0)
+                    {
+                        // 주소에 \images가 포함되어 있다면 딱 그 앞자리까지만 잘라냅니다.
+                        dataPath = dataPath.Substring(0, index);
+                    }
+                    else
+                    {
+                        // 리눅스 경로 스타일(/images)도 예외 없이 잘라냅니다.
+                        index = dataPath.IndexOf("/images", StringComparison.OrdinalIgnoreCase);
+                        if (index >= 0)
+                        {
+                            dataPath = dataPath.Substring(0, index);
+                        }
+                    }
+
+                    // 💡 [안전장치 2] 만약 윈도우가 images 폴더의 '상위 폴더(데이터 폴더)'에 멈춰서 
+                    // images 폴더를 한 번만 클릭하고 열기를 눌러서 멈췄을 때의 처리
+                    if (dataPath.EndsWith("폴더 선택 완료", StringComparison.OrdinalIgnoreCase))
+                    {
+                        dataPath = Path.GetDirectoryName(dataPath);
+                    }
+
+                    // 최종적으로 텍스트박스에 images의 윗단계인 '데이터 폴더' 주소를 강제 주입!
                     Imgtxt.Text = dataPath;
 
+                    // ---------------------------------------------------------------
+                    // 여기서부터는 기존의 카탈로그/이미지 로딩 로직 (100% 동일)
+                    // ---------------------------------------------------------------
                     string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
                                  .Where(f => !f.EndsWith(".catalog_manifest"))
                                  .OrderBy(f => f)

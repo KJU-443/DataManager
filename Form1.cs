@@ -834,7 +834,7 @@ namespace DataManager
                 TrottleUptxt.Text = "";
                 TrottleDowntxt.Text = "";
 
-                ImageFilteringbtn.Text = "이미지 필터링 하기";
+                DelImageFilteringbtn.Text = "이미지 필터링 하기";
                 isFiltering = false;
 
                 return;
@@ -891,7 +891,7 @@ namespace DataManager
 
                 await ShowImage(currentIndex);
 
-                ImageFilteringbtn.Text = "이미지 필터링 해제";
+                DelImageFilteringbtn.Text = "이미지 필터링 해제";
                 isFiltering = true;
             }
             else

@@ -127,7 +127,7 @@
             this.GoDatabtn.Size = new System.Drawing.Size(173, 38);
             this.GoDatabtn.TabIndex = 3;
             this.GoDatabtn.Tag = "noTheme";
-            this.GoDatabtn.Text = "데이터";
+            this.GoDatabtn.Text = "데이터 페이지로 가기";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 

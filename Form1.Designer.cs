@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -98,7 +98,7 @@
             this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(16, 16);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 5;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
@@ -106,6 +106,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 51F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 427F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1843, 1364);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -117,7 +118,7 @@
             this.panel3.Controls.Add(this.groupBox2);
             this.panel3.Controls.Add(this.Graph);
             this.panel3.Location = new System.Drawing.Point(4, 941);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1835, 419);
             this.panel3.TabIndex = 2;
@@ -130,9 +131,9 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox2.ForeColor = System.Drawing.Color.Black;
             this.groupBox2.Location = new System.Drawing.Point(1354, 3);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(481, 416);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
@@ -144,7 +145,7 @@
             this.OpenGraphBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenGraphBrowserbtn.ForeColor = System.Drawing.Color.Black;
             this.OpenGraphBrowserbtn.Location = new System.Drawing.Point(17, 157);
-            this.OpenGraphBrowserbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OpenGraphBrowserbtn.Margin = new System.Windows.Forms.Padding(4);
             this.OpenGraphBrowserbtn.Name = "OpenGraphBrowserbtn";
             this.OpenGraphBrowserbtn.Size = new System.Drawing.Size(450, 68);
             this.OpenGraphBrowserbtn.TabIndex = 12;
@@ -159,7 +160,7 @@
             this.RefreshGraphbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.RefreshGraphbtn.ForeColor = System.Drawing.Color.Black;
             this.RefreshGraphbtn.Location = new System.Drawing.Point(17, 69);
-            this.RefreshGraphbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RefreshGraphbtn.Margin = new System.Windows.Forms.Padding(4);
             this.RefreshGraphbtn.Name = "RefreshGraphbtn";
             this.RefreshGraphbtn.Size = new System.Drawing.Size(450, 68);
             this.RefreshGraphbtn.TabIndex = 11;
@@ -172,20 +173,20 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea1.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.Graph.Legends.Add(legend1);
+            chartArea4.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.Graph.Legends.Add(legend4);
             this.Graph.Location = new System.Drawing.Point(0, -1);
-            this.Graph.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Graph.Margin = new System.Windows.Forms.Padding(4);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.Graph.Series.Add(series1);
+            series4.BorderWidth = 3;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.Graph.Series.Add(series4);
             this.Graph.Size = new System.Drawing.Size(1345, 420);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
@@ -196,7 +197,7 @@
             this.GoTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoTrainbtn.ForeColor = System.Drawing.Color.Black;
             this.GoTrainbtn.Location = new System.Drawing.Point(4, 4);
-            this.GoTrainbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GoTrainbtn.Margin = new System.Windows.Forms.Padding(4);
             this.GoTrainbtn.Name = "GoTrainbtn";
             this.GoTrainbtn.Size = new System.Drawing.Size(225, 48);
             this.GoTrainbtn.TabIndex = 3;
@@ -210,7 +211,7 @@
             this.Imagebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagebar.Location = new System.Drawing.Point(4, 890);
-            this.Imagebar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Imagebar.Margin = new System.Windows.Forms.Padding(4);
             this.Imagebar.Name = "Imagebar";
             this.Imagebar.Size = new System.Drawing.Size(1835, 43);
             this.Imagebar.TabIndex = 1;
@@ -237,7 +238,7 @@
             this.panel4.Controls.Add(this.groupBox1);
             this.panel4.Controls.Add(this.Imagepic);
             this.panel4.Location = new System.Drawing.Point(4, 148);
-            this.panel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1835, 734);
             this.panel4.TabIndex = 4;
@@ -249,7 +250,7 @@
             this.ImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
             this.ImageFilteringbtn.Location = new System.Drawing.Point(12, 543);
-            this.ImageFilteringbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ImageFilteringbtn.Margin = new System.Windows.Forms.Padding(4);
             this.ImageFilteringbtn.Name = "ImageFilteringbtn";
             this.ImageFilteringbtn.Size = new System.Drawing.Size(337, 68);
             this.ImageFilteringbtn.TabIndex = 18;
@@ -265,7 +266,7 @@
             this.DelImageFilteringbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DelImageFilteringbtn.ForeColor = System.Drawing.Color.Black;
             this.DelImageFilteringbtn.Location = new System.Drawing.Point(12, 467);
-            this.DelImageFilteringbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DelImageFilteringbtn.Margin = new System.Windows.Forms.Padding(4);
             this.DelImageFilteringbtn.Name = "DelImageFilteringbtn";
             this.DelImageFilteringbtn.Size = new System.Drawing.Size(337, 68);
             this.DelImageFilteringbtn.TabIndex = 17;
@@ -279,7 +280,7 @@
             this.TrottleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleDowntxt.Location = new System.Drawing.Point(261, 398);
-            this.TrottleDowntxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TrottleDowntxt.Margin = new System.Windows.Forms.Padding(4);
             this.TrottleDowntxt.Name = "TrottleDowntxt";
             this.TrottleDowntxt.Size = new System.Drawing.Size(86, 44);
             this.TrottleDowntxt.TabIndex = 17;
@@ -301,7 +302,7 @@
             this.TrottleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.TrottleUptxt.Location = new System.Drawing.Point(133, 398);
-            this.TrottleUptxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TrottleUptxt.Margin = new System.Windows.Forms.Padding(4);
             this.TrottleUptxt.Name = "TrottleUptxt";
             this.TrottleUptxt.Size = new System.Drawing.Size(86, 44);
             this.TrottleUptxt.TabIndex = 15;
@@ -323,7 +324,7 @@
             this.AngleDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleDowntxt.Location = new System.Drawing.Point(261, 339);
-            this.AngleDowntxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AngleDowntxt.Margin = new System.Windows.Forms.Padding(4);
             this.AngleDowntxt.Name = "AngleDowntxt";
             this.AngleDowntxt.Size = new System.Drawing.Size(86, 44);
             this.AngleDowntxt.TabIndex = 12;
@@ -357,7 +358,7 @@
             this.AngleUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AngleUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.AngleUptxt.Location = new System.Drawing.Point(133, 339);
-            this.AngleUptxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AngleUptxt.Margin = new System.Windows.Forms.Padding(4);
             this.AngleUptxt.Name = "AngleUptxt";
             this.AngleUptxt.Size = new System.Drawing.Size(86, 44);
             this.AngleUptxt.TabIndex = 9;
@@ -396,7 +397,7 @@
             this.Imagelst.FormattingEnabled = true;
             this.Imagelst.ItemHeight = 31;
             this.Imagelst.Location = new System.Drawing.Point(4, 8);
-            this.Imagelst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Imagelst.Margin = new System.Windows.Forms.Padding(4);
             this.Imagelst.Name = "Imagelst";
             this.Imagelst.Size = new System.Drawing.Size(343, 252);
             this.Imagelst.TabIndex = 6;
@@ -423,9 +424,9 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
             this.groupBox1.Location = new System.Drawing.Point(1354, 3);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(481, 728);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
@@ -450,7 +451,7 @@
             this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoToImage.ForeColor = System.Drawing.Color.Black;
             this.GoToImage.Location = new System.Drawing.Point(17, 159);
-            this.GoToImage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GoToImage.Margin = new System.Windows.Forms.Padding(4);
             this.GoToImage.Name = "GoToImage";
             this.GoToImage.Size = new System.Drawing.Size(450, 68);
             this.GoToImage.TabIndex = 16;
@@ -465,7 +466,7 @@
             this.Restorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Restorebtn.ForeColor = System.Drawing.Color.Black;
             this.Restorebtn.Location = new System.Drawing.Point(17, 293);
-            this.Restorebtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Restorebtn.Margin = new System.Windows.Forms.Padding(4);
             this.Restorebtn.Name = "Restorebtn";
             this.Restorebtn.Size = new System.Drawing.Size(144, 68);
             this.Restorebtn.TabIndex = 15;
@@ -480,7 +481,7 @@
             this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
             this.Reversebtn.Location = new System.Drawing.Point(18, 551);
-            this.Reversebtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Reversebtn.Margin = new System.Windows.Forms.Padding(4);
             this.Reversebtn.Name = "Reversebtn";
             this.Reversebtn.Size = new System.Drawing.Size(222, 68);
             this.Reversebtn.TabIndex = 14;
@@ -494,7 +495,7 @@
             this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
             this.Plsybtn.Location = new System.Drawing.Point(244, 551);
-            this.Plsybtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Plsybtn.Margin = new System.Windows.Forms.Padding(4);
             this.Plsybtn.Name = "Plsybtn";
             this.Plsybtn.Size = new System.Drawing.Size(222, 68);
             this.Plsybtn.TabIndex = 13;
@@ -508,7 +509,7 @@
             this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
             this.NextImgbtn.Location = new System.Drawing.Point(244, 465);
-            this.NextImgbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.NextImgbtn.Margin = new System.Windows.Forms.Padding(4);
             this.NextImgbtn.Name = "NextImgbtn";
             this.NextImgbtn.Size = new System.Drawing.Size(222, 68);
             this.NextImgbtn.TabIndex = 12;
@@ -522,7 +523,7 @@
             this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
             this.PreviousImgbtn.Location = new System.Drawing.Point(18, 465);
-            this.PreviousImgbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PreviousImgbtn.Margin = new System.Windows.Forms.Padding(4);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
             this.PreviousImgbtn.Size = new System.Drawing.Size(222, 68);
             this.PreviousImgbtn.TabIndex = 11;
@@ -535,7 +536,7 @@
             this.PlayAndStopbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.PlayAndStopbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PlayAndStopbtn.Location = new System.Drawing.Point(17, 636);
-            this.PlayAndStopbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PlayAndStopbtn.Margin = new System.Windows.Forms.Padding(4);
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
             this.PlayAndStopbtn.Size = new System.Drawing.Size(450, 68);
             this.PlayAndStopbtn.TabIndex = 10;
@@ -550,7 +551,7 @@
             this.OpenImgBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenImgBrowserbtn.ForeColor = System.Drawing.Color.Black;
             this.OpenImgBrowserbtn.Location = new System.Drawing.Point(17, 63);
-            this.OpenImgBrowserbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.OpenImgBrowserbtn.Margin = new System.Windows.Forms.Padding(4);
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
             this.OpenImgBrowserbtn.Size = new System.Drawing.Size(450, 68);
             this.OpenImgBrowserbtn.TabIndex = 1;
@@ -565,7 +566,7 @@
             this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
             this.ImgAddbtn.Location = new System.Drawing.Point(311, 295);
-            this.ImgAddbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ImgAddbtn.Margin = new System.Windows.Forms.Padding(4);
             this.ImgAddbtn.Name = "ImgAddbtn";
             this.ImgAddbtn.Size = new System.Drawing.Size(156, 68);
             this.ImgAddbtn.TabIndex = 2;
@@ -580,7 +581,7 @@
             this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
             this.ImgDeletebtn.Location = new System.Drawing.Point(162, 295);
-            this.ImgDeletebtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ImgDeletebtn.Margin = new System.Windows.Forms.Padding(4);
             this.ImgDeletebtn.Name = "ImgDeletebtn";
             this.ImgDeletebtn.Size = new System.Drawing.Size(147, 68);
             this.ImgDeletebtn.TabIndex = 4;
@@ -607,7 +608,7 @@
             this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
             this.DoubleSpeedbtn.Location = new System.Drawing.Point(244, 380);
-            this.DoubleSpeedbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DoubleSpeedbtn.Margin = new System.Windows.Forms.Padding(4);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
             this.DoubleSpeedbtn.Size = new System.Drawing.Size(222, 68);
             this.DoubleSpeedbtn.TabIndex = 5;
@@ -621,7 +622,7 @@
             this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
             this.DoubleSpeedtxt.Location = new System.Drawing.Point(18, 388);
-            this.DoubleSpeedtxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DoubleSpeedtxt.Margin = new System.Windows.Forms.Padding(4);
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
             this.DoubleSpeedtxt.Size = new System.Drawing.Size(221, 50);
             this.DoubleSpeedtxt.TabIndex = 2;
@@ -633,7 +634,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
             this.Imagepic.Location = new System.Drawing.Point(356, 4);
-            this.Imagepic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Imagepic.Margin = new System.Windows.Forms.Padding(4);
             this.Imagepic.Name = "Imagepic";
             this.Imagepic.Size = new System.Drawing.Size(988, 727);
             this.Imagepic.TabIndex = 5;
@@ -648,7 +649,7 @@
             this.panel1.Controls.Add(this.SelectImgbtn);
             this.panel1.Controls.Add(this.SelectFolderbtn);
             this.panel1.Location = new System.Drawing.Point(4, 68);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1835, 72);
             this.panel1.TabIndex = 5;
@@ -659,7 +660,7 @@
             this.Foldertxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Foldertxt.ForeColor = System.Drawing.Color.Black;
             this.Foldertxt.Location = new System.Drawing.Point(369, 20);
-            this.Foldertxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Foldertxt.Margin = new System.Windows.Forms.Padding(4);
             this.Foldertxt.Name = "Foldertxt";
             this.Foldertxt.Size = new System.Drawing.Size(536, 32);
             this.Foldertxt.TabIndex = 4;
@@ -670,7 +671,7 @@
             this.Imgtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Imgtxt.ForeColor = System.Drawing.Color.Black;
             this.Imgtxt.Location = new System.Drawing.Point(1284, 21);
-            this.Imgtxt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Imgtxt.Margin = new System.Windows.Forms.Padding(4);
             this.Imgtxt.Name = "Imgtxt";
             this.Imgtxt.Size = new System.Drawing.Size(536, 32);
             this.Imgtxt.TabIndex = 5;
@@ -681,7 +682,7 @@
             this.SelectImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SelectImgbtn.ForeColor = System.Drawing.Color.Black;
             this.SelectImgbtn.Location = new System.Drawing.Point(919, 0);
-            this.SelectImgbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SelectImgbtn.Margin = new System.Windows.Forms.Padding(4);
             this.SelectImgbtn.Name = "SelectImgbtn";
             this.SelectImgbtn.Size = new System.Drawing.Size(358, 73);
             this.SelectImgbtn.TabIndex = 3;
@@ -695,7 +696,7 @@
             this.SelectFolderbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.SelectFolderbtn.ForeColor = System.Drawing.Color.Black;
             this.SelectFolderbtn.Location = new System.Drawing.Point(4, 0);
-            this.SelectFolderbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SelectFolderbtn.Margin = new System.Windows.Forms.Padding(4);
             this.SelectFolderbtn.Name = "SelectFolderbtn";
             this.SelectFolderbtn.Size = new System.Drawing.Size(358, 73);
             this.SelectFolderbtn.TabIndex = 2;
@@ -710,7 +711,7 @@
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1875, 1396);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "DataManager V1.0";
             this.tableLayoutPanel1.ResumeLayout(false);

@@ -16,5 +16,10 @@ namespace DataManager
         {
             InitializeComponent();
         }
+
+        private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

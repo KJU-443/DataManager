@@ -106,11 +106,11 @@
             // ImageNumberlbl
             // 
             this.ImageNumberlbl.AutoSize = true;
-            this.ImageNumberlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
             this.ImageNumberlbl.Location = new System.Drawing.Point(91, 239);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
-            this.ImageNumberlbl.Size = new System.Drawing.Size(159, 31);
+            this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
             this.ImageNumberlbl.TabIndex = 17;
             this.ImageNumberlbl.Text = "(1000/1000)";
             // 
@@ -212,6 +212,7 @@
             this.OpenImgBrowserbtn.Tag = "noTheme";
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
             this.OpenImgBrowserbtn.UseVisualStyleBackColor = false;
+            this.OpenImgBrowserbtn.Click += new System.EventHandler(this.OpenImgBrowserbtn_Click);
             // 
             // ImgAddbtn
             // 

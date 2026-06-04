@@ -36,6 +36,17 @@ namespace DataManager
         private string baseDataPath = "";     // 카탈로그 조회를 위해 상위 경로 저장
 
         // 🎯 Form2로부터 실제 상위 데이터 주소(C:\mycar\data)를 전달받습니다.
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.D))
+            {
+                Form1.isDarkMode = !Form1.isDarkMode;
+                ApplyThemePublic();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         public Form4(string path = @"C:\mycar\data")
         {
             InitializeComponent();

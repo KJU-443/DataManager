@@ -402,9 +402,6 @@ namespace DataManager
 
         private async Task ShowImage(int index)
         {
-            Console.WriteLine(
-                $"index={index}, catalogCount={catalogRecords.Count}"
-                );
 
             if (imageFiles.Length == 0) return;
 

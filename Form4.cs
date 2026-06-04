@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataManager_2;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -6,7 +8,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace DataManager
 {
@@ -23,6 +24,11 @@ namespace DataManager
         private List<string> deletedFiles = new List<string>();
         private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
         private string[] originalImageFiles = Array.Empty<string>();
+
+        private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
+        private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
+        private bool colorssaved = false;
+
 
         public Form4()
         {
@@ -112,6 +118,82 @@ namespace DataManager
             await ShowImage(currentIndex);
         }
 
+        public void ApplyThemePublic()
+        {
+            if (!colorssaved)
+            {
+                SaveOriginalColors(this.Controls);
+                colorssaved = true;
+            }
+
+            if (Form1.isDarkMode)
+            {
+                this.BackColor = Color.FromArgb(30, 30, 30);
+                ApplyThemeToControls(this.Controls,
+                    Color.FromArgb(30, 30, 30), Color.White, Color.FromArgb(60, 60, 60));
+            }
+            else
+            {
+                this.BackColor = SystemColors.Control;
+                RestoreOriginalColors(this.Controls);
+            }
+        }
+
+        private void SaveOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                originalBackColors[ctrl] = ctrl.BackColor;
+                originalForeColors[ctrl] = ctrl.ForeColor;
+                if (ctrl.Controls.Count > 0)
+                    SaveOriginalColors(ctrl.Controls);
+            }
+        }
+
+        private void RestoreOriginalColors(Control.ControlCollection controls)
+        {
+            foreach (Control ctrl in controls)
+            {
+                if (originalBackColors.ContainsKey(ctrl))
+                    ctrl.BackColor = originalBackColors[ctrl];
+                if (originalForeColors.ContainsKey(ctrl))
+                    ctrl.ForeColor = originalForeColors[ctrl];
+                if (ctrl.Controls.Count > 0)
+                    RestoreOriginalColors(ctrl.Controls);
+            }
+        }
+
+        private void ApplyThemeToControls(Control.ControlCollection controls,
+    Color backColor, Color foreColor, Color buttonBack)
+        {
+            foreach (Control ctrl in controls)
+            {
+                if (ctrl.Tag?.ToString() == "noTheme")
+                {
+                    if (ctrl.Controls.Count > 0)
+                        ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+                    continue;
+                }
+
+                ctrl.ForeColor = foreColor;
+                if (ctrl is Button)
+                    ctrl.BackColor = buttonBack;
+                else if (ctrl is PictureBox) { }
+                else
+                    ctrl.BackColor = backColor;
+
+                if (ctrl.Controls.Count > 0)
+                    ApplyThemeToControls(ctrl.Controls, backColor, foreColor, buttonBack);
+            }
+        }
+
+        public void ApplyWindowState(Form previousForm)
+        {
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = previousForm.Location;
+            this.Size = previousForm.Size;
+            this.WindowState = previousForm.WindowState;
+        }
         private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
@@ -392,7 +474,39 @@ namespace DataManager
 
         private void GoToTrainbtn_Click(object sender, EventArgs e)
         {
+            playTimer.Stop();
+            Form2 existingForm2 = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+            if (existingForm2 != null)
+            {
+                existingForm2.ApplyWindowState(this);
+                existingForm2.Show();
+                if (Form1.isDarkMode) existingForm2.ApplyThemePublic();
+            }
+            else
+            {
+                Form2 form2 = new Form2("", "");
+                form2.ApplyWindowState(this);
+                form2.Show();
+                if (Form1.isDarkMode) form2.ApplyThemePublic();
+            }
+            this.Hide();
+        }
 
+        private void GoDatabtn_Click(object sender, EventArgs e)
+        {
+            Form1 existingForm1 = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+            if (existingForm1 != null)
+            {
+                existingForm1.Show();
+                if (Form1.isDarkMode) existingForm1.ApplyThemePublic();
+            }
+            else
+            {
+                Form1 form1 = new Form1();
+                form1.Show();
+                if (Form1.isDarkMode) form1.ApplyThemePublic();
+            }
+            this.Hide();
         }
     }
 }

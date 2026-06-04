@@ -31,16 +31,12 @@
             this.Imagepic = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ImageNumberlbl = new System.Windows.Forms.Label();
-            this.GoToImage = new System.Windows.Forms.Button();
-            this.Restorebtn = new System.Windows.Forms.Button();
             this.Reversebtn = new System.Windows.Forms.Button();
             this.Plsybtn = new System.Windows.Forms.Button();
             this.NextImgbtn = new System.Windows.Forms.Button();
             this.PreviousImgbtn = new System.Windows.Forms.Button();
             this.PlayAndStopbtn = new System.Windows.Forms.Button();
             this.OpenImgBrowserbtn = new System.Windows.Forms.Button();
-            this.ImgAddbtn = new System.Windows.Forms.Button();
-            this.ImgDeletebtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.DoubleSpeedbtn = new System.Windows.Forms.Button();
             this.DoubleSpeedtxt = new System.Windows.Forms.TextBox();
@@ -87,16 +83,12 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.ImageNumberlbl);
-            this.groupBox1.Controls.Add(this.GoToImage);
-            this.groupBox1.Controls.Add(this.Restorebtn);
             this.groupBox1.Controls.Add(this.Reversebtn);
             this.groupBox1.Controls.Add(this.Plsybtn);
             this.groupBox1.Controls.Add(this.NextImgbtn);
             this.groupBox1.Controls.Add(this.PreviousImgbtn);
             this.groupBox1.Controls.Add(this.PlayAndStopbtn);
             this.groupBox1.Controls.Add(this.OpenImgBrowserbtn);
-            this.groupBox1.Controls.Add(this.ImgAddbtn);
-            this.groupBox1.Controls.Add(this.ImgDeletebtn);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.DoubleSpeedbtn);
             this.groupBox1.Controls.Add(this.DoubleSpeedtxt);
@@ -119,34 +111,6 @@
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
             this.ImageNumberlbl.TabIndex = 17;
             this.ImageNumberlbl.Text = "(1000/1000)";
-            // 
-            // GoToImage
-            // 
-            this.GoToImage.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoToImage.ForeColor = System.Drawing.Color.Black;
-            this.GoToImage.Location = new System.Drawing.Point(13, 142);
-            this.GoToImage.Name = "GoToImage";
-            this.GoToImage.Size = new System.Drawing.Size(346, 51);
-            this.GoToImage.TabIndex = 16;
-            this.GoToImage.Tag = "noTheme";
-            this.GoToImage.Text = "복구 이미지 리스트 보기";
-            this.GoToImage.UseVisualStyleBackColor = false;
-            this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
-            // 
-            // Restorebtn
-            // 
-            this.Restorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.Restorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Restorebtn.ForeColor = System.Drawing.Color.Black;
-            this.Restorebtn.Location = new System.Drawing.Point(13, 313);
-            this.Restorebtn.Name = "Restorebtn";
-            this.Restorebtn.Size = new System.Drawing.Size(111, 51);
-            this.Restorebtn.TabIndex = 15;
-            this.Restorebtn.Tag = "noTheme";
-            this.Restorebtn.Text = "복구";
-            this.Restorebtn.UseVisualStyleBackColor = false;
-            this.Restorebtn.Click += new System.EventHandler(this.Restorebtn_Click);
             // 
             // Reversebtn
             // 
@@ -226,34 +190,6 @@
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
             this.OpenImgBrowserbtn.UseVisualStyleBackColor = false;
             this.OpenImgBrowserbtn.Click += new System.EventHandler(this.OpenImgBrowserbtn_Click);
-            // 
-            // ImgAddbtn
-            // 
-            this.ImgAddbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
-            this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgAddbtn.Location = new System.Drawing.Point(239, 313);
-            this.ImgAddbtn.Name = "ImgAddbtn";
-            this.ImgAddbtn.Size = new System.Drawing.Size(120, 51);
-            this.ImgAddbtn.TabIndex = 2;
-            this.ImgAddbtn.Tag = "noTheme";
-            this.ImgAddbtn.Text = "추가";
-            this.ImgAddbtn.UseVisualStyleBackColor = false;
-            this.ImgAddbtn.Click += new System.EventHandler(this.ImgAddbtn_Click);
-            // 
-            // ImgDeletebtn
-            // 
-            this.ImgDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
-            this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgDeletebtn.Location = new System.Drawing.Point(125, 313);
-            this.ImgDeletebtn.Name = "ImgDeletebtn";
-            this.ImgDeletebtn.Size = new System.Drawing.Size(113, 51);
-            this.ImgDeletebtn.TabIndex = 4;
-            this.ImgDeletebtn.Tag = "noTheme";
-            this.ImgDeletebtn.Text = "삭제";
-            this.ImgDeletebtn.UseVisualStyleBackColor = false;
-            this.ImgDeletebtn.Click += new System.EventHandler(this.ImgDeletebtn_Click);
             // 
             // label2
             // 
@@ -543,16 +479,12 @@
         private System.Windows.Forms.PictureBox Imagepic;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label ImageNumberlbl;
-        private System.Windows.Forms.Button GoToImage;
-        private System.Windows.Forms.Button Restorebtn;
         private System.Windows.Forms.Button Reversebtn;
         private System.Windows.Forms.Button Plsybtn;
         private System.Windows.Forms.Button NextImgbtn;
         private System.Windows.Forms.Button PreviousImgbtn;
         private System.Windows.Forms.Button PlayAndStopbtn;
         private System.Windows.Forms.Button OpenImgBrowserbtn;
-        private System.Windows.Forms.Button ImgAddbtn;
-        private System.Windows.Forms.Button ImgDeletebtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DoubleSpeedbtn;
         private System.Windows.Forms.TextBox DoubleSpeedtxt;

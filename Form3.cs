@@ -126,7 +126,6 @@ namespace DataManager
             flowLayoutPanel1.Controls.Clear();
             selectedCards.Clear();
 
-            string dataPath = parentForm.Imgtxt.Text;
             string trashPath = Path.Combine(dataPath, "image_trash");
 
             if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)

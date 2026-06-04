@@ -386,6 +386,13 @@ namespace DataManager
 
             Imagelst.Items.Clear();
 
+            // imageFiles 자체를 숫자 순서로 정렬
+            imageFiles = imageFiles.OrderBy(f =>
+            {
+                string numStr = Path.GetFileName(f).Split('_')[0];
+                return int.TryParse(numStr, out int n) ? n : int.MaxValue;
+            }).ToArray();
+
             foreach (string file in imageFiles)
             {
                 Imagelst.Items.Add(Path.GetFileName(file));

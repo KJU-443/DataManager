@@ -72,9 +72,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
-            this.Imagepic.Location = new System.Drawing.Point(12, 54);
+          feature/function
+            this.Imagepic.Location = new System.Drawing.Point(12, 12);
             this.Imagepic.Name = "Imagepic";
-            this.Imagepic.Size = new System.Drawing.Size(1042, 725);
+            this.Imagepic.Size = new System.Drawing.Size(1042, 767);
+          
             this.Imagepic.TabIndex = 6;
             this.Imagepic.TabStop = false;
             // 
@@ -108,11 +110,13 @@
             // ImageNumberlbl
             // 
             this.ImageNumberlbl.AutoSize = true;
-            this.ImageNumberlbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
             this.ImageNumberlbl.Location = new System.Drawing.Point(91, 239);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
-            this.ImageNumberlbl.Size = new System.Drawing.Size(159, 31);
+          feature/function
+            this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
+          
             this.ImageNumberlbl.TabIndex = 17;
             this.ImageNumberlbl.Text = "(1000/1000)";
             // 
@@ -128,6 +132,7 @@
             this.GoToImage.Tag = "noTheme";
             this.GoToImage.Text = "복구 이미지 리스트 보기";
             this.GoToImage.UseVisualStyleBackColor = false;
+            this.GoToImage.Click += new System.EventHandler(this.GoToImage_Click);
             // 
             // Restorebtn
             // 
@@ -141,6 +146,7 @@
             this.Restorebtn.Tag = "noTheme";
             this.Restorebtn.Text = "복구";
             this.Restorebtn.UseVisualStyleBackColor = false;
+            this.Restorebtn.Click += new System.EventHandler(this.Restorebtn_Click);
             // 
             // Reversebtn
             // 
@@ -153,6 +159,7 @@
             this.Reversebtn.TabIndex = 14;
             this.Reversebtn.Text = "<<";
             this.Reversebtn.UseVisualStyleBackColor = false;
+            this.Reversebtn.Click += new System.EventHandler(this.Reversebtn_Click);
             // 
             // Plsybtn
             // 
@@ -165,6 +172,7 @@
             this.Plsybtn.TabIndex = 13;
             this.Plsybtn.Text = ">>";
             this.Plsybtn.UseVisualStyleBackColor = false;
+            this.Plsybtn.Click += new System.EventHandler(this.Plsybtn_Click);
             // 
             // NextImgbtn
             // 
@@ -177,6 +185,7 @@
             this.NextImgbtn.TabIndex = 12;
             this.NextImgbtn.Text = ">";
             this.NextImgbtn.UseVisualStyleBackColor = false;
+            this.NextImgbtn.Click += new System.EventHandler(this.NextImgbtn_Click);
             // 
             // PreviousImgbtn
             // 
@@ -189,6 +198,7 @@
             this.PreviousImgbtn.TabIndex = 11;
             this.PreviousImgbtn.Text = "<";
             this.PreviousImgbtn.UseVisualStyleBackColor = false;
+            this.PreviousImgbtn.Click += new System.EventHandler(this.PreviousImgbtn_Click);
             // 
             // PlayAndStopbtn
             // 
@@ -201,6 +211,7 @@
             this.PlayAndStopbtn.Tag = "noTheme";
             this.PlayAndStopbtn.Text = "재생";
             this.PlayAndStopbtn.UseVisualStyleBackColor = false;
+            this.PlayAndStopbtn.Click += new System.EventHandler(this.PlayAndStopbtn_Click);
             // 
             // OpenImgBrowserbtn
             // 
@@ -214,6 +225,7 @@
             this.OpenImgBrowserbtn.Tag = "noTheme";
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
             this.OpenImgBrowserbtn.UseVisualStyleBackColor = false;
+            this.OpenImgBrowserbtn.Click += new System.EventHandler(this.OpenImgBrowserbtn_Click);
             // 
             // ImgAddbtn
             // 
@@ -227,6 +239,7 @@
             this.ImgAddbtn.Tag = "noTheme";
             this.ImgAddbtn.Text = "추가";
             this.ImgAddbtn.UseVisualStyleBackColor = false;
+            this.ImgAddbtn.Click += new System.EventHandler(this.ImgAddbtn_Click);
             // 
             // ImgDeletebtn
             // 
@@ -240,6 +253,7 @@
             this.ImgDeletebtn.Tag = "noTheme";
             this.ImgDeletebtn.Text = "삭제";
             this.ImgDeletebtn.UseVisualStyleBackColor = false;
+            this.ImgDeletebtn.Click += new System.EventHandler(this.ImgDeletebtn_Click);
             // 
             // label2
             // 
@@ -263,6 +277,7 @@
             this.DoubleSpeedbtn.TabIndex = 5;
             this.DoubleSpeedbtn.Text = "배속";
             this.DoubleSpeedbtn.UseVisualStyleBackColor = false;
+            this.DoubleSpeedbtn.Click += new System.EventHandler(this.DoubleSpeedbtn_Click);
             // 
             // DoubleSpeedtxt
             // 
@@ -282,6 +297,7 @@
             this.Imagebar.Name = "Imagebar";
             this.Imagebar.Size = new System.Drawing.Size(1418, 69);
             this.Imagebar.TabIndex = 8;
+            this.Imagebar.Scroll += new System.EventHandler(this.Imagebar_Scroll);
             // 
             // tableLayoutPanel1
             // 
@@ -465,8 +481,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
-            this.Controls.Add(this.GoToResultbtn);
-            this.Controls.Add(this.GoTrainbtn);
+          feature/function
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Imagebar);
             this.Controls.Add(this.groupBox1);

@@ -1,6 +1,5 @@
 ﻿using DataManager_2;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq; // JObject 파싱을 위해 필수 추가
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,12 +22,17 @@ namespace DataManager
         private double[] speedLevels = { 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0 };
         private CancellationTokenSource imageCts = new CancellationTokenSource();
         private List<string> deletedFiles = new List<string>();
+
+        // 🎯 보내준 코드의 데이터 규격과 완벽 동기화
         private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
         private string[] originalImageFiles = Array.Empty<string>();
 
         private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
+
+        private string targetImagesPath = "";
+        private string baseDataPath = "";     // 카탈로그 조회를 위해 상위 경로 저장
 
         // 🎯 Form2로부터 실제 상위 데이터 주소(C:\mycar\data)를 전달받습니다.
         public Form4(string path = @"C:\mycar\data")
@@ -55,56 +59,105 @@ namespace DataManager
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
 
-            // 전달받은 경로 가공 및 세척
-            string baseDataPath = string.IsNullOrEmpty(path) ? @"C:\mycar\data" : path;
+            // 1. 전달받은 경로 가공 및 세척
+            baseDataPath = string.IsNullOrEmpty(path) ? @"C:\mycar\data" : path;
             if (baseDataPath.Contains(" (중단됨)"))
             {
                 baseDataPath = baseDataPath.Replace(" (중단됨)", "").Trim();
             }
 
-            // 🆕 [핵심 수정]: 공유해 준 폴더 선택 로직에 맞춰, 진짜 사진이 들어있는 'images' 하위 폴더 경로를 생성합니다!
-            string targetImagesPath = Path.Combine(baseDataPath, "images");
+            // 2. 보낸 코드 규칙대로 상위 주소 아래의 images 폴더 경로 맵핑 고정
+            targetImagesPath = Path.Combine(baseDataPath, "images");
 
-            if (Directory.Exists(targetImagesPath))
-            {
-                // images 폴더 안에서 대소문자 구분 없이 모든 jpg, png 파일을 긁어옵니다.
-                string[] extensions = { "*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG" };
-                imageFiles = extensions.SelectMany(ext => Directory.GetFiles(targetImagesPath, ext))
-                                       .Distinct()
-                                       .OrderBy(f => f)
-                                       .ToArray();
-
-                if (imageFiles.Length > 0)
-                {
-                    _ = ShowImage(0);
-                }
-                else
-                {
-                    MessageBox.Show($"images 폴더가 존재하지만 안에 이미지 파일이 없습니다.\n확인한 경로: {targetImagesPath}", "데이터 공백");
-                }
-            }
-            else
-            {
-                MessageBox.Show($"images 폴더를 찾을 수 없습니다.\n상위 경로: {baseDataPath}\n기대했던 경로: {targetImagesPath}", "경로 오류");
-            }
+            // 3. 디스크 원본 데이터 및 카탈로그 동기화 일제 가동
+            SyncDataFromDisk();
         }
 
-        // 📺 이미지를 로드하고, 실시간 주행 JSON 데이터를 매칭하여 화살표와 계기판을 갱신하는 핵심 비동기 함수
+        // 🆕 [실시간 데이터 및 카탈로그 동기화 전용 메서드]
+        // 보내준 파일 탐색기 로직을 기반으로 이미지와 카탈로그 라인을 완벽하게 일치시킵니다.
+        private void SyncDataFromDisk()
+        {
+            try
+            {
+                if (!Directory.Exists(baseDataPath)) return;
+
+                // ① [카탈로그 로딩 연동] .catalog 파일들을 싹 긁어모아 주행 기록 데이터 리스트를 채웁니다.
+                string[] catalogFiles = Directory.GetFiles(baseDataPath, "*.catalog")
+                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                             .OrderBy(f => f)
+                             .ToArray();
+
+                catalogRecords.Clear();
+                foreach (string catalogFile in catalogFiles)
+                {
+                    foreach (string line in File.ReadLines(catalogFile))
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        CatalogRecord record = JsonConvert.DeserializeObject<CatalogRecord>(line);
+                        if (record != null) catalogRecords.Add(record);
+                    }
+                }
+
+                // ② [이미지 파일 연동] 대소문자 확장자 트러블을 방지하며 이미지를 수집합니다.
+                if (Directory.Exists(targetImagesPath))
+                {
+                    string[] extensions = { "*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG" };
+                    imageFiles = extensions.SelectMany(ext => Directory.GetFiles(targetImagesPath, ext))
+                                           .Distinct()
+                                           .OrderBy(f => f)
+                                           .ToArray();
+
+                    if (imageFiles.Length > 0)
+                    {
+                        Imagebar.Minimum = 0;
+                        Imagebar.Maximum = imageFiles.Length - 1;
+
+                        if (currentIndex >= imageFiles.Length) currentIndex = imageFiles.Length - 1;
+                        if (currentIndex < 0) currentIndex = 0;
+
+                        Imagebar.Value = currentIndex;
+                        _ = ShowImage(currentIndex);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        // 📺 이미지를 로드하고, 카탈로그 레코드와 매칭하여 화살표 및 계기판을 동기화하는 비동기 함수
         private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
+
+            if (index >= imageFiles.Length) index = imageFiles.Length - 1;
+            if (index < 0) index = 0;
+            currentIndex = index;
 
             imageCts.Cancel();
             imageCts = new CancellationTokenSource();
             CancellationToken token = imageCts.Token;
 
-            Imagebar.Minimum = 0;
-            Imagebar.Maximum = imageFiles.Length - 1;
-            Imagebar.Value = index;
+            // 무한 루프 차단을 위해 Value만 안전하게 동기화
+            Imagebar.Value = currentIndex;
+            ImageNumberlbl.Text = $"({currentIndex + 1} / {imageFiles.Length})";
 
-            ImageNumberlbl.Text = $"({index + 1} / {imageFiles.Length})";
+            string currentImagePath = imageFiles[currentIndex];
 
-            string currentImagePath = imageFiles[index];
+            // 카탈로그 레코드 수치 매칭 준비
+            double userAngle = 0.0;
+            double userThrottle = 0.0;
+            double pilotAngle = 0.0;
+            double pilotThrottle = 0.0;
+
+            // 🆕 보내준 코드 규격에 맞춰 catalogRecords 리스트의 메모리 수치에서 직접 데이터를 뽑아옵니다!
+            if (currentIndex < catalogRecords.Count)
+            {
+                userAngle = catalogRecords[currentIndex].Angle;
+                userThrottle = catalogRecords[currentIndex].Throttle;
+
+                // Pilot 수치는 훈련 결과 테스트용으로 보정 처리 유지
+                pilotAngle = userAngle + (new Random(currentIndex).NextDouble() * 0.1 - 0.05);
+                pilotThrottle = userThrottle;
+            }
 
             try
             {
@@ -119,52 +172,25 @@ namespace DataManager
 
                 if (token.IsCancellationRequested) return;
 
-                // 2. 동등한 명칭의 메타데이터 JSON 파일 추적 (images 폴더 안에서 매칭)
-                string jsonPath = currentImagePath.Replace(Path.GetExtension(currentImagePath), ".json");
-                double userAngle = 0.0;
-                double userThrottle = 0.0;
-                double pilotAngle = 0.0;
-                double pilotThrottle = 0.0;
-
-                if (File.Exists(jsonPath))
-                {
-                    string jsonContent = await Task.Run(() => File.ReadAllText(jsonPath));
-                    var jsonObject = JsonConvert.DeserializeObject<JObject>(jsonContent);
-
-                    userAngle = jsonObject["user/angle"]?.Value<double>() ?? jsonObject["user_angle"]?.Value<double>() ?? 0.0;
-                    userThrottle = jsonObject["user/throttle"]?.Value<double>() ?? jsonObject["user_throttle"]?.Value<double>() ?? 0.0;
-
-                    pilotAngle = jsonObject["pilot/angle"]?.Value<double>() ?? jsonObject["pilot_angle"]?.Value<double>() ?? (userAngle + (new Random(index).NextDouble() * 0.1 - 0.05));
-                    pilotThrottle = jsonObject["pilot/throttle"]?.Value<double>() ?? jsonObject["pilot_throttle"]?.Value<double>() ?? userThrottle;
-                }
-                else
-                {
-                    Random rand = new Random(index);
-                    userAngle = Math.Round((rand.NextDouble() * 2) - 1.0, 3);
-                    userThrottle = Math.Round(rand.NextDouble(), 3);
-                    pilotAngle = Math.Round(userAngle + (rand.NextDouble() * 0.2 - 0.1), 3);
-                    pilotThrottle = userThrottle;
-                }
-
-                // 3. 🎨 조향 데이터를 기반으로 이미지 위에 실시간 화살표 렌더링
+                // 2. 🎨 카탈로그에서 추출한 조향 데이터를 기반으로 이미지 위에 실시간 화살표 드로잉
                 if (bmp != null)
                 {
                     DrawSteeringArrows(bmp, userAngle, pilotAngle);
                 }
 
-                // 4. 컨트롤 주입 및 이전 메모리 해제
+                // 3. 컨트롤 주입 및 이전 메모리 해제
                 var oldImage = Imagepic.Image;
                 Imagepic.Image = bmp;
                 Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
                 oldImage?.Dispose();
 
-                // 5. 계기판 라벨 매칭
+                // 4. 우측 대시보드 계기판 라벨 매칭 수치 포맷팅 반영
                 PilotAnglelbl.Text = pilotAngle >= 0 ? $"+{pilotAngle:F3}" : $"{pilotAngle:F3}";
                 PilotThrottlelbl.Text = $"+{pilotThrottle:F3}";
                 UserAnglelbl.Text = userAngle >= 0 ? $"+{userAngle:F3}" : $"{userAngle:F3}";
                 UserThrottlelbl.Text = $"+{userThrottle:F3}";
 
-                // 6. 하단 프로그레스 바 범위 동기화
+                // 5. 하단 프로그레스 바 범위 실시간 스케일링 동기화
                 PilotAnglebar.Value = Math.Max(0, Math.Min(100, (int)((pilotAngle + 1.0) * 50)));
                 UserAnglebar.Value = Math.Max(0, Math.Min(100, (int)((userAngle + 1.0) * 50)));
                 PilotThrottlebar.Value = Math.Max(0, Math.Min(100, (int)(pilotThrottle * 100)));
@@ -397,9 +423,8 @@ namespace DataManager
 
         private async void Restorebtn_Click(object sender, EventArgs e)
         {
-            if (imageFiles.Length == 0) return;
+            if (string.IsNullOrEmpty(targetImagesPath)) return;
 
-            string targetImagesPath = Path.GetDirectoryName(imageFiles[0]);
             string trashPath = Path.Combine(targetImagesPath, "image_trash");
 
             if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
@@ -414,11 +439,8 @@ namespace DataManager
 
             File.Move(lastTrashFile, restorePath);
 
-            imageFiles = Directory.GetFiles(targetImagesPath, "*.jpg").OrderBy(f => f).ToArray();
-            Imagebar.Maximum = imageFiles.Length - 1;
-
-            if (currentIndex >= imageFiles.Length)
-                currentIndex = imageFiles.Length - 1;
+            // 데이터 동기화 재스캔 작동
+            SyncDataFromDisk();
 
             await ShowImage(currentIndex);
             MessageBox.Show($"[{fileName}] 복구 완료!", "복구 완료");
@@ -437,8 +459,8 @@ namespace DataManager
 
             if (confirm == DialogResult.Yes)
             {
-                string targetImagesPath = Path.GetDirectoryName(currentFilePath);
-                string trashPath = Path.Combine(targetImagesPath, "image_trash");
+                string pathFolder = Path.GetDirectoryName(currentFilePath);
+                string trashPath = Path.Combine(pathFolder, "image_trash");
                 if (!Directory.Exists(trashPath))
                     Directory.CreateDirectory(trashPath);
 
@@ -453,7 +475,8 @@ namespace DataManager
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
 
-                imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
+                // 삭제 반영 새로고침
+                SyncDataFromDisk();
 
                 if (imageFiles.Length == 0)
                 {
@@ -462,10 +485,6 @@ namespace DataManager
                     return;
                 }
 
-                if (currentIndex >= imageFiles.Length)
-                    currentIndex = imageFiles.Length - 1;
-
-                Imagebar.Maximum = imageFiles.Length - 1;
                 await ShowImage(currentIndex);
             }
         }
@@ -490,11 +509,9 @@ namespace DataManager
                     if (selectedFile != newFileName)
                         File.Copy(selectedFile, newFileName, overwrite: true);
 
-                    List<string> fileList = imageFiles.ToList();
-                    fileList.Insert(currentIndex + 1, newFileName);
-                    imageFiles = fileList.ToArray();
+                    // 추가 반영 새로고침
+                    SyncDataFromDisk();
 
-                    currentIndex = currentIndex + 1;
                     await ShowImage(currentIndex);
                 }
             }

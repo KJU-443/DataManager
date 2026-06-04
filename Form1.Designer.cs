@@ -111,7 +111,6 @@
             this.tableLayoutPanel1.Controls.Add(this.Imagebar, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.panel4, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
-          feature/function
 
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -200,7 +199,6 @@
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
             // 
-          feature/function
             // GoTrainbtn
             // 
             this.GoTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
@@ -392,7 +390,6 @@
             this.Imagelst.ItemHeight = 25;
             this.Imagelst.Location = new System.Drawing.Point(3, 6);
             this.Imagelst.Name = "Imagelst";
-          feature/function
             this.Imagelst.Size = new System.Drawing.Size(265, 179);
 
             this.Imagelst.TabIndex = 6;
@@ -418,7 +415,6 @@
             this.ImageNumberlbl.AutoSize = true;
             this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.ImageNumberlbl.Location = new System.Drawing.Point(82, 181);
 
             this.ImageNumberlbl.Name = "ImageNumberlbl";
@@ -433,7 +429,6 @@
             this.GoToImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoToImage.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.GoToImage.Location = new System.Drawing.Point(13, 119);
             this.GoToImage.Name = "GoToImage";
             this.GoToImage.Size = new System.Drawing.Size(346, 51);
@@ -450,7 +445,6 @@
             this.Restorebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Restorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Restorebtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.Restorebtn.Location = new System.Drawing.Point(13, 220);
             this.Restorebtn.Name = "Restorebtn";
             this.Restorebtn.Size = new System.Drawing.Size(111, 51);
@@ -467,7 +461,6 @@
             this.Reversebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.Reversebtn.Location = new System.Drawing.Point(14, 413);
             this.Reversebtn.Name = "Reversebtn";
             this.Reversebtn.Size = new System.Drawing.Size(171, 51);
@@ -483,7 +476,6 @@
             this.Plsybtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.Plsybtn.Location = new System.Drawing.Point(188, 413);
             this.Plsybtn.Name = "Plsybtn";
             this.Plsybtn.Size = new System.Drawing.Size(171, 51);
@@ -499,7 +491,6 @@
             this.NextImgbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.NextImgbtn.Location = new System.Drawing.Point(188, 349);
             this.NextImgbtn.Name = "NextImgbtn";
             this.NextImgbtn.Size = new System.Drawing.Size(171, 51);
@@ -515,7 +506,6 @@
             this.PreviousImgbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.PreviousImgbtn.Location = new System.Drawing.Point(14, 349);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
             this.PreviousImgbtn.Size = new System.Drawing.Size(171, 51);
@@ -530,7 +520,6 @@
             this.PlayAndStopbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.PlayAndStopbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PlayAndStopbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-          eature/function
             this.PlayAndStopbtn.Location = new System.Drawing.Point(13, 477);
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
             this.PlayAndStopbtn.Size = new System.Drawing.Size(346, 51);
@@ -547,7 +536,6 @@
             this.OpenImgBrowserbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OpenImgBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenImgBrowserbtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.OpenImgBrowserbtn.Location = new System.Drawing.Point(13, 47);
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
             this.OpenImgBrowserbtn.Size = new System.Drawing.Size(346, 51);
@@ -564,7 +552,6 @@
             this.ImgAddbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.ImgAddbtn.Location = new System.Drawing.Point(239, 221);
             this.ImgAddbtn.Name = "ImgAddbtn";
             this.ImgAddbtn.Size = new System.Drawing.Size(120, 51);
@@ -582,7 +569,6 @@
             this.ImgDeletebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.ImgDeletebtn.Location = new System.Drawing.Point(125, 221);
             this.ImgDeletebtn.Name = "ImgDeletebtn";
             this.ImgDeletebtn.Size = new System.Drawing.Size(113, 51);
@@ -599,7 +585,6 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.label2.Location = new System.Drawing.Point(8, 179);
           
             this.label2.Name = "label2";
@@ -614,7 +599,6 @@
             this.DoubleSpeedbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 285);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
             this.DoubleSpeedbtn.Size = new System.Drawing.Size(171, 51);
@@ -630,7 +614,6 @@
             this.DoubleSpeedtxt.BackColor = System.Drawing.Color.White;
             this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
-          feature/function
             this.DoubleSpeedtxt.Location = new System.Drawing.Point(14, 291);
           
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
@@ -645,7 +628,6 @@
             this.Imagepic.BackColor = System.Drawing.Color.White;
             this.Imagepic.Location = new System.Drawing.Point(274, 3);
             this.Imagepic.Name = "Imagepic";
-          feature/function
             this.Imagepic.Size = new System.Drawing.Size(760, 546);
           
             this.Imagepic.TabIndex = 5;

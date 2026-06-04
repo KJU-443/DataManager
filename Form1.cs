@@ -378,6 +378,8 @@ namespace DataManager
 
         private void RefreshImageList()
         {
+            Imagelst.SelectedIndexChanged -= Imagelst_SelectedIndexChanged;
+
             Imagelst.Items.Clear();
 
             foreach (string file in imageFiles)
@@ -387,14 +389,23 @@ namespace DataManager
 
             if (imageFiles.Length > 0 && currentIndex >= 0)
             {
+                if (currentIndex >= imageFiles.Length)
+                    currentIndex = imageFiles.Length - 1;
                 Imagelst.SelectedIndex = currentIndex;
             }
 
             ImageNumberlbl.Text = $"({imageFiles.Length}/{originalImageFiles.Length})";
+
+            // 이벤트 다시 연결
+            Imagelst.SelectedIndexChanged += Imagelst_SelectedIndexChanged;
         }
 
         private async Task ShowImage(int index)
         {
+            Console.WriteLine(
+                $"index={index}, catalogCount={catalogRecords.Count}"
+                );
+
             if (imageFiles.Length == 0) return;
 
             imageCts.Cancel();
@@ -967,11 +978,17 @@ namespace DataManager
             double throttleMin = -999;
             double throttleMax = 999;
 
-            double.TryParse(AngleUptxt.Text, out angleMin);
-            double.TryParse(AngleDowntxt.Text, out angleMax);
+            if (!string.IsNullOrWhiteSpace(AngleUptxt.Text))
+                double.TryParse(AngleUptxt.Text, out angleMin);
 
-            double.TryParse(TrottleUptxt.Text, out throttleMin);
-            double.TryParse(TrottleDowntxt.Text, out throttleMax);
+            if (!string.IsNullOrWhiteSpace(AngleDowntxt.Text))
+                double.TryParse(AngleDowntxt.Text, out angleMax);
+
+            if (!string.IsNullOrWhiteSpace(TrottleUptxt.Text))
+                double.TryParse(TrottleUptxt.Text, out throttleMin);
+
+            if (!string.IsNullOrWhiteSpace(TrottleDowntxt.Text))
+                double.TryParse(TrottleDowntxt.Text, out throttleMax);
 
             List<string> filteredImages = new List<string>();
             List<CatalogRecord> filteredRecords = new List<CatalogRecord>();
@@ -999,9 +1016,12 @@ namespace DataManager
 
             catalogRecords = filteredRecords;
             imageFiles = filteredImages.ToArray();
-
-            RefreshImageList();
             LoadGraph();
+            RefreshImageList();
+
+            MessageBox.Show(
+                $"images={filteredImages.Count}\nrecords={filteredRecords.Count}"
+                );
 
             if (imageFiles.Length > 0)
             {

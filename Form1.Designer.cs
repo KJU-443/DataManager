@@ -28,16 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.OpenGraphBrowserbtn = new System.Windows.Forms.Button();
             this.RefreshGraphbtn = new System.Windows.Forms.Button();
             this.Graph = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.GoTrainbtn = new System.Windows.Forms.Button();
             this.Imagebar = new System.Windows.Forms.TrackBar();
             this.panel4 = new System.Windows.Forms.Panel();
             this.ImageFilteringbtn = new System.Windows.Forms.Button();
@@ -76,6 +75,13 @@
             this.SelectFolderbtn = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.GoToResultbtn = new System.Windows.Forms.Button();
+            this.GoTrainbtn = new System.Windows.Forms.Button();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -86,6 +92,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -170,36 +182,22 @@
             // 
             this.Graph.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea4.Name = "ChartArea1";
-            this.Graph.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.Graph.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.Graph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.Graph.Legends.Add(legend1);
             this.Graph.Location = new System.Drawing.Point(0, -1);
             this.Graph.Name = "Graph";
             this.Graph.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Grayscale;
-            series4.BorderWidth = 3;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.Graph.Series.Add(series4);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.Graph.Series.Add(series1);
             this.Graph.Size = new System.Drawing.Size(1035, 315);
             this.Graph.TabIndex = 0;
             this.Graph.Text = "chart1";
-            // 
-            // GoTrainbtn
-            // 
-            this.GoTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoTrainbtn.ForeColor = System.Drawing.Color.Black;
-            this.GoTrainbtn.Location = new System.Drawing.Point(9, 3);
-            this.GoTrainbtn.Name = "GoTrainbtn";
-            this.GoTrainbtn.Size = new System.Drawing.Size(230, 36);
-            this.GoTrainbtn.TabIndex = 3;
-            this.GoTrainbtn.Tag = "noTheme";
-            this.GoTrainbtn.Text = "훈련 페이지로 가기";
-            this.GoTrainbtn.UseVisualStyleBackColor = false;
-            this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
             // 
             // Imagebar
             // 
@@ -379,7 +377,7 @@
             this.Imagelst.ItemHeight = 25;
             this.Imagelst.Location = new System.Drawing.Point(3, 6);
             this.Imagelst.Name = "Imagelst";
-            this.Imagelst.Size = new System.Drawing.Size(265, 179);
+            this.Imagelst.Size = new System.Drawing.Size(265, 229);
             this.Imagelst.TabIndex = 6;
             this.Imagelst.SelectedIndexChanged += new System.EventHandler(this.Imagelst_SelectedIndexChanged);
             // 
@@ -387,20 +385,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.ImageNumberlbl);
-            this.groupBox1.Controls.Add(this.GoToImage);
-            this.groupBox1.Controls.Add(this.Restorebtn);
-            this.groupBox1.Controls.Add(this.Reversebtn);
-            this.groupBox1.Controls.Add(this.Plsybtn);
-            this.groupBox1.Controls.Add(this.NextImgbtn);
-            this.groupBox1.Controls.Add(this.PreviousImgbtn);
-            this.groupBox1.Controls.Add(this.PlayAndStopbtn);
-            this.groupBox1.Controls.Add(this.OpenImgBrowserbtn);
-            this.groupBox1.Controls.Add(this.ImgAddbtn);
-            this.groupBox1.Controls.Add(this.ImgDeletebtn);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.DoubleSpeedbtn);
-            this.groupBox1.Controls.Add(this.DoubleSpeedtxt);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.groupBox1.ForeColor = System.Drawing.Color.Black;
             this.groupBox1.Location = new System.Drawing.Point(1042, 2);
@@ -412,10 +397,11 @@
             // 
             // ImageNumberlbl
             // 
+            this.ImageNumberlbl.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ImageNumberlbl.AutoSize = true;
             this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
-            this.ImageNumberlbl.Location = new System.Drawing.Point(82, 181);
+            this.ImageNumberlbl.Location = new System.Drawing.Point(199, 13);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
             this.ImageNumberlbl.TabIndex = 17;
@@ -425,11 +411,12 @@
             // GoToImage
             // 
             this.GoToImage.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GoToImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoToImage.ForeColor = System.Drawing.Color.Black;
-            this.GoToImage.Location = new System.Drawing.Point(13, 119);
+            this.GoToImage.Location = new System.Drawing.Point(3, 65);
             this.GoToImage.Name = "GoToImage";
-            this.GoToImage.Size = new System.Drawing.Size(346, 51);
+            this.GoToImage.Size = new System.Drawing.Size(367, 56);
             this.GoToImage.TabIndex = 16;
             this.GoToImage.Tag = "noTheme";
             this.GoToImage.Text = "복구 이미지 리스트 보기";
@@ -439,11 +426,12 @@
             // Restorebtn
             // 
             this.Restorebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.Restorebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Restorebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Restorebtn.ForeColor = System.Drawing.Color.Black;
-            this.Restorebtn.Location = new System.Drawing.Point(13, 220);
+            this.Restorebtn.Location = new System.Drawing.Point(3, 3);
             this.Restorebtn.Name = "Restorebtn";
-            this.Restorebtn.Size = new System.Drawing.Size(111, 51);
+            this.Restorebtn.Size = new System.Drawing.Size(116, 50);
             this.Restorebtn.TabIndex = 15;
             this.Restorebtn.Tag = "noTheme";
             this.Restorebtn.Text = "복구";
@@ -452,12 +440,13 @@
             // 
             // Reversebtn
             // 
-            this.Reversebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.Reversebtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.Reversebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
-            this.Reversebtn.Location = new System.Drawing.Point(14, 413);
+            this.Reversebtn.Location = new System.Drawing.Point(3, 3);
             this.Reversebtn.Name = "Reversebtn";
-            this.Reversebtn.Size = new System.Drawing.Size(171, 51);
+            this.Reversebtn.Size = new System.Drawing.Size(177, 50);
             this.Reversebtn.TabIndex = 14;
             this.Reversebtn.Text = "<<";
             this.Reversebtn.UseVisualStyleBackColor = false;
@@ -465,12 +454,13 @@
             // 
             // Plsybtn
             // 
-            this.Plsybtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.Plsybtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.Plsybtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
-            this.Plsybtn.Location = new System.Drawing.Point(188, 413);
+            this.Plsybtn.Location = new System.Drawing.Point(186, 3);
             this.Plsybtn.Name = "Plsybtn";
-            this.Plsybtn.Size = new System.Drawing.Size(171, 51);
+            this.Plsybtn.Size = new System.Drawing.Size(178, 50);
             this.Plsybtn.TabIndex = 13;
             this.Plsybtn.Text = ">>";
             this.Plsybtn.UseVisualStyleBackColor = false;
@@ -478,12 +468,13 @@
             // 
             // NextImgbtn
             // 
-            this.NextImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.NextImgbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.NextImgbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.NextImgbtn.Location = new System.Drawing.Point(188, 349);
+            this.NextImgbtn.Location = new System.Drawing.Point(186, 3);
             this.NextImgbtn.Name = "NextImgbtn";
-            this.NextImgbtn.Size = new System.Drawing.Size(171, 51);
+            this.NextImgbtn.Size = new System.Drawing.Size(178, 50);
             this.NextImgbtn.TabIndex = 12;
             this.NextImgbtn.Text = ">";
             this.NextImgbtn.UseVisualStyleBackColor = false;
@@ -491,12 +482,13 @@
             // 
             // PreviousImgbtn
             // 
-            this.PreviousImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.PreviousImgbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.PreviousImgbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.PreviousImgbtn.Location = new System.Drawing.Point(14, 349);
+            this.PreviousImgbtn.Location = new System.Drawing.Point(3, 3);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
-            this.PreviousImgbtn.Size = new System.Drawing.Size(171, 51);
+            this.PreviousImgbtn.Size = new System.Drawing.Size(177, 50);
             this.PreviousImgbtn.TabIndex = 11;
             this.PreviousImgbtn.Text = "<";
             this.PreviousImgbtn.UseVisualStyleBackColor = false;
@@ -505,10 +497,11 @@
             // PlayAndStopbtn
             // 
             this.PlayAndStopbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.PlayAndStopbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PlayAndStopbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.PlayAndStopbtn.Location = new System.Drawing.Point(13, 477);
+            this.PlayAndStopbtn.Location = new System.Drawing.Point(3, 437);
             this.PlayAndStopbtn.Name = "PlayAndStopbtn";
-            this.PlayAndStopbtn.Size = new System.Drawing.Size(346, 51);
+            this.PlayAndStopbtn.Size = new System.Drawing.Size(367, 61);
             this.PlayAndStopbtn.TabIndex = 10;
             this.PlayAndStopbtn.Tag = "noTheme";
             this.PlayAndStopbtn.Text = "재생";
@@ -518,11 +511,12 @@
             // OpenImgBrowserbtn
             // 
             this.OpenImgBrowserbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.OpenImgBrowserbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OpenImgBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenImgBrowserbtn.ForeColor = System.Drawing.Color.Black;
-            this.OpenImgBrowserbtn.Location = new System.Drawing.Point(13, 47);
+            this.OpenImgBrowserbtn.Location = new System.Drawing.Point(3, 3);
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
-            this.OpenImgBrowserbtn.Size = new System.Drawing.Size(346, 51);
+            this.OpenImgBrowserbtn.Size = new System.Drawing.Size(367, 56);
             this.OpenImgBrowserbtn.TabIndex = 1;
             this.OpenImgBrowserbtn.Tag = "noTheme";
             this.OpenImgBrowserbtn.Text = "브라우저로 이미지 열기";
@@ -532,11 +526,12 @@
             // ImgAddbtn
             // 
             this.ImgAddbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.ImgAddbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImgAddbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgAddbtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgAddbtn.Location = new System.Drawing.Point(239, 221);
+            this.ImgAddbtn.Location = new System.Drawing.Point(247, 3);
             this.ImgAddbtn.Name = "ImgAddbtn";
-            this.ImgAddbtn.Size = new System.Drawing.Size(120, 51);
+            this.ImgAddbtn.Size = new System.Drawing.Size(117, 50);
             this.ImgAddbtn.TabIndex = 2;
             this.ImgAddbtn.Tag = "noTheme";
             this.ImgAddbtn.Text = "추가";
@@ -546,11 +541,12 @@
             // ImgDeletebtn
             // 
             this.ImgDeletebtn.BackColor = System.Drawing.Color.DarkSalmon;
+            this.ImgDeletebtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ImgDeletebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ImgDeletebtn.ForeColor = System.Drawing.Color.Black;
-            this.ImgDeletebtn.Location = new System.Drawing.Point(125, 221);
+            this.ImgDeletebtn.Location = new System.Drawing.Point(125, 3);
             this.ImgDeletebtn.Name = "ImgDeletebtn";
-            this.ImgDeletebtn.Size = new System.Drawing.Size(113, 51);
+            this.ImgDeletebtn.Size = new System.Drawing.Size(116, 50);
             this.ImgDeletebtn.TabIndex = 4;
             this.ImgDeletebtn.Tag = "noTheme";
             this.ImgDeletebtn.Text = "삭제";
@@ -559,23 +555,26 @@
             // 
             // label2
             // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(8, 179);
+            this.label2.Location = new System.Drawing.Point(53, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 32);
             this.label2.TabIndex = 3;
             this.label2.Text = "이미지";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // DoubleSpeedbtn
             // 
-            this.DoubleSpeedbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.DoubleSpeedbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.DoubleSpeedbtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 285);
+            this.DoubleSpeedbtn.Location = new System.Drawing.Point(186, 3);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
-            this.DoubleSpeedbtn.Size = new System.Drawing.Size(171, 51);
+            this.DoubleSpeedbtn.Size = new System.Drawing.Size(178, 50);
             this.DoubleSpeedbtn.TabIndex = 5;
             this.DoubleSpeedbtn.Text = "배속";
             this.DoubleSpeedbtn.UseVisualStyleBackColor = false;
@@ -583,10 +582,11 @@
             // 
             // DoubleSpeedtxt
             // 
-            this.DoubleSpeedtxt.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.DoubleSpeedtxt.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.DoubleSpeedtxt.BackColor = System.Drawing.Color.White;
             this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedtxt.Location = new System.Drawing.Point(14, 291);
+            this.DoubleSpeedtxt.Location = new System.Drawing.Point(6, 8);
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
             this.DoubleSpeedtxt.Size = new System.Drawing.Size(171, 39);
             this.DoubleSpeedtxt.TabIndex = 2;
@@ -599,7 +599,7 @@
             this.Imagepic.BackColor = System.Drawing.Color.White;
             this.Imagepic.Location = new System.Drawing.Point(274, 3);
             this.Imagepic.Name = "Imagepic";
-            this.Imagepic.Size = new System.Drawing.Size(760, 546);
+            this.Imagepic.Size = new System.Drawing.Size(761, 546);
             this.Imagepic.TabIndex = 5;
             this.Imagepic.TabStop = false;
             this.Imagepic.Click += new System.EventHandler(this.Imagepic_Click);
@@ -664,6 +664,8 @@
             // 
             // panel2
             // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.GoToResultbtn);
             this.panel2.Controls.Add(this.GoTrainbtn);
             this.panel2.Location = new System.Drawing.Point(3, 3);
@@ -673,6 +675,7 @@
             // 
             // GoToResultbtn
             // 
+            this.GoToResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.GoToResultbtn.Location = new System.Drawing.Point(1167, 3);
@@ -682,6 +685,127 @@
             this.GoToResultbtn.Tag = "noTheme";
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
             this.GoToResultbtn.UseVisualStyleBackColor = false;
+            // 
+            // GoTrainbtn
+            // 
+            this.GoTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoTrainbtn.ForeColor = System.Drawing.Color.Black;
+            this.GoTrainbtn.Location = new System.Drawing.Point(9, 3);
+            this.GoTrainbtn.Name = "GoTrainbtn";
+            this.GoTrainbtn.Size = new System.Drawing.Size(230, 36);
+            this.GoTrainbtn.TabIndex = 3;
+            this.GoTrainbtn.Tag = "noTheme";
+            this.GoTrainbtn.Text = "훈련 페이지로 가기";
+            this.GoTrainbtn.UseVisualStyleBackColor = false;
+            this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 1;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel7, 0, 3);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel6, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel5, 0, 4);
+            this.tableLayoutPanel2.Controls.Add(this.OpenImgBrowserbtn, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.GoToImage, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.PlayAndStopbtn, 0, 7);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 6);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel4, 0, 5);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 34);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 8;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(373, 501);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.Reversebtn, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.Plsybtn, 1, 0);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 375);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(367, 56);
+            this.tableLayoutPanel3.TabIndex = 17;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.PreviousImgbtn, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.NextImgbtn, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 313);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(367, 56);
+            this.tableLayoutPanel4.TabIndex = 18;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Controls.Add(this.DoubleSpeedtxt, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.DoubleSpeedbtn, 1, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 251);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(367, 56);
+            this.tableLayoutPanel5.TabIndex = 19;
+            // 
+            // tableLayoutPanel6
+            // 
+            this.tableLayoutPanel6.ColumnCount = 2;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Controls.Add(this.ImageNumberlbl, 1, 0);
+            this.tableLayoutPanel6.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 127);
+            this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+            this.tableLayoutPanel6.RowCount = 1;
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(367, 56);
+            this.tableLayoutPanel6.TabIndex = 19;
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 3;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel7.Controls.Add(this.Restorebtn, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.ImgDeletebtn, 1, 0);
+            this.tableLayoutPanel7.Controls.Add(this.ImgAddbtn, 2, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 189);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 1;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(367, 56);
+            this.tableLayoutPanel7.TabIndex = 19;
             // 
             // Form1
             // 
@@ -701,11 +825,18 @@
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel6.PerformLayout();
+            this.tableLayoutPanel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -730,7 +861,6 @@
         private System.Windows.Forms.Button OpenImgBrowserbtn;
         private System.Windows.Forms.Button ImgAddbtn;
         private System.Windows.Forms.Button ImgDeletebtn;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DoubleSpeedbtn;
         private System.Windows.Forms.TextBox DoubleSpeedtxt;
         private System.Windows.Forms.PictureBox Imagepic;
@@ -757,5 +887,12 @@
         private System.Windows.Forms.Button ImageFilteringbtn;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button GoToResultbtn;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.Label label2;
     }
 }

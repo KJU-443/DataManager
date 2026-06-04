@@ -36,10 +36,10 @@
             this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.GoToResultbtn = new System.Windows.Forms.Button();
             this.TrainFigurelbl = new System.Windows.Forms.Label();
             this.TrainWronglbl = new System.Windows.Forms.Label();
             this.GoDatabtn = new System.Windows.Forms.Button();
-            this.GoToResultbtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -142,6 +142,8 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.Controls.Add(this.GoToResultbtn);
             this.panel1.Controls.Add(this.TrainFigurelbl);
             this.panel1.Controls.Add(this.TrainWronglbl);
@@ -150,6 +152,19 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1412, 42);
             this.panel1.TabIndex = 10;
+            // 
+            // GoToResultbtn
+            // 
+            this.GoToResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoToResultbtn.Location = new System.Drawing.Point(1172, 4);
+            this.GoToResultbtn.Name = "GoToResultbtn";
+            this.GoToResultbtn.Size = new System.Drawing.Size(236, 38);
+            this.GoToResultbtn.TabIndex = 20;
+            this.GoToResultbtn.Tag = "noTheme";
+            this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
+            this.GoToResultbtn.UseVisualStyleBackColor = false;
             // 
             // TrainFigurelbl
             // 
@@ -186,18 +201,6 @@
             this.GoDatabtn.Text = "데이터 페이지로 가기";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
-            // 
-            // GoToResultbtn
-            // 
-            this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoToResultbtn.Location = new System.Drawing.Point(1172, 4);
-            this.GoToResultbtn.Name = "GoToResultbtn";
-            this.GoToResultbtn.Size = new System.Drawing.Size(236, 38);
-            this.GoToResultbtn.TabIndex = 20;
-            this.GoToResultbtn.Tag = "noTheme";
-            this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
-            this.GoToResultbtn.UseVisualStyleBackColor = false;
             // 
             // Form2
             // 

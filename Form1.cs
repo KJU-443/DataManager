@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static DataManager.Form5;
 
 namespace DataManager
 {
@@ -44,6 +45,9 @@ namespace DataManager
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
         public static bool isDarkMode = false;
+
+        
+        private bool _suppressDeleteConfirm = false;
 
 
         public Form1()
@@ -545,90 +549,96 @@ namespace DataManager
             string currentFilePath = imageFiles[currentIndex];
             string fileNameOnly = Path.GetFileName(currentFilePath);
 
-            DialogResult confirm = MessageBox.Show(
-                "현재 프레임을 삭제할까요?\n(이미지는 image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)",
-                "데이터 삭제", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (confirm == DialogResult.Yes)
+            if (!_suppressDeleteConfirm)
             {
-                // image_trash 폴더 생성
-                string dataPath = Imgtxt.Text;
-                string trashPath = Path.Combine(dataPath, "image_trash");
-                if (!Directory.Exists(trashPath))
-                    Directory.CreateDirectory(trashPath);
-
-                // 이미지 image_trash로 이동
-                string destPath = Path.Combine(trashPath, fileNameOnly);
-                if (Imagepic.Image != null)
+                using (var dialog = new DoNotShowDialog(
+                    "현재 프레임을 삭제할까요?\n(이미지는 image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)"))
                 {
-                    Imagepic.Image.Dispose();
-                    Imagepic.Image = null;
+                    if (dialog.ShowDialog(this) != DialogResult.OK)
+                        return;
+
+                    if (dialog.DoNotShowAgain)
+                        _suppressDeleteConfirm = true;
                 }
-                File.Move(currentFilePath, destPath);
-
-                if (!deletedFiles.Contains(fileNameOnly))
-                    deletedFiles.Add(fileNameOnly);
-
-                // catalog에서 해당 레코드 삭제
-                string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
-                                                 .OrderBy(f => f)
-                                                 .ToArray();
-
-                foreach (string catalogFile in catalogFiles)
-                {
-                    var lines = File.ReadAllLines(catalogFile)
-                                    .Where(line =>
-                                    {
-                                        if (string.IsNullOrWhiteSpace(line)) return false;
-                                        try
-                                        {
-                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                            return json?.ImageArray != fileNameOnly;
-                                        }
-                                        catch { return true; }
-                                    })
-                                    .ToList();
-                    File.WriteAllLines(catalogFile, lines);
-                }
-
-                // originalCatalogLines에서도 삭제
-                originalCatalogLines = originalCatalogLines
-                    .Where(line =>
-                    {
-                        if (string.IsNullOrWhiteSpace(line)) return false;
-                        try
-                        {
-                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                            return json?.ImageArray != fileNameOnly;
-                        }
-                        catch { return true; }
-                    })
-                    .ToList();
-
-                // catalogRecords에서도 삭제
-                if (currentIndex < catalogRecords.Count)
-                    catalogRecords.RemoveAt(currentIndex);
-
-                // deletedFiles는 이제 실제 삭제니까 추가 안 해도 됨
-                imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
-                RefreshImageList();
-
-                if (imageFiles.Length == 0)
-                {
-                    Imagebar.Value = 0;
-                    MessageBox.Show("데이터셋 내에 남은 프레임이 없습니다.", "알림");
-                    return;
-                }
-
-                if (currentIndex >= imageFiles.Length)
-                    currentIndex = imageFiles.Length - 1;
-
-                Imagebar.Maximum = imageFiles.Length - 1;
-                await ShowImage(currentIndex);
             }
-        }
 
+            // image_trash 폴더 생성
+            string dataPath = Imgtxt.Text;
+            string trashPath = Path.Combine(dataPath, "image_trash");
+            if (!Directory.Exists(trashPath))
+                Directory.CreateDirectory(trashPath);
+
+            // 이미지 image_trash로 이동
+            string destPath = Path.Combine(trashPath, fileNameOnly);
+            if (Imagepic.Image != null)
+            {
+                var old = Imagepic.Image;
+                Imagepic.Image = null;
+                old.Dispose();
+                await Task.Delay(50);
+            }
+            File.Move(currentFilePath, destPath);
+
+            if (!deletedFiles.Contains(fileNameOnly))
+                deletedFiles.Add(fileNameOnly);
+
+            // catalog에서 해당 레코드 삭제
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            foreach (string catalogFile in catalogFiles)
+            {
+                var lines = File.ReadAllLines(catalogFile)
+                                .Where(line =>
+                                {
+                                    if (string.IsNullOrWhiteSpace(line)) return false;
+                                    try
+                                    {
+                                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                        return json?.ImageArray != fileNameOnly;
+                                    }
+                                    catch { return true; }
+                                })
+                                .ToList();
+                File.WriteAllLines(catalogFile, lines);
+            }
+
+            // originalCatalogLines에서도 삭제
+            originalCatalogLines = originalCatalogLines
+                .Where(line =>
+                {
+                    if (string.IsNullOrWhiteSpace(line)) return false;
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                        return json?.ImageArray != fileNameOnly;
+                    }
+                    catch { return true; }
+                })
+                .ToList();
+
+            // catalogRecords에서도 삭제
+            if (currentIndex < catalogRecords.Count)
+                catalogRecords.RemoveAt(currentIndex);
+
+            imageFiles = imageFiles.Where(f => f != currentFilePath).ToArray();
+            RefreshImageList();
+
+            if (imageFiles.Length == 0)
+            {
+                Imagebar.Value = 0;
+                MessageBox.Show("데이터셋 내에 남은 프레임이 없습니다.", "알림");
+                return;
+            }
+
+            if (currentIndex >= imageFiles.Length)
+                currentIndex = imageFiles.Length - 1;
+
+            Imagebar.Maximum = imageFiles.Length - 1;
+            await ShowImage(currentIndex);
+        }
         private async void ImgAddbtn_Click(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;

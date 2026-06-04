@@ -211,6 +211,24 @@ namespace DataManager_2
                 Massagelbl.ForeColor = Color.Red;
                 Traninglst.Items.Add("[안내] 훈련이 중간에 중단되었습니다.");
                 Traninglst.TopIndex = Traninglst.Items.Count - 1;
+
+                // 🆕 [안전장치 추가]: 중간에 강제로 멈춰도 결과 페이지용 기록 리스트에 유효 데이터 등록
+                string firstImagePath = "";
+                try
+                {
+                    // images 폴더가 따로 없으므로 dataPath 본진 폴더에서 직접 사진을 찾습니다.
+                    if (System.IO.Directory.Exists(dataPath))
+                    {
+                        var imgs = System.IO.Directory.GetFiles(dataPath, "*.jpg").OrderBy(f => f).ToArray();
+                        if (imgs.Length > 0) firstImagePath = imgs[0];
+                    }
+                }
+                catch { } // 이미지 경로 파싱 실패 시 터지지 않도록 예외 무시
+
+                // 리스트뷰 및 결과창 구분을 위해 경로에 (중단됨) 식별 명시 추가
+                trainingHistory.Add((DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), dataPath + " (중단됨)", firstImagePath));
+                RefreshListBox(); // 현재 화면 리스트박스 갱신
+
                 return;
             }
 
@@ -363,6 +381,11 @@ namespace DataManager_2
                             if (System.IO.Directory.Exists(imagesFolder))
                             {
                                 var imgs = System.IO.Directory.GetFiles(imagesFolder, "*.jpg").OrderBy(f => f).ToArray();
+                                if (imgs.Length > 0) firstImagePath = imgs[0];
+                            }
+                            else if (System.IO.Directory.Exists(dataPath)) // 백업 경로 탐색
+                            {
+                                var imgs = System.IO.Directory.GetFiles(dataPath, "*.jpg").OrderBy(f => f).ToArray();
                                 if (imgs.Length > 0) firstImagePath = imgs[0];
                             }
 
@@ -559,12 +582,13 @@ namespace DataManager_2
             }
             else
             {
-                Form4 form4 = new Form4();
+                // 🆕 핵심 연동 지점: 새 결과 윈도우(Form4) 인스턴스를 생성할 때, 현재 화면의 주행 데이터 본진 주소(dataPath)를 선물상자에 담아 토스합니다!
+                Form4 form4 = new Form4(this.dataPath);
+                form4.ApplyWindowState(this);
                 form4.Show();
                 if (Form1.isDarkMode) form4.ApplyThemePublic();
             }
             this.Hide();
         }
     }
-
 }

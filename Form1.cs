@@ -1081,6 +1081,143 @@ namespace DataManager
         {
             if (imageFiles.Length == 0) return;
 
+            // ↓ 번호 범위 삭제 로직 추가 (NumUptxt, NumDowntxt에 값이 있을 때만 실행)
+            if (!string.IsNullOrWhiteSpace(NumUptxt.Text) && !string.IsNullOrWhiteSpace(NumDowntxt.Text))
+            {
+                if (!int.TryParse(NumUptxt.Text, out int numFrom) ||
+                    !int.TryParse(NumDowntxt.Text, out int numTo))
+                {
+                    MessageBox.Show("시작/끝 번호를 올바르게 입력해주세요.", "알림");
+                    return;
+                }
+
+                if (numFrom > numTo)
+                {
+                    MessageBox.Show("시작 번호가 끝 번호보다 클 수 없습니다.", "알림");
+                    return;
+                }
+
+                var targetFiles = imageFiles
+                    .Where(f =>
+                    {
+                        string name = Path.GetFileName(f);
+                        string numStr = name.Split('_')[0];
+                        return int.TryParse(numStr, out int num) && num >= numFrom && num <= numTo;
+                    })
+                    .ToList();
+
+                if (targetFiles.Count == 0)
+                {
+                    MessageBox.Show("해당 범위에 이미지가 없습니다.", "알림");
+                    return;
+                }
+
+                DialogResult rangeConfirm = MessageBox.Show(
+                    $"{numFrom} ~ {numTo} 범위의 이미지 {targetFiles.Count}개를 삭제할까요?\n(image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)",
+                    "범위 삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (rangeConfirm == DialogResult.Yes)
+                {
+                    string dataPath = Imgtxt.Text;
+                    string trashPath = Path.Combine(dataPath, "image_trash");
+                    if (!Directory.Exists(trashPath))
+                        Directory.CreateDirectory(trashPath);
+
+                    var deletedFileNames = targetFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+
+                    foreach (string filePath in targetFiles)
+                    {
+                        string fileNameOnly = Path.GetFileName(filePath);
+                        string destPath = Path.Combine(trashPath, fileNameOnly);
+
+                        if (Imagepic.Image != null)
+                        {
+                            var old = Imagepic.Image;
+                            Imagepic.Image = null;
+                            old.Dispose();
+                            await Task.Delay(50);
+                        }
+
+                        if (File.Exists(filePath))
+                            File.Move(filePath, destPath);
+
+                        if (!deletedFiles.Contains(fileNameOnly))
+                            deletedFiles.Add(fileNameOnly);
+                    }
+
+                    string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                                     .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                     .OrderBy(f => f)
+                                                     .ToArray();
+
+                    foreach (string catalogFile in catalogFiles)
+                    {
+                        var lines = File.ReadAllLines(catalogFile)
+                                        .Where(line =>
+                                        {
+                                            if (string.IsNullOrWhiteSpace(line)) return false;
+                                            try
+                                            {
+                                                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                                return !deletedFileNames.Contains(json?.ImageArray);
+                                            }
+                                            catch { return true; }
+                                        })
+                                        .ToList();
+                        File.WriteAllLines(catalogFile, lines);
+                    }
+
+                    originalCatalogLines = originalCatalogLines
+                        .Where(line =>
+                        {
+                            if (string.IsNullOrWhiteSpace(line)) return false;
+                            try
+                            {
+                                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                return !deletedFileNames.Contains(json?.ImageArray);
+                            }
+                            catch { return true; }
+                        })
+                        .ToList();
+
+                    originalImageFiles = originalImageFiles
+                        .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
+                        .ToArray();
+                    originalCatalogRecords = originalCatalogRecords
+                        .Where(r => !deletedFileNames.Contains(r.ImageArray))
+                        .ToList();
+
+                    imageFiles = imageFiles
+                        .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
+                        .ToArray();
+                    catalogRecords = catalogRecords
+                        .Where(r => !deletedFileNames.Contains(r.ImageArray))
+                        .ToList();
+
+                    NumUptxt.Text = "";
+                    NumDowntxt.Text = "";
+
+                    RefreshImageList();
+                    LoadGraph();
+
+                    if (imageFiles.Length > 0)
+                    {
+                        currentIndex = 0;
+                        Imagebar.Minimum = 0;
+                        Imagebar.Maximum = imageFiles.Length - 1;
+                        await ShowImage(currentIndex);
+                        MessageBox.Show($"{targetFiles.Count}개의 이미지가 삭제되었습니다.", "완료");
+                    }
+                    else
+                    {
+                        Imagepic.Image = null;
+                        Imagebar.Value = 0;
+                        MessageBox.Show("모든 이미지가 삭제되었습니다.", "알림");
+                    }
+                }
+                return; // ← 번호 범위 삭제 후 아래 필터링 로직은 실행 안 함
+            }
+
             if (!isFiltering)
             {
                 MessageBox.Show("먼저 필터링을 적용해주세요.", "알림");

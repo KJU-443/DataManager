@@ -72,7 +72,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
-          feature/function
             this.Imagepic.Location = new System.Drawing.Point(12, 12);
             this.Imagepic.Name = "Imagepic";
             this.Imagepic.Size = new System.Drawing.Size(1042, 767);
@@ -114,7 +113,6 @@
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
             this.ImageNumberlbl.Location = new System.Drawing.Point(91, 239);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
-          feature/function
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
           
             this.ImageNumberlbl.TabIndex = 17;
@@ -481,7 +479,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
-          feature/function
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Imagebar);
             this.Controls.Add(this.groupBox1);

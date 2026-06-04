@@ -28,6 +28,7 @@ namespace DataManager
 
         private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
+
         private bool colorssaved = false;
 
         // 🎯 Form2로부터 실제 상위 데이터 주소(C:\mycar\data)를 전달받습니다.
@@ -35,7 +36,6 @@ namespace DataManager
         {
             InitializeComponent();
             this.KeyPreview = true;
-            this.KeyDown += Form4_KeyDown;
             playTimer.Interval = 100;
             playTimer.Tick += new EventHandler(PlayTimer_Tick);
 
@@ -374,26 +374,6 @@ namespace DataManager
             this.Hide();
         }
 
-        private void Form4_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (this.ActiveControl is TextBox) return;
-
-            if (e.KeyCode == Keys.Right)
-            {
-                e.SuppressKeyPress = true;
-                NextImgbtn.PerformClick();
-            }
-            else if (e.KeyCode == Keys.Left)
-            {
-                e.SuppressKeyPress = true;
-                PreviousImgbtn.PerformClick();
-            }
-            else if (e.KeyCode == Keys.Delete)
-            {
-                e.SuppressKeyPress = true;
-                ImgDeletebtn.PerformClick();
-            }
-        }
 
         private async void Restorebtn_Click(object sender, EventArgs e)
         {

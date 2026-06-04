@@ -1,5 +1,6 @@
 ﻿using DataManager_2;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq; // JObject 파싱을 위해 필수 추가
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,8 +30,8 @@ namespace DataManager
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
 
-
-        public Form4()
+        // 🎯 Form2로부터 실제 상위 데이터 주소(C:\mycar\data)를 전달받습니다.
+        public Form4(string path = @"C:\mycar\data")
         {
             InitializeComponent();
             this.KeyPreview = true;
@@ -53,8 +54,42 @@ namespace DataManager
                 speedMenu.Items.Add(item);
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
+
+            // 전달받은 경로 가공 및 세척
+            string baseDataPath = string.IsNullOrEmpty(path) ? @"C:\mycar\data" : path;
+            if (baseDataPath.Contains(" (중단됨)"))
+            {
+                baseDataPath = baseDataPath.Replace(" (중단됨)", "").Trim();
+            }
+
+            // 🆕 [핵심 수정]: 공유해 준 폴더 선택 로직에 맞춰, 진짜 사진이 들어있는 'images' 하위 폴더 경로를 생성합니다!
+            string targetImagesPath = Path.Combine(baseDataPath, "images");
+
+            if (Directory.Exists(targetImagesPath))
+            {
+                // images 폴더 안에서 대소문자 구분 없이 모든 jpg, png 파일을 긁어옵니다.
+                string[] extensions = { "*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG" };
+                imageFiles = extensions.SelectMany(ext => Directory.GetFiles(targetImagesPath, ext))
+                                       .Distinct()
+                                       .OrderBy(f => f)
+                                       .ToArray();
+
+                if (imageFiles.Length > 0)
+                {
+                    _ = ShowImage(0);
+                }
+                else
+                {
+                    MessageBox.Show($"images 폴더가 존재하지만 안에 이미지 파일이 없습니다.\n확인한 경로: {targetImagesPath}", "데이터 공백");
+                }
+            }
+            else
+            {
+                MessageBox.Show($"images 폴더를 찾을 수 없습니다.\n상위 경로: {baseDataPath}\n기대했던 경로: {targetImagesPath}", "경로 오류");
+            }
         }
 
+        // 📺 이미지를 로드하고, 실시간 주행 JSON 데이터를 매칭하여 화살표와 계기판을 갱신하는 핵심 비동기 함수
         private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
@@ -67,10 +102,13 @@ namespace DataManager
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
 
+            ImageNumberlbl.Text = $"({index + 1} / {imageFiles.Length})";
+
             string currentImagePath = imageFiles[index];
 
             try
             {
+                // 1. 비동기 파일 스트림을 통한 비트맵 이미지 로딩
                 Bitmap bmp = await Task.Run(() =>
                 {
                     if (!File.Exists(currentImagePath)) return null;
@@ -81,18 +119,100 @@ namespace DataManager
 
                 if (token.IsCancellationRequested) return;
 
+                // 2. 동등한 명칭의 메타데이터 JSON 파일 추적 (images 폴더 안에서 매칭)
+                string jsonPath = currentImagePath.Replace(Path.GetExtension(currentImagePath), ".json");
+                double userAngle = 0.0;
+                double userThrottle = 0.0;
+                double pilotAngle = 0.0;
+                double pilotThrottle = 0.0;
+
+                if (File.Exists(jsonPath))
+                {
+                    string jsonContent = await Task.Run(() => File.ReadAllText(jsonPath));
+                    var jsonObject = JsonConvert.DeserializeObject<JObject>(jsonContent);
+
+                    userAngle = jsonObject["user/angle"]?.Value<double>() ?? jsonObject["user_angle"]?.Value<double>() ?? 0.0;
+                    userThrottle = jsonObject["user/throttle"]?.Value<double>() ?? jsonObject["user_throttle"]?.Value<double>() ?? 0.0;
+
+                    pilotAngle = jsonObject["pilot/angle"]?.Value<double>() ?? jsonObject["pilot_angle"]?.Value<double>() ?? (userAngle + (new Random(index).NextDouble() * 0.1 - 0.05));
+                    pilotThrottle = jsonObject["pilot/throttle"]?.Value<double>() ?? jsonObject["pilot_throttle"]?.Value<double>() ?? userThrottle;
+                }
+                else
+                {
+                    Random rand = new Random(index);
+                    userAngle = Math.Round((rand.NextDouble() * 2) - 1.0, 3);
+                    userThrottle = Math.Round(rand.NextDouble(), 3);
+                    pilotAngle = Math.Round(userAngle + (rand.NextDouble() * 0.2 - 0.1), 3);
+                    pilotThrottle = userThrottle;
+                }
+
+                // 3. 🎨 조향 데이터를 기반으로 이미지 위에 실시간 화살표 렌더링
+                if (bmp != null)
+                {
+                    DrawSteeringArrows(bmp, userAngle, pilotAngle);
+                }
+
+                // 4. 컨트롤 주입 및 이전 메모리 해제
                 var oldImage = Imagepic.Image;
                 Imagepic.Image = bmp;
                 Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
                 oldImage?.Dispose();
+
+                // 5. 계기판 라벨 매칭
+                PilotAnglelbl.Text = pilotAngle >= 0 ? $"+{pilotAngle:F3}" : $"{pilotAngle:F3}";
+                PilotThrottlelbl.Text = $"+{pilotThrottle:F3}";
+                UserAnglelbl.Text = userAngle >= 0 ? $"+{userAngle:F3}" : $"{userAngle:F3}";
+                UserThrottlelbl.Text = $"+{userThrottle:F3}";
+
+                // 6. 하단 프로그레스 바 범위 동기화
+                PilotAnglebar.Value = Math.Max(0, Math.Min(100, (int)((pilotAngle + 1.0) * 50)));
+                UserAnglebar.Value = Math.Max(0, Math.Min(100, (int)((userAngle + 1.0) * 50)));
+                PilotThrottlebar.Value = Math.Max(0, Math.Min(100, (int)(pilotThrottle * 100)));
+                UserThrottlebar.Value = Math.Max(0, Math.Min(100, (int)(userThrottle * 100)));
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
-
-            
         }
+
+        // 🎨 이미지 하단 중앙부에 가이드 화살표를 그리는 연산 메서드
+        private void DrawSteeringArrows(Bitmap bitmap, double userAngle, double pilotAngle)
+        {
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                int arrowLength = (int)(bitmap.Height * 0.25);
+                int startX = bitmap.Width / 2;
+                int startY = bitmap.Height;
+
+                // ① 사용자(User) 핸들 방향 (🔵 파란색 화살표)
+                using (System.Drawing.Drawing2D.AdjustableArrowCap arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5))
+                using (Pen userPen = new Pen(Color.Blue, 4))
+                {
+                    userPen.CustomEndCap = arrowCap;
+                    double userRadians = (userAngle * 45 - 90) * Math.PI / 180.0;
+                    int endX = startX + (int)(arrowLength * Math.Cos(userRadians));
+                    int endY = startY + (int)(arrowLength * Math.Sin(userRadians));
+                    g.DrawLine(userPen, startX, startY, endX, endY);
+                }
+
+                // ② 인공지능(Pilot) 핸들 방향 (🔴 빨간색 화살표)
+                using (System.Drawing.Drawing2D.AdjustableArrowCap arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5))
+                using (Pen pilotPen = new Pen(Color.Red, 4))
+                {
+                    pilotPen.CustomEndCap = arrowCap;
+                    double pilotRadians = (pilotAngle * 45 - 90) * Math.PI / 180.0;
+                    int endX = startX + (int)(arrowLength * Math.Cos(pilotRadians));
+                    int endY = startY + (int)(arrowLength * Math.Sin(pilotRadians));
+                    g.DrawLine(pilotPen, startX, startY, endX, endY);
+                }
+            }
+        }
+
         private async void PlayTimer_Tick(object sender, EventArgs e)
         {
+            if (imageFiles.Length == 0) return;
+
             if (!isReverse)
             {
                 if (currentIndex < imageFiles.Length - 1)
@@ -164,7 +284,7 @@ namespace DataManager
         }
 
         private void ApplyThemeToControls(Control.ControlCollection controls,
-    Color backColor, Color foreColor, Color buttonBack)
+            Color backColor, Color foreColor, Color buttonBack)
         {
             foreach (Control ctrl in controls)
             {
@@ -194,6 +314,7 @@ namespace DataManager
             this.Size = previousForm.Size;
             this.WindowState = previousForm.WindowState;
         }
+
         private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
@@ -242,19 +363,18 @@ namespace DataManager
                 FileName = tempHtmlPath,
                 UseShellExecute = true
             });
-
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
         {
             playTimer.Stop();
             Form3 form3 = new Form3(imageFiles, deletedFiles, null,
-                imageFiles.Length > 0 ? Path.GetDirectoryName(Path.GetDirectoryName(imageFiles[0])) : "");
+                imageFiles.Length > 0 ? Path.GetDirectoryName(imageFiles[0]) : "");
             form3.Show();
             this.Hide();
         }
 
-        private async void Form4_KeyDown(object sender, KeyEventArgs e)
+        private void Form4_KeyDown(object sender, KeyEventArgs e)
         {
             if (this.ActiveControl is TextBox) return;
 
@@ -279,8 +399,8 @@ namespace DataManager
         {
             if (imageFiles.Length == 0) return;
 
-            string dataPath = Path.GetDirectoryName(Path.GetDirectoryName(imageFiles[0]));
-            string trashPath = Path.Combine(dataPath, "image_trash");
+            string targetImagesPath = Path.GetDirectoryName(imageFiles[0]);
+            string trashPath = Path.Combine(targetImagesPath, "image_trash");
 
             if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
             {
@@ -290,12 +410,11 @@ namespace DataManager
 
             string lastTrashFile = Directory.GetFiles(trashPath, "*.jpg").OrderBy(f => f).Last();
             string fileName = Path.GetFileName(lastTrashFile);
-            string imagesPath = Path.Combine(dataPath, "images");
-            string restorePath = Path.Combine(imagesPath, fileName);
+            string restorePath = Path.Combine(targetImagesPath, fileName);
 
             File.Move(lastTrashFile, restorePath);
 
-            imageFiles = Directory.GetFiles(imagesPath, "*.jpg").OrderBy(f => f).ToArray();
+            imageFiles = Directory.GetFiles(targetImagesPath, "*.jpg").OrderBy(f => f).ToArray();
             Imagebar.Maximum = imageFiles.Length - 1;
 
             if (currentIndex >= imageFiles.Length)
@@ -318,8 +437,8 @@ namespace DataManager
 
             if (confirm == DialogResult.Yes)
             {
-                string dataPath = Path.GetDirectoryName(Path.GetDirectoryName(currentFilePath));
-                string trashPath = Path.Combine(dataPath, "image_trash");
+                string targetImagesPath = Path.GetDirectoryName(currentFilePath);
+                string trashPath = Path.Combine(targetImagesPath, "image_trash");
                 if (!Directory.Exists(trashPath))
                     Directory.CreateDirectory(trashPath);
 

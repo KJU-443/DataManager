@@ -540,10 +540,30 @@ namespace DataManager_2
             this.Size = previousForm.Size;
             this.WindowState = previousForm.WindowState;
         }
-
+        public void ApplyThemePublic()
+        {
+            ApplyTheme(this);
+        }
         private void TrainWronglbl_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void GoToResultbtn_Click(object sender, EventArgs e)
+        {
+            Form4 existingForm4 = Application.OpenForms.OfType<Form4>().FirstOrDefault();
+            if (existingForm4 != null)
+            {
+                existingForm4.Show();
+                if (Form1.isDarkMode) existingForm4.ApplyThemePublic();
+            }
+            else
+            {
+                Form4 form4 = new Form4();
+                form4.Show();
+                if (Form1.isDarkMode) form4.ApplyThemePublic();
+            }
+            this.Hide();
         }
     }
 

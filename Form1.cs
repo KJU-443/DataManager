@@ -883,8 +883,8 @@ namespace DataManager
             playTimer.Stop();
             Form3 form3 = new Form3(imageFiles, deletedFiles, this, Imgtxt.Text);
             form3.ApplyWindowState(this);
-            this.Hide();
             form3.Show();
+            this.Hide();
         }
 
         public void RestoreImage(string fileName)
@@ -1175,6 +1175,48 @@ namespace DataManager
         {
 
         }
+
+        private void GoDatabtn_Click(object sender, EventArgs e)
+        {
+            playTimer.Stop();
+            Form2 existingForm2 = Application.OpenForms.OfType<Form2>().FirstOrDefault();
+            if (existingForm2 != null)
+            {
+                existingForm2.ApplyWindowState(this);
+                existingForm2.Show();
+                if (Form1.isDarkMode) existingForm2.ApplyThemePublic();
+            }
+            else
+            {
+                Form2 form2 = new Form2(selectedFolderPath, Imgtxt.Text);
+                form2.ApplyWindowState(this);
+                form2.Show();
+                if (Form1.isDarkMode) form2.ApplyThemePublic();
+            }
+            this.Hide();
+        }
+
+        private void GoTrainResultbtn_Click(object sender, EventArgs e)
+        {
+            playTimer.Stop();
+            Form4 existingForm4 = Application.OpenForms.OfType<Form4>().FirstOrDefault();
+            if (existingForm4 != null)
+            {
+                existingForm4.ApplyWindowState(this);
+                existingForm4.Show();
+                if (Form1.isDarkMode) existingForm4.ApplyThemePublic();
+            }
+            else
+            {
+                Form4 form4 = new Form4();
+                form4.ApplyWindowState(this);
+                form4.Show();
+                if (Form1.isDarkMode) form4.ApplyThemePublic();
+            }
+            this.Hide();
+        }
+
+
     } 
 }
 

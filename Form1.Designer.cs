@@ -32,6 +32,9 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.GoTrainResultbtn = new System.Windows.Forms.Button();
+            this.GoDatabtn = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.OpenGraphBrowserbtn = new System.Windows.Forms.Button();
@@ -81,11 +84,10 @@
             this.SelectFolderbtn = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.GoToResultbtn = new System.Windows.Forms.Button();
+            this.GoToResultbtn.Click += new System.EventHandler(this.GoTrainResultbtn_Click);
             this.GoTrainbtn = new System.Windows.Forms.Button();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.GoTrainResultbtn = new System.Windows.Forms.Button();
-            this.GoDatabtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Graph)).BeginInit();
@@ -101,7 +103,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -127,6 +128,44 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1023);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel5.Controls.Add(this.GoTrainResultbtn);
+            this.panel5.Controls.Add(this.GoDatabtn);
+            this.panel5.Location = new System.Drawing.Point(3, 3);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1412, 42);
+            this.panel5.TabIndex = 11;
+            // 
+            // GoTrainResultbtn
+            // 
+            this.GoTrainResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.GoTrainResultbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoTrainResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoTrainResultbtn.Location = new System.Drawing.Point(1172, 4);
+            this.GoTrainResultbtn.Name = "GoTrainResultbtn";
+            this.GoTrainResultbtn.Size = new System.Drawing.Size(236, 38);
+            this.GoTrainResultbtn.TabIndex = 20;
+            this.GoTrainResultbtn.Tag = "noTheme";
+            this.GoTrainResultbtn.Text = "훈련 결과 페이지로 가기";
+            this.GoTrainResultbtn.UseVisualStyleBackColor = false;
+            this.GoTrainResultbtn.Click += new System.EventHandler(this.GoTrainResultbtn_Click);
+            // 
+            // GoDatabtn
+            // 
+            this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
+            this.GoDatabtn.Name = "GoDatabtn";
+            this.GoDatabtn.Size = new System.Drawing.Size(221, 38);
+            this.GoDatabtn.TabIndex = 3;
+            this.GoDatabtn.Tag = "noTheme";
+            this.GoDatabtn.Text = "훈련 페이지로 가기";
+            this.GoDatabtn.UseVisualStyleBackColor = false;
+            this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
             // panel3
             // 
@@ -811,42 +850,6 @@
             this.GoTrainbtn.UseVisualStyleBackColor = false;
             this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
             // 
-            // panel5
-            // 
-            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel5.Controls.Add(this.GoTrainResultbtn);
-            this.panel5.Controls.Add(this.GoDatabtn);
-            this.panel5.Location = new System.Drawing.Point(3, 3);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1412, 42);
-            this.panel5.TabIndex = 11;
-            // 
-            // GoTrainResultbtn
-            // 
-            this.GoTrainResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.GoTrainResultbtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoTrainResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoTrainResultbtn.Location = new System.Drawing.Point(1172, 4);
-            this.GoTrainResultbtn.Name = "GoTrainResultbtn";
-            this.GoTrainResultbtn.Size = new System.Drawing.Size(236, 38);
-            this.GoTrainResultbtn.TabIndex = 20;
-            this.GoTrainResultbtn.Tag = "noTheme";
-            this.GoTrainResultbtn.Text = "훈련 결과 페이지로 가기";
-            this.GoTrainResultbtn.UseVisualStyleBackColor = false;
-            // 
-            // GoDatabtn
-            // 
-            this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
-            this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
-            this.GoDatabtn.Name = "GoDatabtn";
-            this.GoDatabtn.Size = new System.Drawing.Size(221, 38);
-            this.GoDatabtn.TabIndex = 3;
-            this.GoDatabtn.Tag = "noTheme";
-            this.GoDatabtn.Text = "데이터 페이지로 가기";
-            this.GoDatabtn.UseVisualStyleBackColor = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -858,6 +861,7 @@
             this.Text = "DataManager V1.0";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Graph)).EndInit();
@@ -877,7 +881,6 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

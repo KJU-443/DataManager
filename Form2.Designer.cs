@@ -165,26 +165,27 @@
             this.GoToResultbtn.Tag = "noTheme";
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
             this.GoToResultbtn.UseVisualStyleBackColor = false;
+            this.GoToResultbtn.Click += new System.EventHandler(this.GoToResultbtn_Click);
             // 
             // TrainFigurelbl
             // 
             this.TrainFigurelbl.AutoSize = true;
-            this.TrainFigurelbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrainFigurelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TrainFigurelbl.ForeColor = System.Drawing.Color.Black;
             this.TrainFigurelbl.Location = new System.Drawing.Point(397, 7);
             this.TrainFigurelbl.Name = "TrainFigurelbl";
-            this.TrainFigurelbl.Size = new System.Drawing.Size(184, 31);
+            this.TrainFigurelbl.Size = new System.Drawing.Size(173, 29);
             this.TrainFigurelbl.TabIndex = 19;
             this.TrainFigurelbl.Text = "훈련 진행률 : 0%";
             // 
             // TrainWronglbl
             // 
             this.TrainWronglbl.AutoSize = true;
-            this.TrainWronglbl.Font = new System.Drawing.Font("한컴 고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TrainWronglbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TrainWronglbl.ForeColor = System.Drawing.Color.Black;
             this.TrainWronglbl.Location = new System.Drawing.Point(800, 7);
             this.TrainWronglbl.Name = "TrainWronglbl";
-            this.TrainWronglbl.Size = new System.Drawing.Size(184, 31);
+            this.TrainWronglbl.Size = new System.Drawing.Size(173, 29);
             this.TrainWronglbl.TabIndex = 18;
             this.TrainWronglbl.Text = "훈련 오답률 : 0%";
             this.TrainWronglbl.Click += new System.EventHandler(this.TrainWronglbl_Click);

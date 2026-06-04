@@ -46,7 +46,8 @@ namespace DataManager
         private bool colorssaved = false;
         public static bool isDarkMode = false;
 
-        
+        private int _rangeStart = -1; // -1이면 시작점 미설정 상태
+
         private bool _suppressDeleteConfirm = false;
 
 
@@ -405,7 +406,21 @@ namespace DataManager
                 Imagelst.SelectedIndex = currentIndex;
             }
 
-            ImageNumberlbl.Text = $"({imageFiles.Length}/{originalImageFiles.Length})";
+            int currentNum = 0;
+            if (currentIndex < imageFiles.Length)
+            {
+                string numStr = Path.GetFileName(imageFiles[currentIndex]).Split('_')[0];
+                int.TryParse(numStr, out currentNum);
+            }
+
+            int totalNum = 0;
+            if (originalImageFiles.Length > 0)
+            {
+                string numStr = Path.GetFileName(originalImageFiles[originalImageFiles.Length - 1]).Split('_')[0];
+                int.TryParse(numStr, out totalNum);
+            }
+
+            ImageNumberlbl.Text = $"({currentNum}/{originalImageFiles.Length})";
 
             // 이벤트 다시 연결
             Imagelst.SelectedIndexChanged += Imagelst_SelectedIndexChanged;
@@ -454,6 +469,21 @@ namespace DataManager
                 AngleFigurelbl.Text = $"angle : {catalogRecords[index].Angle:F3}";
                 TrottleFigurelbl.Text = $"throttle : {catalogRecords[index].Throttle:F3}";
             }
+            int currentNum = 0;
+            if (index < imageFiles.Length)
+            {
+                string numStr = Path.GetFileName(imageFiles[index]).Split('_')[0];
+                int.TryParse(numStr, out currentNum);
+            }
+
+            int totalNum = 0;
+            if (originalImageFiles.Length > 0)
+            {
+                string numStr = Path.GetFileName(originalImageFiles[originalImageFiles.Length - 1]).Split('_')[0];
+                int.TryParse(numStr, out totalNum);
+            }
+
+            ImageNumberlbl.Text = $"({currentNum}/{originalImageFiles.Length})";
         }
 
         private async void PlayTimer_Tick(object sender, EventArgs e)
@@ -1082,13 +1112,55 @@ namespace DataManager
                 e.SuppressKeyPress = true;
                 ImgDeletebtn.PerformClick();
             }
+
+            // D 키 (범위 삭제)
+            else if (e.KeyCode == Keys.D && !e.Control)
+            {
+                e.SuppressKeyPress = true;
+
+                if (_rangeStart == -1)
+                {
+                    // 첫 번째 D: 시작점 설정 + UI 변경
+                    string numStr = Path.GetFileName(imageFiles[currentIndex]).Split('_')[0];
+                    int.TryParse(numStr, out _rangeStart);
+
+                    ImageNumberlbl.ForeColor = Color.Red;
+                    Imgstatuslbl.ForeColor = Color.Red;
+                    Imgstatuslbl.Text = "삭제중..";
+                }
+                else
+                {
+                    // 두 번째 D: 끝점 설정 후 삭제
+                    string numStr = Path.GetFileName(imageFiles[currentIndex]).Split('_')[0];
+                    int.TryParse(numStr, out int rangeEnd);
+
+                    if (rangeEnd < _rangeStart)
+                    {
+                        _rangeStart = -1;
+                        ImageNumberlbl.ForeColor = Color.Black;
+                        Imgstatuslbl.ForeColor = Color.Black;
+                        Imgstatuslbl.Text = "이미지";
+                        return;
+                    }
+
+                    NumUptxt.Text = _rangeStart.ToString();
+                    NumDowntxt.Text = rangeEnd.ToString();
+                    _rangeStart = -1;
+
+                    button1_Click(this, EventArgs.Empty);
+
+                    // 삭제 완료 후 UI 복구
+                    ImageNumberlbl.ForeColor = Color.Black;
+                    Imgstatuslbl.ForeColor = Color.Black;
+                    Imgstatuslbl.Text = "이미지";
+                }
+            }
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
 
-            // ↓ 번호 범위 삭제 로직 추가 (NumUptxt, NumDowntxt에 값이 있을 때만 실행)
             if (!string.IsNullOrWhiteSpace(NumUptxt.Text) && !string.IsNullOrWhiteSpace(NumDowntxt.Text))
             {
                 if (!int.TryParse(NumUptxt.Text, out int numFrom) ||
@@ -1119,110 +1191,108 @@ namespace DataManager
                     return;
                 }
 
-                DialogResult rangeConfirm = MessageBox.Show(
-                    $"{numFrom} ~ {numTo} 범위의 이미지 {targetFiles.Count}개를 삭제할까요?\n(image_trash 폴더로 이동되고 카탈로그에서도 삭제됩니다.)",
-                    "범위 삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                string dataPath = Imgtxt.Text;
+                string trashPath = Path.Combine(dataPath, "image_trash");
+                if (!Directory.Exists(trashPath))
+                    Directory.CreateDirectory(trashPath);
 
-                if (rangeConfirm == DialogResult.Yes)
+                var deletedFileNames = targetFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+
+                ImageNumberlbl.ForeColor = Color.Red;
+                foreach (string filePath in targetFiles)
                 {
-                    string dataPath = Imgtxt.Text;
-                    string trashPath = Path.Combine(dataPath, "image_trash");
-                    if (!Directory.Exists(trashPath))
-                        Directory.CreateDirectory(trashPath);
+                    string fileNameOnly = Path.GetFileName(filePath);
+                    string destPath = Path.Combine(trashPath, fileNameOnly);
 
-                    var deletedFileNames = targetFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+                    Application.DoEvents();
 
-                    foreach (string filePath in targetFiles)
+                    if (Imagepic.Image != null)
                     {
-                        string fileNameOnly = Path.GetFileName(filePath);
-                        string destPath = Path.Combine(trashPath, fileNameOnly);
-
-                        if (Imagepic.Image != null)
-                        {
-                            var old = Imagepic.Image;
-                            Imagepic.Image = null;
-                            old.Dispose();
-                            await Task.Delay(50);
-                        }
-
-                        if (File.Exists(filePath))
-                            File.Move(filePath, destPath);
-
-                        if (!deletedFiles.Contains(fileNameOnly))
-                            deletedFiles.Add(fileNameOnly);
-                    }
-
-                    string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                                     .Where(f => !f.EndsWith(".catalog_manifest"))
-                                                     .OrderBy(f => f)
-                                                     .ToArray();
-
-                    foreach (string catalogFile in catalogFiles)
-                    {
-                        var lines = File.ReadAllLines(catalogFile)
-                                        .Where(line =>
-                                        {
-                                            if (string.IsNullOrWhiteSpace(line)) return false;
-                                            try
-                                            {
-                                                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                                return !deletedFileNames.Contains(json?.ImageArray);
-                                            }
-                                            catch { return true; }
-                                        })
-                                        .ToList();
-                        File.WriteAllLines(catalogFile, lines);
-                    }
-
-                    originalCatalogLines = originalCatalogLines
-                        .Where(line =>
-                        {
-                            if (string.IsNullOrWhiteSpace(line)) return false;
-                            try
-                            {
-                                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                return !deletedFileNames.Contains(json?.ImageArray);
-                            }
-                            catch { return true; }
-                        })
-                        .ToList();
-
-                    originalImageFiles = originalImageFiles
-                        .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
-                        .ToArray();
-                    originalCatalogRecords = originalCatalogRecords
-                        .Where(r => !deletedFileNames.Contains(r.ImageArray))
-                        .ToList();
-
-                    imageFiles = imageFiles
-                        .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
-                        .ToArray();
-                    catalogRecords = catalogRecords
-                        .Where(r => !deletedFileNames.Contains(r.ImageArray))
-                        .ToList();
-
-                    NumUptxt.Text = "";
-                    NumDowntxt.Text = "";
-
-                    RefreshImageList();
-                    LoadGraph();
-
-                    if (imageFiles.Length > 0)
-                    {
-                        currentIndex = 0;
-                        Imagebar.Minimum = 0;
-                        Imagebar.Maximum = imageFiles.Length - 1;
-                        await ShowImage(currentIndex);
-                        MessageBox.Show($"{targetFiles.Count}개의 이미지가 삭제되었습니다.", "완료");
-                    }
-                    else
-                    {
+                        var old = Imagepic.Image;
                         Imagepic.Image = null;
-                        Imagebar.Value = 0;
-                        MessageBox.Show("모든 이미지가 삭제되었습니다.", "알림");
+                        old.Dispose();
+                        await Task.Delay(50);
                     }
+
+                    if (File.Exists(filePath))
+                        File.Move(filePath, destPath);
+
+                    if (!deletedFiles.Contains(fileNameOnly))
+                        deletedFiles.Add(fileNameOnly);
                 }
-                return; // ← 번호 범위 삭제 후 아래 필터링 로직은 실행 안 함
+                ImageNumberlbl.ForeColor = Color.Black;
+
+                string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                 .OrderBy(f => f)
+                                                 .ToArray();
+
+                foreach (string catalogFile in catalogFiles)
+                {
+                    var lines = File.ReadAllLines(catalogFile)
+                                    .Where(line =>
+                                    {
+                                        if (string.IsNullOrWhiteSpace(line)) return false;
+                                        try
+                                        {
+                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                            return !deletedFileNames.Contains(json?.ImageArray);
+                                        }
+                                        catch { return true; }
+                                    })
+                                    .ToList();
+                    File.WriteAllLines(catalogFile, lines);
+                }
+
+                originalCatalogLines = originalCatalogLines
+                    .Where(line =>
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) return false;
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            return !deletedFileNames.Contains(json?.ImageArray);
+                        }
+                        catch { return true; }
+                    })
+                    .ToList();
+
+                originalImageFiles = originalImageFiles
+                    .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
+                    .ToArray();
+                originalCatalogRecords = originalCatalogRecords
+                    .Where(r => !deletedFileNames.Contains(r.ImageArray))
+                    .ToList();
+
+                imageFiles = imageFiles
+                    .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
+                    .ToArray();
+                catalogRecords = catalogRecords
+                    .Where(r => !deletedFileNames.Contains(r.ImageArray))
+                    .ToList();
+
+                NumUptxt.Text = "";
+                NumDowntxt.Text = "";
+
+                RefreshImageList();
+                LoadGraph();
+
+                if (imageFiles.Length > 0)
+                {
+                    if (currentIndex >= imageFiles.Length)
+                        currentIndex = imageFiles.Length - 1;
+                    Imagebar.Minimum = 0;
+                    Imagebar.Maximum = imageFiles.Length - 1;
+                    await ShowImage(currentIndex);
+                }
+                else
+                {
+                    Imagepic.Image = null;
+                    Imagebar.Value = 0;
+                    MessageBox.Show("모든 이미지가 삭제되었습니다.", "알림");
+                }
+
+                return;
             }
 
             if (!isFiltering)
@@ -1242,10 +1312,13 @@ namespace DataManager
                 if (!Directory.Exists(trashPath))
                     Directory.CreateDirectory(trashPath);
 
+                ImageNumberlbl.ForeColor = Color.Red;
                 foreach (string filePath in imageFiles)
                 {
                     string fileNameOnly = Path.GetFileName(filePath);
                     string destPath = Path.Combine(trashPath, fileNameOnly);
+
+                    Application.DoEvents();
 
                     if (Imagepic.Image != null)
                     {
@@ -1259,8 +1332,8 @@ namespace DataManager
                     if (!deletedFiles.Contains(fileNameOnly))
                         deletedFiles.Add(fileNameOnly);
                 }
+                ImageNumberlbl.ForeColor = Color.Black;
 
-                // catalog에서 삭제된 파일들 일괄 제거
                 string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
                                                  .Where(f => !f.EndsWith(".catalog_manifest"))
                                                  .OrderBy(f => f)
@@ -1285,7 +1358,6 @@ namespace DataManager
                     File.WriteAllLines(catalogFile, lines);
                 }
 
-                // originalCatalogLines에서도 삭제
                 originalCatalogLines = originalCatalogLines
                     .Where(line =>
                     {
@@ -1299,7 +1371,6 @@ namespace DataManager
                     })
                     .ToList();
 
-                // 필터 해제 후 원본으로 복귀
                 originalImageFiles = originalImageFiles
                     .Where(f => !deletedFileNames.Contains(Path.GetFileName(f)))
                     .ToArray();
@@ -1323,7 +1394,8 @@ namespace DataManager
 
                 if (imageFiles.Length > 0)
                 {
-                    currentIndex = 0;
+                    if (currentIndex >= imageFiles.Length)
+                        currentIndex = imageFiles.Length - 1;
                     Imagebar.Minimum = 0;
                     Imagebar.Maximum = imageFiles.Length - 1;
                     await ShowImage(currentIndex);

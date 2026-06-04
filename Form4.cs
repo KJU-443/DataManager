@@ -23,7 +23,7 @@ namespace DataManager
         private CancellationTokenSource imageCts = new CancellationTokenSource();
         private List<string> deletedFiles = new List<string>();
 
-        // 🎯 보내준 코드의 데이터 규격과 완벽 동기화
+        // 보내준 코드의 데이터 규격과 완벽 동기화
         private List<CatalogRecord> catalogRecords = new List<CatalogRecord>();
         private string[] originalImageFiles = Array.Empty<string>();
 
@@ -59,7 +59,7 @@ namespace DataManager
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
 
-            // 1. 전달받은 경로 가공 및 세척
+            // 🛠️ [버그 수정]: 지역 변수 string 재선언을 제거하여 전역 필드 baseDataPath에 값이 들어가도록 설정합니다.
             baseDataPath = string.IsNullOrEmpty(path) ? @"C:\mycar\data" : path;
             if (baseDataPath.Contains(" (중단됨)"))
             {
@@ -74,7 +74,6 @@ namespace DataManager
         }
 
         // 🆕 [실시간 데이터 및 카탈로그 동기화 전용 메서드]
-        // 보내준 파일 탐색기 로직을 기반으로 이미지와 카탈로그 라인을 완벽하게 일치시킵니다.
         private void SyncDataFromDisk()
         {
             try
@@ -83,9 +82,9 @@ namespace DataManager
 
                 // ① [카탈로그 로딩 연동] .catalog 파일들을 싹 긁어모아 주행 기록 데이터 리스트를 채웁니다.
                 string[] catalogFiles = Directory.GetFiles(baseDataPath, "*.catalog")
-                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                             .OrderBy(f => f)
-                             .ToArray();
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
 
                 catalogRecords.Clear();
                 foreach (string catalogFile in catalogFiles)
@@ -116,7 +115,19 @@ namespace DataManager
                         if (currentIndex < 0) currentIndex = 0;
 
                         Imagebar.Value = currentIndex;
+
+                        // 🆕 [핵심 추가]: 동기화가 끝나자마자 화면에 첫 번째 이미지를 띄워 하얀 화면을 방지합니다.
                         _ = ShowImage(currentIndex);
+                    }
+                    else
+                    {
+                        // 이미지가 아예 없을 때 PictureBox 비우기
+                        if (Imagepic.Image != null)
+                        {
+                            Imagepic.Image.Dispose();
+                            Imagepic.Image = null;
+                        }
+                        ImageNumberlbl.Text = "(0 / 0)";
                     }
                 }
             }
@@ -421,7 +432,7 @@ namespace DataManager
             }
         }
 
-        private async void Restorebtn_Click(object sender, EventArgs e)
+        private void Restorebtn_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(targetImagesPath)) return;
 
@@ -439,14 +450,12 @@ namespace DataManager
 
             File.Move(lastTrashFile, restorePath);
 
-            // 데이터 동기화 재스캔 작동
+            // 데이터 동기화 및 즉시 화면 갱신
             SyncDataFromDisk();
-
-            await ShowImage(currentIndex);
             MessageBox.Show($"[{fileName}] 복구 완료!", "복구 완료");
         }
 
-        private async void ImgDeletebtn_Click(object sender, EventArgs e)
+        private void ImgDeletebtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
 
@@ -475,21 +484,18 @@ namespace DataManager
                 if (!deletedFiles.Contains(fileNameOnly))
                     deletedFiles.Add(fileNameOnly);
 
-                // 삭제 반영 새로고침
+                // 삭제 반영 새로고침 (내부에서 ShowImage 실행하여 즉시 렌더링)
                 SyncDataFromDisk();
 
                 if (imageFiles.Length == 0)
                 {
                     Imagebar.Value = 0;
                     MessageBox.Show("남은 프레임이 없습니다.", "알림");
-                    return;
                 }
-
-                await ShowImage(currentIndex);
             }
         }
 
-        private async void ImgAddbtn_Click(object sender, EventArgs e)
+        private void ImgAddbtn_Click(object sender, EventArgs e)
         {
             string windowsUser = Environment.UserName;
             string wslBasePath = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar";
@@ -503,7 +509,9 @@ namespace DataManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string selectedFile = openFileDialog.FileName;
-                    string imagesPath = Path.GetDirectoryName(imageFiles[0]);
+                    if (imageFiles.Length == 0 && string.IsNullOrEmpty(targetImagesPath)) return;
+
+                    string imagesPath = targetImagesPath;
                     string newFileName = Path.Combine(imagesPath, Path.GetFileName(selectedFile));
 
                     if (selectedFile != newFileName)
@@ -511,8 +519,6 @@ namespace DataManager
 
                     // 추가 반영 새로고침
                     SyncDataFromDisk();
-
-                    await ShowImage(currentIndex);
                 }
             }
         }

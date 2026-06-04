@@ -58,6 +58,8 @@
             this.UserAnglelbl = new System.Windows.Forms.Label();
             this.UserThrottlelbl = new System.Windows.Forms.Label();
             this.PilotAnglebar = new System.Windows.Forms.ProgressBar();
+            this.GoTrainbtn = new System.Windows.Forms.Button();
+            this.GoToResultbtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).BeginInit();
@@ -70,9 +72,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
+          feature/function
             this.Imagepic.Location = new System.Drawing.Point(12, 12);
             this.Imagepic.Name = "Imagepic";
             this.Imagepic.Size = new System.Drawing.Size(1042, 767);
+          
             this.Imagepic.TabIndex = 6;
             this.Imagepic.TabStop = false;
             // 
@@ -110,7 +114,9 @@
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
             this.ImageNumberlbl.Location = new System.Drawing.Point(91, 239);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
+          feature/function
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
+          
             this.ImageNumberlbl.TabIndex = 17;
             this.ImageNumberlbl.Text = "(1000/1000)";
             // 
@@ -445,11 +451,37 @@
             this.PilotAnglebar.Size = new System.Drawing.Size(275, 11);
             this.PilotAnglebar.TabIndex = 8;
             // 
+            // GoTrainbtn
+            // 
+            this.GoTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoTrainbtn.ForeColor = System.Drawing.Color.Black;
+            this.GoTrainbtn.Location = new System.Drawing.Point(12, 12);
+            this.GoTrainbtn.Name = "GoTrainbtn";
+            this.GoTrainbtn.Size = new System.Drawing.Size(234, 36);
+            this.GoTrainbtn.TabIndex = 10;
+            this.GoTrainbtn.Tag = "noTheme";
+            this.GoTrainbtn.Text = "훈련 페이지로 가기";
+            this.GoTrainbtn.UseVisualStyleBackColor = false;
+            // 
+            // GoToResultbtn
+            // 
+            this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoToResultbtn.Location = new System.Drawing.Point(813, 10);
+            this.GoToResultbtn.Name = "GoToResultbtn";
+            this.GoToResultbtn.Size = new System.Drawing.Size(241, 38);
+            this.GoToResultbtn.TabIndex = 22;
+            this.GoToResultbtn.Tag = "noTheme";
+            this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
+            this.GoToResultbtn.UseVisualStyleBackColor = false;
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
+          feature/function
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Imagebar);
             this.Controls.Add(this.groupBox1);
@@ -499,5 +531,7 @@
         private System.Windows.Forms.Label UserAnglelbl;
         private System.Windows.Forms.Label UserThrottlelbl;
         private System.Windows.Forms.ProgressBar PilotAnglebar;
+        private System.Windows.Forms.Button GoTrainbtn;
+        private System.Windows.Forms.Button GoToResultbtn;
     }
 }

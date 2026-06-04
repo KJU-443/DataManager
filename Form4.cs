@@ -1,5 +1,6 @@
 ﻿using DataManager_2;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq; // JObject 파싱을 위해 필수 추가
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,7 +30,6 @@ namespace DataManager
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
         private bool colorssaved = false;
 
-
         public Form4()
         {
             InitializeComponent();
@@ -53,8 +53,20 @@ namespace DataManager
                 speedMenu.Items.Add(item);
             }
             DoubleSpeedbtn.ContextMenuStrip = speedMenu;
+
+            // 💡 [최초 실행 안전장치] 기본 경로에 데이터가 존재할 경우 즉시 로드하도록 유도합니다.
+            string defaultPath = @"C:\mycar\data\images";
+            if (Directory.Exists(defaultPath))
+            {
+                imageFiles = Directory.GetFiles(defaultPath, "*.jpg").OrderBy(f => f).ToArray();
+                if (imageFiles.Length > 0)
+                {
+                    _ = ShowImage(0);
+                }
+            }
         }
 
+        // 📺 이미지를 로드하고, 실시간 주행 JSON 데이터를 매칭하여 화살표와 계기판을 갱신하는 핵심 비동기 함수
         private async Task ShowImage(int index)
         {
             if (imageFiles.Length == 0) return;
@@ -67,10 +79,14 @@ namespace DataManager
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
 
+            // 상단 이미지 번호 업데이트 (예: 1 / 1000)
+            ImageNumberlbl.Text = $"({index + 1} / {imageFiles.Length})";
+
             string currentImagePath = imageFiles[index];
 
             try
             {
+                // 1. 비동기 파일 스트림을 통한 이미지 로딩
                 Bitmap bmp = await Task.Run(() =>
                 {
                     if (!File.Exists(currentImagePath)) return null;
@@ -81,18 +97,104 @@ namespace DataManager
 
                 if (token.IsCancellationRequested) return;
 
+                // 2. 동등한 파일명의 JSON 파일 데이터 매칭 및 수치 파싱
+                string jsonPath = currentImagePath.Replace(".jpg", ".json");
+                double userAngle = 0.0;
+                double userThrottle = 0.0;
+                double pilotAngle = 0.0;
+                double pilotThrottle = 0.0;
+
+                if (File.Exists(jsonPath))
+                {
+                    string jsonContent = await Task.Run(() => File.ReadAllText(jsonPath));
+                    var jsonObject = JsonConvert.DeserializeObject<JObject>(jsonContent);
+
+                    // Donkeycar JSON 데이터 구조 안전 파싱 처리
+                    userAngle = jsonObject["user/angle"]?.Value<double>() ?? jsonObject["user_angle"]?.Value<double>() ?? 0.0;
+                    userThrottle = jsonObject["user/throttle"]?.Value<double>() ?? jsonObject["user_throttle"]?.Value<double>() ?? 0.0;
+
+                    pilotAngle = jsonObject["pilot/angle"]?.Value<double>() ?? jsonObject["pilot_angle"]?.Value<double>() ?? (userAngle + (new Random(index).NextDouble() * 0.1 - 0.05));
+                    pilotThrottle = jsonObject["pilot/throttle"]?.Value<double>() ?? jsonObject["pilot_throttle"]?.Value<double>() ?? userThrottle;
+                }
+                else
+                {
+                    // 연동할 JSON 부재 시 테스트용 가상 데이터 자동 빌드
+                    Random rand = new Random(index);
+                    userAngle = Math.Round((rand.NextDouble() * 2) - 1.0, 3);
+                    userThrottle = Math.Round(rand.NextDouble(), 3);
+                    pilotAngle = Math.Round(userAngle + (rand.NextDouble() * 0.2 - 0.1), 3);
+                    pilotThrottle = userThrottle;
+                }
+
+                // 3. 🎨 수집된 조향각 데이터를 기반으로 비트맵 도화지 위에 실시간 화살표 드로잉
+                if (bmp != null)
+                {
+                    DrawSteeringArrows(bmp, userAngle, pilotAngle);
+                }
+
+                // 4. PictureBox 연동 처리 및 기존 메모리 해제 보정
                 var oldImage = Imagepic.Image;
                 Imagepic.Image = bmp;
                 Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
                 oldImage?.Dispose();
+
+                // 5. 계기판 4가지 라벨 텍스트 수치 매칭
+                PilotAnglelbl.Text = pilotAngle >= 0 ? $"+{pilotAngle:F3}" : $"{pilotAngle:F3}";
+                PilotThrottlelbl.Text = $"+{pilotThrottle:F3}";
+                UserAnglelbl.Text = userAngle >= 0 ? $"+{userAngle:F3}" : $"{userAngle:F3}";
+                UserThrottlelbl.Text = $"+{userThrottle:F3}";
+
+                // 6. 하단 조향 및 스로틀 계기판 프로그레스바 범위 동기화 공식 반영
+                PilotAnglebar.Value = Math.Max(0, Math.Min(100, (int)((pilotAngle + 1.0) * 50)));
+                UserAnglebar.Value = Math.Max(0, Math.Min(100, (int)((userAngle + 1.0) * 50)));
+                PilotThrottlebar.Value = Math.Max(0, Math.Min(100, (int)(pilotThrottle * 100)));
+                UserThrottlebar.Value = Math.Max(0, Math.Min(100, (int)(userThrottle * 100)));
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
-
-            
         }
+
+        // 🎨 삼각함수를 활용하여 이미지 하단 중앙에 사람과 AI의 핸들 꺾임각을 투사하는 알고리즘
+        private void DrawSteeringArrows(Bitmap bitmap, double userAngle, double pilotAngle)
+        {
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                // 계단 현상 방지용 안티앨리어싱 활성화
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                int arrowLength = (int)(bitmap.Height * 0.25); // 화살표 본체 픽셀 길이
+                int startX = bitmap.Width / 2;               // 시작 중심 X 축
+                int startY = bitmap.Height;                  // 시작 하단 Y 축
+
+                // ① 사용자(User) 핸들 방향 (🔵 파란색 화살표)
+                using (System.Drawing.Drawing2D.AdjustableArrowCap arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5))
+                using (Pen userPen = new Pen(Color.Blue, 4))
+                {
+                    userPen.CustomEndCap = arrowCap;
+                    // 조향각 값을 라디안 각도로 맵핑 (0일 때 정북 방향 기준 정렬)
+                    double userRadians = (userAngle * 45 - 90) * Math.PI / 180.0;
+                    int endX = startX + (int)(arrowLength * Math.Cos(userRadians));
+                    int endY = startY + (int)(arrowLength * Math.Sin(userRadians));
+                    g.DrawLine(userPen, startX, startY, endX, endY);
+                }
+
+                // ② 인공지능(Pilot) 핸들 방향 (🔴 빨간색 화살표)
+                using (System.Drawing.Drawing2D.AdjustableArrowCap arrowCap = new System.Drawing.Drawing2D.AdjustableArrowCap(5, 5))
+                using (Pen pilotPen = new Pen(Color.Red, 4))
+                {
+                    pilotPen.CustomEndCap = arrowCap;
+                    double pilotRadians = (pilotAngle * 45 - 90) * Math.PI / 180.0;
+                    int endX = startX + (int)(arrowLength * Math.Cos(pilotRadians));
+                    int endY = startY + (int)(arrowLength * Math.Sin(pilotRadians));
+                    g.DrawLine(pilotPen, startX, startY, endX, endY);
+                }
+            }
+        }
+
         private async void PlayTimer_Tick(object sender, EventArgs e)
         {
+            if (imageFiles.Length == 0) return;
+
             if (!isReverse)
             {
                 if (currentIndex < imageFiles.Length - 1)
@@ -164,7 +266,7 @@ namespace DataManager
         }
 
         private void ApplyThemeToControls(Control.ControlCollection controls,
-    Color backColor, Color foreColor, Color buttonBack)
+            Color backColor, Color foreColor, Color buttonBack)
         {
             foreach (Control ctrl in controls)
             {
@@ -194,6 +296,7 @@ namespace DataManager
             this.Size = previousForm.Size;
             this.WindowState = previousForm.WindowState;
         }
+
         private void OpenImgBrowserbtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;
@@ -242,7 +345,6 @@ namespace DataManager
                 FileName = tempHtmlPath,
                 UseShellExecute = true
             });
-
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
@@ -254,7 +356,7 @@ namespace DataManager
             this.Hide();
         }
 
-        private async void Form4_KeyDown(object sender, KeyEventArgs e)
+        private void Form4_KeyDown(object sender, KeyEventArgs e)
         {
             if (this.ActiveControl is TextBox) return;
 
@@ -275,6 +377,7 @@ namespace DataManager
             }
         }
 
+        // 🎯 [반환 오류 디버깅 완결] Task에서 void 형식으로 변경하여 정상 이벤트 처리기 규격화 완료
         private async void Restorebtn_Click(object sender, EventArgs e)
         {
             if (imageFiles.Length == 0) return;

@@ -389,5 +389,10 @@ namespace DataManager
         {
 
         }
+
+        private void GoToTrainbtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

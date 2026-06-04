@@ -60,10 +60,14 @@
             this.PilotAnglebar = new System.Windows.Forms.ProgressBar();
             this.GoTrainbtn = new System.Windows.Forms.Button();
             this.GoToResultbtn = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.GoToTrainbtn = new System.Windows.Forms.Button();
+            this.GoDatabtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Imagepic)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // Imagepic
@@ -72,10 +76,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Imagepic.BackColor = System.Drawing.Color.White;
-            this.Imagepic.Location = new System.Drawing.Point(12, 12);
+            this.Imagepic.Location = new System.Drawing.Point(12, 59);
             this.Imagepic.Name = "Imagepic";
-            this.Imagepic.Size = new System.Drawing.Size(1042, 767);
-          
+            this.Imagepic.Size = new System.Drawing.Size(1042, 720);
             this.Imagepic.TabIndex = 6;
             this.Imagepic.TabStop = false;
             // 
@@ -114,7 +117,6 @@
             this.ImageNumberlbl.Location = new System.Drawing.Point(91, 239);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
-          
             this.ImageNumberlbl.TabIndex = 17;
             this.ImageNumberlbl.Text = "(1000/1000)";
             // 
@@ -474,11 +476,49 @@
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
             this.GoToResultbtn.UseVisualStyleBackColor = false;
             // 
+            // panel5
+            // 
+            this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel5.Controls.Add(this.GoToTrainbtn);
+            this.panel5.Controls.Add(this.GoDatabtn);
+            this.panel5.Location = new System.Drawing.Point(12, 11);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1042, 42);
+            this.panel5.TabIndex = 12;
+            // 
+            // GoToTrainbtn
+            // 
+            this.GoToTrainbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.GoToTrainbtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoToTrainbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoToTrainbtn.Location = new System.Drawing.Point(803, 4);
+            this.GoToTrainbtn.Name = "GoToTrainbtn";
+            this.GoToTrainbtn.Size = new System.Drawing.Size(236, 38);
+            this.GoToTrainbtn.TabIndex = 20;
+            this.GoToTrainbtn.Tag = "noTheme";
+            this.GoToTrainbtn.Text = "훈련 페이지로 가기";
+            this.GoToTrainbtn.UseVisualStyleBackColor = false;
+            this.GoToTrainbtn.Click += new System.EventHandler(this.GoToTrainbtn_Click);
+            // 
+            // GoDatabtn
+            // 
+            this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
+            this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
+            this.GoDatabtn.Name = "GoDatabtn";
+            this.GoDatabtn.Size = new System.Drawing.Size(221, 38);
+            this.GoDatabtn.TabIndex = 3;
+            this.GoDatabtn.Tag = "noTheme";
+            this.GoDatabtn.Text = "데이터 페이지로 가기";
+            this.GoDatabtn.UseVisualStyleBackColor = false;
+            // 
             // Form4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
+            this.Controls.Add(this.panel5);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.Imagebar);
             this.Controls.Add(this.groupBox1);
@@ -491,6 +531,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.Imagebar)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,5 +571,8 @@
         private System.Windows.Forms.ProgressBar PilotAnglebar;
         private System.Windows.Forms.Button GoTrainbtn;
         private System.Windows.Forms.Button GoToResultbtn;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Button GoToTrainbtn;
+        private System.Windows.Forms.Button GoDatabtn;
     }
 }

@@ -84,8 +84,11 @@
             this.SelectFolderbtn = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.GoToResultbtn = new System.Windows.Forms.Button();
-            this.GoToResultbtn.Click += new System.EventHandler(this.GoTrainResultbtn_Click);
             this.GoTrainbtn = new System.Windows.Forms.Button();
+            this.NumDowntxt = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.NumUptxt = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -257,6 +260,10 @@
             this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel4.Controls.Add(this.NumDowntxt);
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Controls.Add(this.label3);
+            this.panel4.Controls.Add(this.NumUptxt);
             this.panel4.Controls.Add(this.ImageFilteringbtn);
             this.panel4.Controls.Add(this.DelImageFilteringbtn);
             this.panel4.Controls.Add(this.TrottleDowntxt);
@@ -341,7 +348,7 @@
             this.TrottleTextlbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TrottleTextlbl.AutoSize = true;
             this.TrottleTextlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrottleTextlbl.Location = new System.Drawing.Point(3, 303);
+            this.TrottleTextlbl.Location = new System.Drawing.Point(10, 301);
             this.TrottleTextlbl.Name = "TrottleTextlbl";
             this.TrottleTextlbl.Size = new System.Drawing.Size(94, 29);
             this.TrottleTextlbl.TabIndex = 14;
@@ -835,6 +842,7 @@
             this.GoToResultbtn.Tag = "noTheme";
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
             this.GoToResultbtn.UseVisualStyleBackColor = false;
+            this.GoToResultbtn.Click += new System.EventHandler(this.GoTrainResultbtn_Click);
             // 
             // GoTrainbtn
             // 
@@ -849,6 +857,46 @@
             this.GoTrainbtn.Text = "훈련 페이지로 가기";
             this.GoTrainbtn.UseVisualStyleBackColor = false;
             this.GoTrainbtn.Click += new System.EventHandler(this.GoTrainbtn_Click);
+            // 
+            // NumDowntxt
+            // 
+            this.NumDowntxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.NumDowntxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.NumDowntxt.Location = new System.Drawing.Point(201, 214);
+            this.NumDowntxt.Name = "NumDowntxt";
+            this.NumDowntxt.Size = new System.Drawing.Size(67, 35);
+            this.NumDowntxt.TabIndex = 22;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Location = new System.Drawing.Point(170, 217);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(28, 29);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "~";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label3.Location = new System.Drawing.Point(3, 217);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 29);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "number";
+            // 
+            // NumUptxt
+            // 
+            this.NumUptxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.NumUptxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.NumUptxt.Location = new System.Drawing.Point(102, 214);
+            this.NumUptxt.Name = "NumUptxt";
+            this.NumUptxt.Size = new System.Drawing.Size(67, 35);
+            this.NumUptxt.TabIndex = 19;
             // 
             // Form1
             // 
@@ -941,5 +989,9 @@
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Button GoTrainResultbtn;
         private System.Windows.Forms.Button GoDatabtn;
+        private System.Windows.Forms.TextBox NumDowntxt;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox NumUptxt;
     }
 }

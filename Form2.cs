@@ -20,6 +20,7 @@ namespace DataManager_2
         private static List<(string time, string path, string imagePath)> trainingHistory = new List<(string, string, string)>();
         private string dataPath = "";
         private bool isTraining = false;
+        
 
         private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
@@ -30,6 +31,7 @@ namespace DataManager_2
             InitializeComponent();
             realWorkingDirectory = path;
             dataPath = data;
+            radioOverwrite.Checked = true;
 
             SortMethodcom.SelectedIndex = 0;
             Massagelbl.Text = "학습 시스템 준비 완료.";

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -205,8 +205,6 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.lossGraph);
             this.panel3.Controls.Add(this.Traninglst);
             this.panel3.Location = new System.Drawing.Point(3, 129);
             this.panel3.Name = "panel3";
@@ -217,7 +215,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(913, 201);
+            this.label1.Location = new System.Drawing.Point(1320, 509);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(173, 40);
             this.label1.TabIndex = 11;
@@ -226,16 +224,16 @@
             // 
             // lossGraph
             // 
-            chartArea1.Name = "ChartArea1";
-            this.lossGraph.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.lossGraph.Legends.Add(legend1);
-            this.lossGraph.Location = new System.Drawing.Point(920, 244);
+            chartArea2.Name = "ChartArea1";
+            this.lossGraph.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.lossGraph.Legends.Add(legend2);
+            this.lossGraph.Location = new System.Drawing.Point(1187, 529);
             this.lossGraph.Name = "lossGraph";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.lossGraph.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.lossGraph.Series.Add(series2);
             this.lossGraph.Size = new System.Drawing.Size(487, 349);
             this.lossGraph.TabIndex = 11;
             this.lossGraph.Text = "chart1";
@@ -243,12 +241,12 @@
             // 
             // Traninglst
             // 
-            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Traninglst.FormattingEnabled = true;
             this.Traninglst.ItemHeight = 18;
             this.Traninglst.Location = new System.Drawing.Point(0, 0);
             this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(853, 834);
+            this.Traninglst.Size = new System.Drawing.Size(1412, 834);
             this.Traninglst.TabIndex = 8;
             this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
@@ -268,7 +266,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.lossGraph);
             this.Name = "Form2";
             this.Text = "TrainingPart V1.0";
             this.Load += new System.EventHandler(this.Form2_Load);
@@ -279,9 +279,9 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

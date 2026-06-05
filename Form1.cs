@@ -50,6 +50,9 @@ namespace DataManager
 
         private bool _suppressDeleteConfirm = false;
 
+        private Bitmap _preloadedBitmap = null;
+        private int _preloadedIndex = -1;
+
 
         public Form1()
         {
@@ -394,10 +397,13 @@ namespace DataManager
                 return int.TryParse(numStr, out int n) ? n : int.MaxValue;
             }).ToArray();
 
+            Imagelst.BeginUpdate();  // UI 업데이트 중단
+            Imagelst.Items.Clear();
             foreach (string file in imageFiles)
             {
                 Imagelst.Items.Add(Path.GetFileName(file));
             }
+            Imagelst.EndUpdate();    // UI 업데이트 재개
 
             if (imageFiles.Length > 0 && currentIndex >= 0)
             {
@@ -428,7 +434,6 @@ namespace DataManager
 
         private async Task ShowImage(int index)
         {
-
             if (imageFiles.Length == 0) return;
 
             imageCts.Cancel();
@@ -438,52 +443,76 @@ namespace DataManager
             Imagebar.Minimum = 0;
             Imagebar.Maximum = imageFiles.Length - 1;
             Imagebar.Value = index;
-            Imagelst.SelectedIndex = index;
+            if (!isPlaying)
+                Imagelst.SelectedIndex = index;
 
             string currentImagePath = imageFiles[index];
 
             try
             {
-                Bitmap bmp = await Task.Run(() =>
+                Bitmap bmp;
+                if (_preloadedIndex == index && _preloadedBitmap != null)
                 {
-                    if (!File.Exists(currentImagePath)) return null;
-                    using (FileStream fs = new FileStream(currentImagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    using (System.Drawing.Image tempImg = System.Drawing.Image.FromStream(fs))
-                        return new Bitmap(tempImg);
-                }, token);
+                    bmp = _preloadedBitmap;
+                    _preloadedBitmap = null;
+                    _preloadedIndex = -1;
+                }
+                else
+                {
+                    bmp = await Task.Run(() =>
+                    {
+                        if (!File.Exists(currentImagePath)) return null;
+                        using (FileStream fs = new FileStream(currentImagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (System.Drawing.Image tempImg = System.Drawing.Image.FromStream(fs))
+                            return new Bitmap(tempImg);
+                    }, token);
+                }
 
                 if (token.IsCancellationRequested) return;
 
-                // 새 이미지 로드 완료 후 한 번에 교체
                 var oldImage = Imagepic.Image;
                 Imagepic.Image = bmp;
                 Imagepic.SizeMode = PictureBoxSizeMode.Zoom;
-                oldImage?.Dispose(); // 교체 후 기존 이미지 해제
+                oldImage?.Dispose();
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
 
-            // angle/throttle 라벨 표시
             if (index < catalogRecords.Count)
             {
                 AngleFigurelbl.Text = $"angle : {catalogRecords[index].Angle:F3}";
                 TrottleFigurelbl.Text = $"throttle : {catalogRecords[index].Throttle:F3}";
             }
+
             int currentNum = 0;
             if (index < imageFiles.Length)
             {
                 string numStr = Path.GetFileName(imageFiles[index]).Split('_')[0];
                 int.TryParse(numStr, out currentNum);
             }
-
-            int totalNum = 0;
-            if (originalImageFiles.Length > 0)
-            {
-                string numStr = Path.GetFileName(originalImageFiles[originalImageFiles.Length - 1]).Split('_')[0];
-                int.TryParse(numStr, out totalNum);
-            }
-
             ImageNumberlbl.Text = $"({currentNum}/{originalImageFiles.Length})";
+
+            // 다음 이미지 미리 로드
+            int nextIndex = index + 1;
+            if (nextIndex < imageFiles.Length && nextIndex != _preloadedIndex)
+            {
+                _preloadedIndex = nextIndex;
+                string nextPath = imageFiles[nextIndex];
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        using (FileStream fs = new FileStream(nextPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (System.Drawing.Image tempImg = System.Drawing.Image.FromStream(fs))
+                        {
+                            var bmp = new Bitmap(tempImg);
+                            _preloadedBitmap?.Dispose();
+                            _preloadedBitmap = bmp;
+                        }
+                    }
+                    catch { }
+                });
+            }
         }
 
         private async void PlayTimer_Tick(object sender, EventArgs e)
@@ -886,21 +915,29 @@ namespace DataManager
                 return;
             }
 
-            // image_trash에서 가장 마지막 파일 복구
-            string lastTrashFile = Directory.GetFiles(trashPath, "*.jpg")
-                                            .OrderBy(f => f)
-                                            .Last();
-            string fileName = Path.GetFileName(lastTrashFile);
+            string[] trashFiles = Directory.GetFiles(trashPath, "*.jpg").OrderBy(f => f).ToArray();
+
+            DialogResult confirm = MessageBox.Show(
+                $"image_trash의 이미지 {trashFiles.Length}개를 전부 복구할까요?",
+                "복구 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes) return;
 
             string imagesPath = Path.Combine(dataPath, "images");
-            string restorePath = Path.Combine(imagesPath, fileName);
 
-            File.Move(lastTrashFile, restorePath);
+            foreach (string trashFile in trashFiles)
+            {
+                string fileName = Path.GetFileName(trashFile);
+                string restorePath = Path.Combine(imagesPath, fileName);
+                if (!File.Exists(restorePath))
+                    File.Move(trashFile, restorePath);
+            }
 
             // imageFiles 재구성
             imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                   .OrderBy(f => f)
                                   .ToArray();
+            originalImageFiles = imageFiles.ToArray();
 
             // catalogRecords 재구성
             originalCatalogLines.Clear();
@@ -922,6 +959,8 @@ namespace DataManager
                 }
             }
 
+            originalCatalogRecords = catalogRecords.ToList();
+
             RefreshImageList();
             Imagebar.Maximum = imageFiles.Length - 1;
             LoadGraph();
@@ -930,7 +969,7 @@ namespace DataManager
                 currentIndex = imageFiles.Length - 1;
 
             await ShowImage(currentIndex);
-            MessageBox.Show($"[{fileName}] 복구 완료!", "복구 완료");
+            MessageBox.Show($"{trashFiles.Length}개 복구 완료!", "복구 완료");
         }
 
         private void GoToImage_Click(object sender, EventArgs e)

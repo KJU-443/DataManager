@@ -35,6 +35,9 @@ namespace DataManager
         private string targetImagesPath = "";
         private string baseDataPath = "";     // 카탈로그 조회를 위해 상위 경로 저장
 
+        private Bitmap _preloadedBitmap = null;
+        private int _preloadedIndex = -1;
+
         // 🎯 Form2로부터 실제 상위 데이터 주소(C:\mycar\data)를 전달받습니다.
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -220,6 +223,28 @@ namespace DataManager
             }
             catch (OperationCanceledException) { }
             catch (Exception) { }
+
+            // 다음 이미지 미리 로드
+            int nextIndex = index + 1;
+            if (nextIndex < imageFiles.Length && nextIndex != _preloadedIndex)
+            {
+                _preloadedIndex = nextIndex;
+                string nextPath = imageFiles[nextIndex];
+                _ = Task.Run(() =>
+                {
+                    try
+                    {
+                        using (FileStream fs = new FileStream(nextPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        using (System.Drawing.Image tempImg = System.Drawing.Image.FromStream(fs))
+                        {
+                            var bmp = new Bitmap(tempImg);
+                            _preloadedBitmap?.Dispose();
+                            _preloadedBitmap = bmp;
+                        }
+                    }
+                    catch { }
+                });
+            }
         }
 
         // 🎨 이미지 하단 중앙부에 가이드 화살표를 그리는 연산 메서드

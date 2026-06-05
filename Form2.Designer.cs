@@ -37,9 +37,9 @@
             this.Massagelbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.GoToResultbtn = new System.Windows.Forms.Button();
-            this.TrainFigurelbl = new System.Windows.Forms.Label();
-            this.TrainWronglbl = new System.Windows.Forms.Label();
             this.GoDatabtn = new System.Windows.Forms.Button();
+            this.radioOverwrite = new System.Windows.Forms.RadioButton();
+            this.radioNew = new System.Windows.Forms.RadioButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -56,15 +56,16 @@
             this.tableLayoutPanel1.Controls.Add(this.Traninglst, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.Massagelbl, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(16, 16);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1006);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1843, 1341);
             this.tableLayoutPanel1.TabIndex = 1;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -75,18 +76,20 @@
             this.panel2.Controls.Add(this.SortMethodlbl);
             this.panel2.Controls.Add(this.SortMethodcom);
             this.panel2.Controls.Add(this.TrainingStartbtn);
-            this.panel2.Location = new System.Drawing.Point(3, 51);
+            this.panel2.Location = new System.Drawing.Point(4, 68);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1412, 72);
+            this.panel2.Size = new System.Drawing.Size(1835, 96);
             this.panel2.TabIndex = 7;
             // 
             // SortMethodlbl
             // 
             this.SortMethodlbl.AutoSize = true;
             this.SortMethodlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SortMethodlbl.Location = new System.Drawing.Point(13, 11);
+            this.SortMethodlbl.Location = new System.Drawing.Point(17, 15);
+            this.SortMethodlbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SortMethodlbl.Name = "SortMethodlbl";
-            this.SortMethodlbl.Size = new System.Drawing.Size(213, 40);
+            this.SortMethodlbl.Size = new System.Drawing.Size(286, 55);
             this.SortMethodlbl.TabIndex = 10;
             this.SortMethodlbl.Text = "보기 방법 변경";
             this.SortMethodlbl.Click += new System.EventHandler(this.SortMethodlbl_Click);
@@ -99,9 +102,10 @@
             "Tabel",
             "2-Tabel",
             "Card"});
-            this.SortMethodcom.Location = new System.Drawing.Point(263, 16);
+            this.SortMethodcom.Location = new System.Drawing.Point(342, 21);
+            this.SortMethodcom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SortMethodcom.Name = "SortMethodcom";
-            this.SortMethodcom.Size = new System.Drawing.Size(384, 40);
+            this.SortMethodcom.Size = new System.Drawing.Size(498, 50);
             this.SortMethodcom.TabIndex = 9;
             // 
             // TrainingStartbtn
@@ -110,9 +114,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TrainingStartbtn.BackColor = System.Drawing.Color.DarkSalmon;
             this.TrainingStartbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrainingStartbtn.Location = new System.Drawing.Point(783, 2);
+            this.TrainingStartbtn.Location = new System.Drawing.Point(1018, 3);
+            this.TrainingStartbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TrainingStartbtn.Name = "TrainingStartbtn";
-            this.TrainingStartbtn.Size = new System.Drawing.Size(625, 69);
+            this.TrainingStartbtn.Size = new System.Drawing.Size(811, 92);
             this.TrainingStartbtn.TabIndex = 7;
             this.TrainingStartbtn.Tag = "noTheme";
             this.TrainingStartbtn.Text = "훈련 시작";
@@ -123,10 +128,11 @@
             // 
             this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Traninglst.FormattingEnabled = true;
-            this.Traninglst.ItemHeight = 18;
-            this.Traninglst.Location = new System.Drawing.Point(3, 129);
+            this.Traninglst.ItemHeight = 24;
+            this.Traninglst.Location = new System.Drawing.Point(4, 172);
+            this.Traninglst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(1412, 834);
+            this.Traninglst.Size = new System.Drawing.Size(1835, 1112);
             this.Traninglst.TabIndex = 8;
             this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
@@ -134,9 +140,10 @@
             // 
             this.Massagelbl.AutoSize = true;
             this.Massagelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Massagelbl.Location = new System.Drawing.Point(3, 966);
+            this.Massagelbl.Location = new System.Drawing.Point(4, 1288);
+            this.Massagelbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Massagelbl.Name = "Massagelbl";
-            this.Massagelbl.Size = new System.Drawing.Size(93, 25);
+            this.Massagelbl.Size = new System.Drawing.Size(127, 31);
             this.Massagelbl.TabIndex = 9;
             this.Massagelbl.Text = "경고 텍스트";
             // 
@@ -144,13 +151,14 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.radioNew);
+            this.panel1.Controls.Add(this.radioOverwrite);
             this.panel1.Controls.Add(this.GoToResultbtn);
-            this.panel1.Controls.Add(this.TrainFigurelbl);
-            this.panel1.Controls.Add(this.TrainWronglbl);
             this.panel1.Controls.Add(this.GoDatabtn);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Location = new System.Drawing.Point(4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1412, 42);
+            this.panel1.Size = new System.Drawing.Size(1835, 56);
             this.panel1.TabIndex = 10;
             // 
             // GoToResultbtn
@@ -158,58 +166,60 @@
             this.GoToResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoToResultbtn.Location = new System.Drawing.Point(1172, 4);
+            this.GoToResultbtn.Location = new System.Drawing.Point(1523, 5);
+            this.GoToResultbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GoToResultbtn.Name = "GoToResultbtn";
-            this.GoToResultbtn.Size = new System.Drawing.Size(236, 38);
+            this.GoToResultbtn.Size = new System.Drawing.Size(307, 51);
             this.GoToResultbtn.TabIndex = 20;
             this.GoToResultbtn.Tag = "noTheme";
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
             this.GoToResultbtn.UseVisualStyleBackColor = false;
             this.GoToResultbtn.Click += new System.EventHandler(this.GoToResultbtn_Click);
             // 
-            // TrainFigurelbl
-            // 
-            this.TrainFigurelbl.AutoSize = true;
-            this.TrainFigurelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrainFigurelbl.ForeColor = System.Drawing.Color.Black;
-            this.TrainFigurelbl.Location = new System.Drawing.Point(397, 7);
-            this.TrainFigurelbl.Name = "TrainFigurelbl";
-            this.TrainFigurelbl.Size = new System.Drawing.Size(173, 29);
-            this.TrainFigurelbl.TabIndex = 19;
-            this.TrainFigurelbl.Text = "훈련 진행률 : 0%";
-            // 
-            // TrainWronglbl
-            // 
-            this.TrainWronglbl.AutoSize = true;
-            this.TrainWronglbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrainWronglbl.ForeColor = System.Drawing.Color.Black;
-            this.TrainWronglbl.Location = new System.Drawing.Point(800, 7);
-            this.TrainWronglbl.Name = "TrainWronglbl";
-            this.TrainWronglbl.Size = new System.Drawing.Size(173, 29);
-            this.TrainWronglbl.TabIndex = 18;
-            this.TrainWronglbl.Text = "훈련 오답률 : 0%";
-            this.TrainWronglbl.Click += new System.EventHandler(this.TrainWronglbl_Click);
-            // 
             // GoDatabtn
             // 
             this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
+            this.GoDatabtn.Location = new System.Drawing.Point(6, 5);
+            this.GoDatabtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GoDatabtn.Name = "GoDatabtn";
-            this.GoDatabtn.Size = new System.Drawing.Size(221, 38);
+            this.GoDatabtn.Size = new System.Drawing.Size(287, 51);
             this.GoDatabtn.TabIndex = 3;
             this.GoDatabtn.Tag = "noTheme";
             this.GoDatabtn.Text = "데이터 페이지로 가기";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
+            // radioOverwrite
+            // 
+            this.radioOverwrite.AutoSize = true;
+            this.radioOverwrite.Location = new System.Drawing.Point(602, 18);
+            this.radioOverwrite.Name = "radioOverwrite";
+            this.radioOverwrite.Size = new System.Drawing.Size(371, 28);
+            this.radioOverwrite.TabIndex = 21;
+            this.radioOverwrite.TabStop = true;
+            this.radioOverwrite.Text = "기존 모델 덮어쓰기(mypilot.h5)";
+            this.radioOverwrite.UseVisualStyleBackColor = true;
+            // 
+            // radioNew
+            // 
+            this.radioNew.AutoSize = true;
+            this.radioNew.Location = new System.Drawing.Point(1045, 18);
+            this.radioNew.Name = "radioNew";
+            this.radioNew.Size = new System.Drawing.Size(361, 28);
+            this.radioNew.TabIndex = 22;
+            this.radioNew.TabStop = true;
+            this.radioNew.Text = "날짜 별로 새로 모델 생성하기";
+            this.radioNew.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1442, 1030);
+            this.ClientSize = new System.Drawing.Size(1875, 1373);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form2";
             this.Text = "TrainingPart V1.0";
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -233,8 +243,8 @@
         private System.Windows.Forms.Label SortMethodlbl;
         private System.Windows.Forms.ListBox Traninglst;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label TrainFigurelbl;
-        private System.Windows.Forms.Label TrainWronglbl;
         private System.Windows.Forms.Button GoToResultbtn;
+        private System.Windows.Forms.RadioButton radioNew;
+        private System.Windows.Forms.RadioButton radioOverwrite;
     }
 }

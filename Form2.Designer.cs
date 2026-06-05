@@ -37,22 +37,22 @@
             this.SortMethodlbl = new System.Windows.Forms.Label();
             this.SortMethodcom = new System.Windows.Forms.ComboBox();
             this.TrainingStartbtn = new System.Windows.Forms.Button();
-            this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.radioNew = new System.Windows.Forms.RadioButton();
             this.radioOverwrite = new System.Windows.Forms.RadioButton();
             this.GoToResultbtn = new System.Windows.Forms.Button();
             this.GoDatabtn = new System.Windows.Forms.Button();
-            this.lossGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.label1 = new System.Windows.Forms.Label();
+            this.lossGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.Traninglst = new System.Windows.Forms.ListBox();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).BeginInit();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -129,17 +129,6 @@
             this.TrainingStartbtn.UseVisualStyleBackColor = false;
             this.TrainingStartbtn.Click += new System.EventHandler(this.TrainingStartbtn_Click);
             // 
-            // Traninglst
-            // 
-            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Traninglst.FormattingEnabled = true;
-            this.Traninglst.ItemHeight = 18;
-            this.Traninglst.Location = new System.Drawing.Point(0, 0);
-            this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(747, 834);
-            this.Traninglst.TabIndex = 8;
-            this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
-            // 
             // Massagelbl
             // 
             this.Massagelbl.AutoSize = true;
@@ -167,7 +156,7 @@
             // 
             this.radioNew.AutoSize = true;
             this.radioNew.Location = new System.Drawing.Point(804, 14);
-            this.radioNew.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioNew.Margin = new System.Windows.Forms.Padding(2);
             this.radioNew.Name = "radioNew";
             this.radioNew.Size = new System.Drawing.Size(273, 22);
             this.radioNew.TabIndex = 22;
@@ -179,7 +168,7 @@
             // 
             this.radioOverwrite.AutoSize = true;
             this.radioOverwrite.Location = new System.Drawing.Point(463, 14);
-            this.radioOverwrite.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioOverwrite.Margin = new System.Windows.Forms.Padding(2);
             this.radioOverwrite.Name = "radioOverwrite";
             this.radioOverwrite.Size = new System.Drawing.Size(284, 22);
             this.radioOverwrite.TabIndex = 21;
@@ -214,23 +203,6 @@
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
-            // lossGraph
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.lossGraph.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.lossGraph.Legends.Add(legend1);
-            this.lossGraph.Location = new System.Drawing.Point(750, 199);
-            this.lossGraph.Name = "lossGraph";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.lossGraph.Series.Add(series1);
-            this.lossGraph.Size = new System.Drawing.Size(659, 449);
-            this.lossGraph.TabIndex = 11;
-            this.lossGraph.Text = "chart1";
-            this.lossGraph.Click += new System.EventHandler(this.lossGraph_Click);
-            // 
             // panel3
             // 
             this.panel3.Controls.Add(this.label1);
@@ -240,6 +212,45 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1412, 834);
             this.panel3.TabIndex = 11;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Location = new System.Drawing.Point(913, 201);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(173, 40);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "훈련 오답률";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lossGraph
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.lossGraph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.lossGraph.Legends.Add(legend1);
+            this.lossGraph.Location = new System.Drawing.Point(920, 244);
+            this.lossGraph.Name = "lossGraph";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.lossGraph.Series.Add(series1);
+            this.lossGraph.Size = new System.Drawing.Size(487, 349);
+            this.lossGraph.TabIndex = 11;
+            this.lossGraph.Text = "chart1";
+            this.lossGraph.Click += new System.EventHandler(this.lossGraph_Click);
+            // 
+            // Traninglst
+            // 
+            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Traninglst.FormattingEnabled = true;
+            this.Traninglst.ItemHeight = 18;
+            this.Traninglst.Location = new System.Drawing.Point(0, 0);
+            this.Traninglst.Name = "Traninglst";
+            this.Traninglst.Size = new System.Drawing.Size(853, 834);
+            this.Traninglst.TabIndex = 8;
+            this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
             // printPreviewDialog1
             // 
@@ -251,17 +262,6 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(753, 153);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 40);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "훈련 오답률";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -271,15 +271,16 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form2";
             this.Text = "TrainingPart V1.0";
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).EndInit();
             this.ResumeLayout(false);
 
         }

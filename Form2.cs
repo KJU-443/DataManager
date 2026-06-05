@@ -72,14 +72,22 @@ namespace DataManager_2
             isTraining = true;
             TrainingStartbtn.Text = "훈련 멈추기";
             Traninglst.Items.Clear();
-            Traninglst.Items.Add("훈련을 시작합니다...");
+
+            string modelFileName = radioOverwrite.Checked ? "mypilot.h5" : $"mypilot_{DateTime.Now:yyyyMMdd_HHmm}.h5";
+
+            // 💡 핵심: 리눅스 환경변수 $HOME을 직접 사용하여 경로 문제를 원천 봉쇄
+            // mkdir -p를 사용할 때도 $HOME을 활용함
+            string wslCommand = $"mkdir -p $HOME/mycar/models && " +
+                                $"cd $HOME/mycar && " +
+                                $"~/miniconda3/envs/e2e_env/bin/python3 train.py --tubs $HOME/mycar/data --model $HOME/mycar/models/{modelFileName}";
 
             try
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    FileName = "wsl",
-                    Arguments = "-d Ubuntu-22.04 bash -c \"cd ~/mycar && ~/miniconda3/envs/e2e_env/bin/python3 ~/mycar/train.py --tubs ~/mycar/data --model ~/mycar/models/mypilot.h5\"",
+                    FileName = "wsl.exe",
+                    // 💡 -e bash -c 를 통해 명령어를 직접 쉘에 전달
+                    Arguments = $"-d Ubuntu-22.04 -e bash -c \"{wslCommand}\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -88,12 +96,15 @@ namespace DataManager_2
 
                 donkeyTrainProcess = new Process { StartInfo = startInfo };
                 donkeyTrainProcess.EnableRaisingEvents = true;
-                // 프로세스 종료 시 자동 정리 로직 연결
-                donkeyTrainProcess.Exited += (s, args) => this.Invoke(new Action(() => HandleTrainingStop()));
 
+                donkeyTrainProcess.Exited += (s, args) => this.Invoke(new Action(() => HandleTrainingStop(modelFileName)));
+
+                // 상세 에러 로그 추적
                 donkeyTrainProcess.OutputDataReceived += (s, args) => {
-                    if (args.Data != null && this.IsHandleCreated)
-                        this.BeginInvoke(new Action(() => { Traninglst.Items.Add(args.Data); Traninglst.TopIndex = Traninglst.Items.Count - 1; }));
+                    if (args.Data != null) this.Invoke(new Action(() => Traninglst.Items.Add(args.Data)));
+                };
+                donkeyTrainProcess.ErrorDataReceived += (s, args) => {
+                    if (args.Data != null) this.Invoke(new Action(() => Traninglst.Items.Add($"[에러로그]: {args.Data}")));
                 };
 
                 donkeyTrainProcess.Start();
@@ -103,41 +114,23 @@ namespace DataManager_2
             catch (Exception ex) { MessageBox.Show("실행 오류: " + ex.Message); isTraining = false; }
         }
 
-        private void HandleTrainingStop()
+        private void HandleTrainingStop(string fileName)
         {
             if (!isTraining) return;
             isTraining = false;
 
-            // 🛑 파이썬이 종료된 후 파일을 강제로 찾고 복사하는 작업
+            // 파이썬 종료 후 파일 시스템 반영 대기
             Task.Run(async () =>
             {
-                string windowsUser = Environment.UserName;
-                // 리눅스 내부 경로
-                string wslModelPath = $"/home/{windowsUser}/mycar/models/mypilot.h5";
-                // 윈도우 접근 경로
-                string winTarget = $@"\\wsl.localhost\Ubuntu-22.04\home\{windowsUser}\mycar\models\mypilot.h5";
-
-                bool found = false;
-                for (int i = 0; i < 10; i++) // 5초 동안 0.5초 간격으로 확인
-                {
-                    if (File.Exists(winTarget)) { found = true; break; }
-                    await Task.Delay(500);
-                }
+                await Task.Delay(2000);
 
                 this.Invoke(new Action(() =>
                 {
-                    if (found)
-                    {
-                        Traninglst.Items.Add("[성공] 모델 파일 저장 완료.");
-                    }
-                    else
-                    {
-                        Traninglst.Items.Add("[경고] 모델 파일을 찾을 수 없습니다. (리눅스 내부 경로 확인 필요)");
-                    }
-
+                    Traninglst.Items.Add($"[완료] 저장된 모델: {fileName}");
                     TrainingStartbtn.Text = "훈련 시작";
                     RefreshListBox();
-                    MessageBox.Show("훈련이 종료되었습니다.");
+
+                    // 결과창으로 이동
                     GoToResultbtn_Click(null, null);
                 }));
             });

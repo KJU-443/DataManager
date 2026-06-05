@@ -28,6 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.SortMethodlbl = new System.Windows.Forms.Label();
@@ -36,13 +40,19 @@
             this.Traninglst = new System.Windows.Forms.ListBox();
             this.Massagelbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.radioNew = new System.Windows.Forms.RadioButton();
+            this.radioOverwrite = new System.Windows.Forms.RadioButton();
             this.GoToResultbtn = new System.Windows.Forms.Button();
             this.GoDatabtn = new System.Windows.Forms.Button();
-            this.radioOverwrite = new System.Windows.Forms.RadioButton();
-            this.radioNew = new System.Windows.Forms.RadioButton();
+            this.lossGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -53,19 +63,18 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.Traninglst, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.Massagelbl, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(16, 16);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 2);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1843, 1341);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1418, 1006);
             this.tableLayoutPanel1.TabIndex = 1;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -76,20 +85,18 @@
             this.panel2.Controls.Add(this.SortMethodlbl);
             this.panel2.Controls.Add(this.SortMethodcom);
             this.panel2.Controls.Add(this.TrainingStartbtn);
-            this.panel2.Location = new System.Drawing.Point(4, 68);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel2.Location = new System.Drawing.Point(3, 51);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1835, 96);
+            this.panel2.Size = new System.Drawing.Size(1412, 72);
             this.panel2.TabIndex = 7;
             // 
             // SortMethodlbl
             // 
             this.SortMethodlbl.AutoSize = true;
             this.SortMethodlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.SortMethodlbl.Location = new System.Drawing.Point(17, 15);
-            this.SortMethodlbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.SortMethodlbl.Location = new System.Drawing.Point(13, 11);
             this.SortMethodlbl.Name = "SortMethodlbl";
-            this.SortMethodlbl.Size = new System.Drawing.Size(286, 55);
+            this.SortMethodlbl.Size = new System.Drawing.Size(213, 40);
             this.SortMethodlbl.TabIndex = 10;
             this.SortMethodlbl.Text = "보기 방법 변경";
             this.SortMethodlbl.Click += new System.EventHandler(this.SortMethodlbl_Click);
@@ -102,10 +109,9 @@
             "Tabel",
             "2-Tabel",
             "Card"});
-            this.SortMethodcom.Location = new System.Drawing.Point(342, 21);
-            this.SortMethodcom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SortMethodcom.Location = new System.Drawing.Point(263, 16);
             this.SortMethodcom.Name = "SortMethodcom";
-            this.SortMethodcom.Size = new System.Drawing.Size(498, 50);
+            this.SortMethodcom.Size = new System.Drawing.Size(384, 40);
             this.SortMethodcom.TabIndex = 9;
             // 
             // TrainingStartbtn
@@ -114,10 +120,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TrainingStartbtn.BackColor = System.Drawing.Color.DarkSalmon;
             this.TrainingStartbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.TrainingStartbtn.Location = new System.Drawing.Point(1018, 3);
-            this.TrainingStartbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TrainingStartbtn.Location = new System.Drawing.Point(783, 2);
             this.TrainingStartbtn.Name = "TrainingStartbtn";
-            this.TrainingStartbtn.Size = new System.Drawing.Size(811, 92);
+            this.TrainingStartbtn.Size = new System.Drawing.Size(624, 69);
             this.TrainingStartbtn.TabIndex = 7;
             this.TrainingStartbtn.Tag = "noTheme";
             this.TrainingStartbtn.Text = "훈련 시작";
@@ -126,13 +131,12 @@
             // 
             // Traninglst
             // 
-            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Left;
             this.Traninglst.FormattingEnabled = true;
-            this.Traninglst.ItemHeight = 24;
-            this.Traninglst.Location = new System.Drawing.Point(4, 172);
-            this.Traninglst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Traninglst.ItemHeight = 18;
+            this.Traninglst.Location = new System.Drawing.Point(0, 0);
             this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(1835, 1112);
+            this.Traninglst.Size = new System.Drawing.Size(747, 834);
             this.Traninglst.TabIndex = 8;
             this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
@@ -140,10 +144,9 @@
             // 
             this.Massagelbl.AutoSize = true;
             this.Massagelbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.Massagelbl.Location = new System.Drawing.Point(4, 1288);
-            this.Massagelbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.Massagelbl.Location = new System.Drawing.Point(3, 966);
             this.Massagelbl.Name = "Massagelbl";
-            this.Massagelbl.Size = new System.Drawing.Size(127, 31);
+            this.Massagelbl.Size = new System.Drawing.Size(93, 25);
             this.Massagelbl.TabIndex = 9;
             this.Massagelbl.Text = "경고 텍스트";
             // 
@@ -155,21 +158,43 @@
             this.panel1.Controls.Add(this.radioOverwrite);
             this.panel1.Controls.Add(this.GoToResultbtn);
             this.panel1.Controls.Add(this.GoDatabtn);
-            this.panel1.Location = new System.Drawing.Point(4, 4);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1835, 56);
+            this.panel1.Size = new System.Drawing.Size(1412, 42);
             this.panel1.TabIndex = 10;
+            // 
+            // radioNew
+            // 
+            this.radioNew.AutoSize = true;
+            this.radioNew.Location = new System.Drawing.Point(804, 14);
+            this.radioNew.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioNew.Name = "radioNew";
+            this.radioNew.Size = new System.Drawing.Size(273, 22);
+            this.radioNew.TabIndex = 22;
+            this.radioNew.TabStop = true;
+            this.radioNew.Text = "날짜 별로 새로 모델 생성하기";
+            this.radioNew.UseVisualStyleBackColor = true;
+            // 
+            // radioOverwrite
+            // 
+            this.radioOverwrite.AutoSize = true;
+            this.radioOverwrite.Location = new System.Drawing.Point(463, 14);
+            this.radioOverwrite.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioOverwrite.Name = "radioOverwrite";
+            this.radioOverwrite.Size = new System.Drawing.Size(284, 22);
+            this.radioOverwrite.TabIndex = 21;
+            this.radioOverwrite.TabStop = true;
+            this.radioOverwrite.Text = "기존 모델 덮어쓰기(mypilot.h5)";
+            this.radioOverwrite.UseVisualStyleBackColor = true;
             // 
             // GoToResultbtn
             // 
             this.GoToResultbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.GoToResultbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoToResultbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoToResultbtn.Location = new System.Drawing.Point(1523, 5);
-            this.GoToResultbtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GoToResultbtn.Location = new System.Drawing.Point(1172, 4);
             this.GoToResultbtn.Name = "GoToResultbtn";
-            this.GoToResultbtn.Size = new System.Drawing.Size(307, 51);
+            this.GoToResultbtn.Size = new System.Drawing.Size(236, 38);
             this.GoToResultbtn.TabIndex = 20;
             this.GoToResultbtn.Tag = "noTheme";
             this.GoToResultbtn.Text = "훈련 결과 페이지로 가기";
@@ -180,46 +205,70 @@
             // 
             this.GoDatabtn.BackColor = System.Drawing.Color.PowderBlue;
             this.GoDatabtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.GoDatabtn.Location = new System.Drawing.Point(6, 5);
-            this.GoDatabtn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GoDatabtn.Location = new System.Drawing.Point(5, 4);
             this.GoDatabtn.Name = "GoDatabtn";
-            this.GoDatabtn.Size = new System.Drawing.Size(287, 51);
+            this.GoDatabtn.Size = new System.Drawing.Size(221, 38);
             this.GoDatabtn.TabIndex = 3;
             this.GoDatabtn.Tag = "noTheme";
             this.GoDatabtn.Text = "데이터 페이지로 가기";
             this.GoDatabtn.UseVisualStyleBackColor = false;
             this.GoDatabtn.Click += new System.EventHandler(this.GoDatabtn_Click);
             // 
-            // radioOverwrite
+            // lossGraph
             // 
-            this.radioOverwrite.AutoSize = true;
-            this.radioOverwrite.Location = new System.Drawing.Point(602, 18);
-            this.radioOverwrite.Name = "radioOverwrite";
-            this.radioOverwrite.Size = new System.Drawing.Size(371, 28);
-            this.radioOverwrite.TabIndex = 21;
-            this.radioOverwrite.TabStop = true;
-            this.radioOverwrite.Text = "기존 모델 덮어쓰기(mypilot.h5)";
-            this.radioOverwrite.UseVisualStyleBackColor = true;
+            chartArea1.Name = "ChartArea1";
+            this.lossGraph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.lossGraph.Legends.Add(legend1);
+            this.lossGraph.Location = new System.Drawing.Point(750, 199);
+            this.lossGraph.Name = "lossGraph";
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.lossGraph.Series.Add(series1);
+            this.lossGraph.Size = new System.Drawing.Size(659, 449);
+            this.lossGraph.TabIndex = 11;
+            this.lossGraph.Text = "chart1";
+            this.lossGraph.Click += new System.EventHandler(this.lossGraph_Click);
             // 
-            // radioNew
+            // panel3
             // 
-            this.radioNew.AutoSize = true;
-            this.radioNew.Location = new System.Drawing.Point(1045, 18);
-            this.radioNew.Name = "radioNew";
-            this.radioNew.Size = new System.Drawing.Size(361, 28);
-            this.radioNew.TabIndex = 22;
-            this.radioNew.TabStop = true;
-            this.radioNew.Text = "날짜 별로 새로 모델 생성하기";
-            this.radioNew.UseVisualStyleBackColor = true;
+            this.panel3.Controls.Add(this.label1);
+            this.panel3.Controls.Add(this.lossGraph);
+            this.panel3.Controls.Add(this.Traninglst);
+            this.panel3.Location = new System.Drawing.Point(3, 129);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1412, 834);
+            this.panel3.TabIndex = 11;
+            // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label1.Location = new System.Drawing.Point(753, 153);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(173, 40);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "훈련 오답률";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1875, 1373);
+            this.ClientSize = new System.Drawing.Size(1442, 1030);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form2";
             this.Text = "TrainingPart V1.0";
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -228,6 +277,9 @@
             this.panel2.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -246,5 +298,9 @@
         private System.Windows.Forms.Button GoToResultbtn;
         private System.Windows.Forms.RadioButton radioNew;
         private System.Windows.Forms.RadioButton radioOverwrite;
+        private System.Windows.Forms.DataVisualization.Charting.Chart lossGraph;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private System.Windows.Forms.Label label1;
     }
 }

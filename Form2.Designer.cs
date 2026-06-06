@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -46,13 +46,17 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.lossGraph = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.Traninglst = new System.Windows.Forms.ListBox();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.containerPanel = new System.Windows.Forms.Panel();
+            this.Traninglst = new System.Windows.Forms.ListBox();
+            this.chartPanel = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).BeginInit();
+            this.containerPanel.SuspendLayout();
+            this.chartPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -205,7 +209,7 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.Traninglst);
+            this.panel3.Controls.Add(this.containerPanel);
             this.panel3.Location = new System.Drawing.Point(3, 129);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1412, 834);
@@ -215,7 +219,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.Location = new System.Drawing.Point(1320, 509);
+            this.label1.Location = new System.Drawing.Point(39, 250);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(173, 40);
             this.label1.TabIndex = 11;
@@ -224,31 +228,20 @@
             // 
             // lossGraph
             // 
-            chartArea2.Name = "ChartArea1";
-            this.lossGraph.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.lossGraph.Legends.Add(legend2);
-            this.lossGraph.Location = new System.Drawing.Point(1187, 529);
+            chartArea1.Name = "ChartArea1";
+            this.lossGraph.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.lossGraph.Legends.Add(legend1);
+            this.lossGraph.Location = new System.Drawing.Point(35, 304);
             this.lossGraph.Name = "lossGraph";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.lossGraph.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.lossGraph.Series.Add(series1);
             this.lossGraph.Size = new System.Drawing.Size(487, 349);
             this.lossGraph.TabIndex = 11;
             this.lossGraph.Text = "chart1";
             this.lossGraph.Click += new System.EventHandler(this.lossGraph_Click);
-            // 
-            // Traninglst
-            // 
-            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Traninglst.FormattingEnabled = true;
-            this.Traninglst.ItemHeight = 18;
-            this.Traninglst.Location = new System.Drawing.Point(0, 0);
-            this.Traninglst.Name = "Traninglst";
-            this.Traninglst.Size = new System.Drawing.Size(1412, 834);
-            this.Traninglst.TabIndex = 8;
-            this.Traninglst.SelectedIndexChanged += new System.EventHandler(this.Traninglst_SelectedIndexChanged);
             // 
             // printPreviewDialog1
             // 
@@ -260,15 +253,43 @@
             this.printPreviewDialog1.Name = "printPreviewDialog1";
             this.printPreviewDialog1.Visible = false;
             // 
+            // containerPanel
+            // 
+            this.containerPanel.Controls.Add(this.chartPanel);
+            this.containerPanel.Controls.Add(this.Traninglst);
+            this.containerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.containerPanel.Location = new System.Drawing.Point(0, 0);
+            this.containerPanel.Name = "containerPanel";
+            this.containerPanel.Size = new System.Drawing.Size(1412, 834);
+            this.containerPanel.TabIndex = 0;
+            // 
+            // Traninglst
+            // 
+            this.Traninglst.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Traninglst.FormattingEnabled = true;
+            this.Traninglst.ItemHeight = 18;
+            this.Traninglst.Location = new System.Drawing.Point(0, 0);
+            this.Traninglst.Name = "Traninglst";
+            this.Traninglst.Size = new System.Drawing.Size(647, 834);
+            this.Traninglst.TabIndex = 0;
+            // 
+            // chartPanel
+            // 
+            this.chartPanel.Controls.Add(this.label1);
+            this.chartPanel.Controls.Add(this.lossGraph);
+            this.chartPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.chartPanel.Location = new System.Drawing.Point(647, 0);
+            this.chartPanel.Name = "chartPanel";
+            this.chartPanel.Size = new System.Drawing.Size(765, 834);
+            this.chartPanel.TabIndex = 1;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1442, 1030);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.lossGraph);
             this.Name = "Form2";
             this.Text = "TrainingPart V1.0";
             this.Load += new System.EventHandler(this.Form2_Load);
@@ -280,8 +301,10 @@
             this.panel1.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lossGraph)).EndInit();
+            this.containerPanel.ResumeLayout(false);
+            this.chartPanel.ResumeLayout(false);
+            this.chartPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -294,7 +317,6 @@
         private System.Windows.Forms.Button TrainingStartbtn;
         private System.Windows.Forms.Label Massagelbl;
         private System.Windows.Forms.Label SortMethodlbl;
-        private System.Windows.Forms.ListBox Traninglst;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button GoToResultbtn;
         private System.Windows.Forms.RadioButton radioNew;
@@ -303,5 +325,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel containerPanel;
+        private System.Windows.Forms.Panel chartPanel;
+        private System.Windows.Forms.ListBox Traninglst;
     }
 }

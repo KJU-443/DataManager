@@ -15,6 +15,7 @@ namespace DataManager_2
 {
     public partial class Form2 : Form
     {
+
         private Process donkeyTrainProcess = null;
         private string realWorkingDirectory = "";
         private static List<(string time, string path, string imagePath)> trainingHistory = new List<(string, string, string)>();
@@ -29,6 +30,7 @@ namespace DataManager_2
         public Form2(string path, string data)
         {
             InitializeComponent();
+            InitializeLossChart();
             realWorkingDirectory = path;
             dataPath = data;
             radioOverwrite.Checked = true;
@@ -58,6 +60,7 @@ namespace DataManager_2
                     if (donkeyTrainProcess != null && !donkeyTrainProcess.HasExited)
                     {
                         Process.Start("wsl", "-d Ubuntu-22.04 bash -c \"pkill -2 -f train.py\"");
+                        ResetGraph();
                         Traninglst.Items.Add("[안내] 훈련 중단 신호 전달 완료. 모델 저장 대기 중...");
                     }
                 }
@@ -103,7 +106,28 @@ namespace DataManager_2
 
                 // 상세 에러 로그 추적
                 donkeyTrainProcess.OutputDataReceived += (s, args) => {
-                    if (args.Data != null) this.Invoke(new Action(() => Traninglst.Items.Add(args.Data)));
+                    if(args.Data != null){
+                        // 폼의 핸들이 생성되었을 때만 Invoke 실행
+                        if (this.IsHandleCreated)
+                        {
+                            this.Invoke(new Action(() => {
+                                Traninglst.Items.Add(args.Data);
+
+                                if (args.Data.Contains("loss:"))
+                                {
+                                    try
+                                    {
+                                        string lossStr = args.Data.Split(new[] { "loss:" }, StringSplitOptions.None)[1].Trim().Split(' ')[0];
+                                        if (double.TryParse(lossStr, out double lossVal))
+                                        {
+                                            UpdateLossGraph(lossVal);
+                                        }
+                                    }
+                                    catch { }
+                                }
+                            }));
+                        }
+                    }
                 };
                 donkeyTrainProcess.ErrorDataReceived += (s, args) => {
                     if (args.Data != null) this.Invoke(new Action(() => Traninglst.Items.Add($"[에러로그]: {args.Data}")));
@@ -120,6 +144,8 @@ namespace DataManager_2
         {
             if (!isTraining) return;
             isTraining = false;
+
+            ResetGraph();
 
             // 파이썬 종료 후 파일 시스템 반영 대기
             Task.Run(async () =>
@@ -150,9 +176,65 @@ namespace DataManager_2
         private void GoDatabtn_Click(object sender, EventArgs e) { Form1 f = Application.OpenForms.OfType<Form1>().FirstOrDefault() ?? new Form1(); f.Show(); if (Form1.isDarkMode) f.ApplyThemePublic(); this.Close(); }
         private void GoToResultbtn_Click(object sender, EventArgs e) { Form4 f4 = new Form4(dataPath); f4.ApplyWindowState(this); f4.Show(); this.Hide(); }
         private void SortMethodcom_SelectedIndexChanged(object sender, EventArgs e) { string s = SortMethodcom.SelectedItem?.ToString(); if (s == "Tabel") ShowTableView(); else if (s == "2-Tabel") Show2TableView(); else if (s == "Card") ShowCardView(); }
-        private void ShowTableView() { Traninglst.Visible = true; Traninglst.Dock = DockStyle.Fill; foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList()) tableLayoutPanel1.Controls.Remove(c); RefreshListBox(); }
-        private void Show2TableView() { Traninglst.Visible = false; foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList()) tableLayoutPanel1.Controls.Remove(c); Panel dp = new Panel { Name = "dynamicPanel", Dock = DockStyle.Fill }; tableLayoutPanel1.Controls.Add(dp, 0, 2); ListBox l = new ListBox { Dock = DockStyle.Left, Width = dp.Width / 2 }; ListBox r = new ListBox { Dock = DockStyle.Fill }; l.Items.Add("=== 이력(좌) ==="); r.Items.Add("=== 이력(우) ==="); int h = (trainingHistory.Count + 1) / 2; for (int i = 0; i < trainingHistory.Count; i++) { string s = $"[{trainingHistory[i].time}] {trainingHistory[i].path}"; if (i < h) l.Items.Add(s); else r.Items.Add(s); } dp.Controls.Add(r); dp.Controls.Add(l); }
-        private void ShowCardView() { Traninglst.Visible = false; foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList()) tableLayoutPanel1.Controls.Remove(c); Panel dp = new Panel { Name = "dynamicPanel", Dock = DockStyle.Fill, AutoScroll = true }; tableLayoutPanel1.Controls.Add(dp, 0, 2); for (int i = 0; i < trainingHistory.Count; i++) { var e = trainingHistory[i]; Panel card = new Panel { Width = 300, Height = 200, Location = new Point((i % 2) * 310 + 10, (i / 2) * 210 + 10), BorderStyle = BorderStyle.FixedSingle }; PictureBox p = new PictureBox { Width = 150, Height = 100, SizeMode = PictureBoxSizeMode.Zoom }; if (File.Exists(e.imagePath)) p.Image = Image.FromFile(e.imagePath); Label l = new Label { Text = e.time, Dock = DockStyle.Bottom }; card.Controls.Add(p); card.Controls.Add(l); dp.Controls.Add(card); } }
+        private void ShowTableView(){
+            foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList())
+                tableLayoutPanel1.Controls.Remove(c);
+
+            Traninglst.Visible = true;
+            chartPanel.Visible = true;
+            Traninglst.Dock = DockStyle.Left;
+            Traninglst.Width = tableLayoutPanel1.Width / 2;
+        }
+        private void Show2TableView(){
+            Traninglst.Visible = false;
+            chartPanel.Visible = false;
+
+            foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList())
+                tableLayoutPanel1.Controls.Remove(c);
+
+            Panel dp = new Panel { Name = "dynamicPanel", Dock = DockStyle.Fill };
+            tableLayoutPanel1.Controls.Add(dp, 0, 2);
+
+            ListBox l = new ListBox { Dock = DockStyle.Left, Width = dp.Width / 2 };
+            ListBox r = new ListBox { Dock = DockStyle.Fill };
+
+            l.Items.Add("=== 이력(좌) ===");
+            r.Items.Add("=== 이력(우) ===");
+
+            int h = (trainingHistory.Count + 1) / 2;
+            for (int i = 0; i < trainingHistory.Count; i++)
+            {
+                string s = $"[{trainingHistory[i].time}] {trainingHistory[i].path}";
+                if (i < h) l.Items.Add(s);
+                else r.Items.Add(s);
+            }
+            dp.Controls.Add(r);
+            dp.Controls.Add(l);
+        }
+        private void ShowCardView(){
+            Traninglst.Visible = false;
+            chartPanel.Visible = false;
+
+            foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList())
+                tableLayoutPanel1.Controls.Remove(c);
+
+            Panel dp = new Panel { Name = "dynamicPanel", Dock = DockStyle.Fill, AutoScroll = true };
+            tableLayoutPanel1.Controls.Add(dp, 0, 2);
+
+            for (int i = 0; i < trainingHistory.Count; i++)
+            {
+                var e = trainingHistory[i];
+                Panel card = new Panel { Width = 300, Height = 200, Location = new Point((i % 2) * 310 + 10, (i / 2) * 210 + 10), BorderStyle = BorderStyle.FixedSingle };
+                PictureBox p = new PictureBox { Width = 150, Height = 100, SizeMode = PictureBoxSizeMode.Zoom };
+
+                if (File.Exists(e.imagePath)) p.Image = Image.FromFile(e.imagePath);
+
+                Label lbl = new Label { Text = e.time, Dock = DockStyle.Bottom };
+                card.Controls.Add(p);
+                card.Controls.Add(lbl);
+                dp.Controls.Add(card);
+            }
+        }
         public void ApplyWindowState(Form p) { this.StartPosition = FormStartPosition.Manual; this.Location = p.Location; this.Size = p.Size; this.WindowState = p.WindowState; }
         public void ApplyThemePublic() { ApplyTheme(this); }
         private void TrainingStartbtn_Click(object sender, EventArgs e) { }
@@ -160,5 +242,64 @@ namespace DataManager_2
         private void Traninglst_SelectedIndexChanged(object sender, EventArgs e) { }
         private void SortMethodlbl_Click(object sender, EventArgs e) { }
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e) { }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lossGraph_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InitializeLossChart()
+        {
+            lossGraph.Series.Clear();
+            lossGraph.ChartAreas.Clear();
+            lossGraph.ChartAreas.Add("Area1");
+
+            var series = new System.Windows.Forms.DataVisualization.Charting.Series("LossSeries");
+            series.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series.Color = Color.Red;
+            series.BorderWidth = 2;
+
+            lossGraph.Series.Add(series);
+            lossGraph.ChartAreas[0].AxisX.Title = "Epoch";
+            lossGraph.ChartAreas[0].AxisY.Title = "Loss";
+        }
+
+        private void UpdateLossGraph(double lossValue)
+        {
+            // 차트 데이터 추가
+            lossGraph.Series["LossSeries"].Points.AddY(lossValue);
+
+            // 화면에 표시할 데이터 범위 제한 (최근 50개만 표시 등)
+            if (lossGraph.Series["LossSeries"].Points.Count > 50)
+            {
+                lossGraph.Series["LossSeries"].Points.RemoveAt(0);
+            }
+
+            // 축 자동 조정
+            lossGraph.ChartAreas[0].RecalculateAxesScale();
+        }
+
+        private void ResetGraph()
+        {
+            if (this.IsHandleCreated)
+            {
+                this.Invoke(new Action(() => {
+                    if (lossGraph.Series.Contains(lossGraph.Series["LossSeries"]))
+                    {
+                        lossGraph.Series["LossSeries"].Points.Clear();
+                    }
+                }));
+            }
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

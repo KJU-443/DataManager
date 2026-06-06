@@ -80,8 +80,6 @@ namespace DataManager_2
 
             string modelFileName = radioOverwrite.Checked ? "mypilot.h5" : $"mypilot_{DateTime.Now:yyyyMMdd_HHmm}.h5";
 
-            // 💡 핵심: 리눅스 환경변수 $HOME을 직접 사용하여 경로 문제를 원천 봉쇄
-            // mkdir -p를 사용할 때도 $HOME을 활용함
             string wslCommand = $"mkdir -p $HOME/mycar/models && " +
                                 $"cd $HOME/mycar && " +
                                 $"~/miniconda3/envs/e2e_env/bin/python3 train.py --tubs $HOME/mycar/data --model $HOME/mycar/models/{modelFileName}";
@@ -91,7 +89,6 @@ namespace DataManager_2
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = "wsl.exe",
-                    // 💡 -e bash -c 를 통해 명령어를 직접 쉘에 전달
                     Arguments = $"-d Ubuntu-22.04 -e bash -c \"{wslCommand}\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -104,28 +101,57 @@ namespace DataManager_2
 
                 donkeyTrainProcess.Exited += (s, args) => this.Invoke(new Action(() => HandleTrainingStop(modelFileName)));
 
-                // 상세 에러 로그 추적
                 donkeyTrainProcess.OutputDataReceived += (s, args) => {
-                    if(args.Data != null){
-                        // 폼의 핸들이 생성되었을 때만 Invoke 실행
-                        if (this.IsHandleCreated)
+                    if (args.Data != null)
+                    {
+                        if (this.IsHandleCreated && !this.IsDisposed)  // IsDisposed 체크 추가
                         {
-                            this.Invoke(new Action(() => {
-                                Traninglst.Items.Add(args.Data);
+                            try
+                            {
+                                this.Invoke(new Action(() => {
+                                    if (this.IsDisposed) return;  // 다시 한 번 체크
 
-                                if (args.Data.Contains("loss:"))
-                                {
-                                    try
+                                    Traninglst.Items.Add(args.Data);
+
+                                    // 진행률 파싱
+                                    if (args.Data.Contains("Epoch") && args.Data.Contains("/"))
                                     {
-                                        string lossStr = args.Data.Split(new[] { "loss:" }, StringSplitOptions.None)[1].Trim().Split(' ')[0];
-                                        if (double.TryParse(lossStr, out double lossVal))
+                                        try
                                         {
-                                            UpdateLossGraph(lossVal);
+                                            string cleanText = args.Data.Replace("Epoch", "").Trim();
+                                            string[] parts = cleanText.Split(' ')[0].Split('/');
+
+                                            if (parts.Length == 2)
+                                            {
+                                                double currentEpoch = double.Parse(parts[0]);
+                                                double totalEpoch = double.Parse(parts[1]);
+                                                int percentage = (int)((currentEpoch / totalEpoch) * 100);
+
+                                                TrainingProgresslbl.Text = $"훈련 진행률: {percentage}%";
+                                            }
                                         }
+                                        catch { }
                                     }
-                                    catch { }
-                                }
-                            }));
+
+                                    // 오답률 파싱
+                                    if (args.Data.Contains("loss:"))
+                                    {
+                                        try
+                                        {
+                                            string lossStr = args.Data.Split(new[] { "loss:" }, StringSplitOptions.None)[1].Trim().Split(' ')[0];
+                                            if (double.TryParse(lossStr, out double lossVal))
+                                            {
+                                                UpdateLossGraph(lossVal);
+                                            }
+                                        }
+                                        catch { }
+                                    }
+                                }));
+                            }
+                            catch (ObjectDisposedException)
+                            {
+                                // Form이 닫혀서 무시
+                            }
                         }
                     }
                 };
@@ -145,9 +171,9 @@ namespace DataManager_2
             if (!isTraining) return;
             isTraining = false;
 
+            TrainingProgresslbl.Text = "훈련 진행률: 0%";
             ResetGraph();
 
-            // 파이썬 종료 후 파일 시스템 반영 대기
             Task.Run(async () =>
             {
                 await Task.Delay(2000);
@@ -158,7 +184,6 @@ namespace DataManager_2
                     TrainingStartbtn.Text = "훈련 시작";
                     RefreshListBox();
 
-                    // 결과창으로 이동
                     GoToResultbtn_Click(null, null);
                 }));
             });
@@ -298,6 +323,11 @@ namespace DataManager_2
         }
 
         private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }

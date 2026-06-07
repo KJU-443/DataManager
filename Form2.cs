@@ -21,7 +21,8 @@ namespace DataManager_2
         private static List<(string time, string path, string imagePath)> trainingHistory = new List<(string, string, string)>();
         private string dataPath = "";
         private bool isTraining = false;
-        
+        private DateTime trainingStartTime;
+
 
         private Dictionary<Control, Color> originalBackColors = new Dictionary<Control, Color>();
         private Dictionary<Control, Color> originalForeColors = new Dictionary<Control, Color>();
@@ -74,6 +75,7 @@ namespace DataManager_2
 
         private void StartTraining()
         {
+            trainingStartTime = DateTime.Now; // 훈련 시작 시간 기록
             isTraining = true;
             TrainingStartbtn.Text = "훈련 멈추기";
             Traninglst.Items.Clear();
@@ -104,36 +106,38 @@ namespace DataManager_2
                 donkeyTrainProcess.OutputDataReceived += (s, args) => {
                     if (args.Data != null)
                     {
-                        if (this.IsHandleCreated && !this.IsDisposed)  // IsDisposed 체크 추가
+                        if (this.IsHandleCreated && !this.IsDisposed)
                         {
                             try
                             {
                                 this.Invoke(new Action(() => {
-                                    if (this.IsDisposed) return;  // 다시 한 번 체크
+                                    if (this.IsDisposed) return;
 
+                                    // 1. 스크롤 로직
+                                    int visibleItems = Traninglst.ClientSize.Height / (Traninglst.ItemHeight > 0 ? Traninglst.ItemHeight : 15);
+                                    bool isAtBottom = (Traninglst.TopIndex >= Traninglst.Items.Count - visibleItems - 1);
                                     Traninglst.Items.Add(args.Data);
+                                    if (isAtBottom) Traninglst.TopIndex = Math.Max(0, Traninglst.Items.Count - 1);
 
-                                    // 진행률 파싱
+                                    // 2. 진행률 파싱
                                     if (args.Data.Contains("Epoch") && args.Data.Contains("/"))
                                     {
                                         try
                                         {
                                             string cleanText = args.Data.Replace("Epoch", "").Trim();
                                             string[] parts = cleanText.Split(' ')[0].Split('/');
-
                                             if (parts.Length == 2)
                                             {
                                                 double currentEpoch = double.Parse(parts[0]);
                                                 double totalEpoch = double.Parse(parts[1]);
                                                 int percentage = (int)((currentEpoch / totalEpoch) * 100);
-
                                                 TrainingProgresslbl.Text = $"훈련 진행률: {percentage}%";
                                             }
                                         }
                                         catch { }
                                     }
 
-                                    // 오답률 파싱
+                                    // 3. 실시간 오답률 파싱 및 라벨 업데이트
                                     if (args.Data.Contains("loss:"))
                                     {
                                         try
@@ -142,19 +146,19 @@ namespace DataManager_2
                                             if (double.TryParse(lossStr, out double lossVal))
                                             {
                                                 UpdateLossGraph(lossVal);
+                                                // [실시간 업데이트 추가]
+                                                lastlosslbl.Text = $"실시간 오답률: {lossVal:F4}";
                                             }
                                         }
                                         catch { }
                                     }
                                 }));
                             }
-                            catch (ObjectDisposedException)
-                            {
-                                // Form이 닫혀서 무시
-                            }
+                            catch (ObjectDisposedException) { }
                         }
                     }
                 };
+
                 donkeyTrainProcess.ErrorDataReceived += (s, args) => {
                     if (args.Data != null) this.Invoke(new Action(() => Traninglst.Items.Add($"[에러로그]: {args.Data}")));
                 };
@@ -171,19 +175,37 @@ namespace DataManager_2
             if (!isTraining) return;
             isTraining = false;
 
-            TrainingProgresslbl.Text = "훈련 진행률: 0%";
-            ResetGraph();
+            // 1. 마지막으로 찍힌 loss 값 찾기
+            string lastLoss = "N/A";
+            this.Invoke(new Action(() =>
+            {
+                // 리스트박스 뒤에서부터 거꾸로 검색
+                for (int i = Traninglst.Items.Count - 1; i >= 0; i--)
+                {
+                    string item = Traninglst.Items[i].ToString();
+                    if (item.Contains("loss:"))
+                    {
+                        // "loss:" 뒤의 숫자만 추출
+                        lastLoss = item.Split(new[] { "loss:" }, StringSplitOptions.None)[1].Trim().Split(' ')[0];
+                        break;
+                    }
+                }
+
+                // 2. 라벨에 표시 (TrainingProgresslbl2 등을 활용하면 좋을 것 같아!)
+                lastlosslbl.Text = $"최종 오답률: {lastLoss}";
+
+                TrainingProgresslbl.Text = "훈련 진행률: 0%";
+                ResetGraph();
+            }));
 
             Task.Run(async () =>
             {
                 await Task.Delay(2000);
-
                 this.Invoke(new Action(() =>
                 {
-                    Traninglst.Items.Add($"[완료] 저장된 모델: {fileName}");
+                    Traninglst.Items.Add($"[완료] 저장된 모델: {fileName} (최종 오답률: {lastLoss})");
                     TrainingStartbtn.Text = "훈련 시작";
                     RefreshListBox();
-
                     GoToResultbtn_Click(null, null);
                 }));
             });

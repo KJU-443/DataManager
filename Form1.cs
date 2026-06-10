@@ -98,7 +98,7 @@ namespace DataManager
                 SaveOriginalColors(form.Controls);
                 colorssaved = true;
             }
-
+            
             Color backColor = isDarkMode ? Color.FromArgb(30, 30, 30) : SystemColors.Control;
             Color foreColor = isDarkMode ? Color.White : Color.Black;
             Color buttonBack = isDarkMode ? Color.FromArgb(60, 60, 60) : SystemColors.ButtonFace;
@@ -648,27 +648,36 @@ namespace DataManager
             if (!deletedFiles.Contains(fileNameOnly))
                 deletedFiles.Add(fileNameOnly);
 
-            // catalog에서 해당 레코드 삭제
+            // catalog에서 해당 레코드 삭제 + catalog_trash에 백업
             string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
                                              .Where(f => !f.EndsWith(".catalog_manifest"))
                                              .OrderBy(f => f)
                                              .ToArray();
 
+            string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+
             foreach (string catalogFile in catalogFiles)
             {
-                var lines = File.ReadAllLines(catalogFile)
-                                .Where(line =>
-                                {
-                                    if (string.IsNullOrWhiteSpace(line)) return false;
-                                    try
-                                    {
-                                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                        return json?.ImageArray != fileNameOnly;
-                                    }
-                                    catch { return true; }
-                                })
-                                .ToList();
-                File.WriteAllLines(catalogFile, lines);
+                var allLines = File.ReadAllLines(catalogFile).ToList();
+                var keepLines = new List<string>();
+                var removeLines = new List<string>();
+
+                foreach (string line in allLines)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    try
+                    {
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                        if (json?.ImageArray == fileNameOnly)
+                            removeLines.Add(line);
+                        else
+                            keepLines.Add(line);
+                    }
+                    catch { keepLines.Add(line); }
+                }
+
+                File.WriteAllLines(catalogFile, keepLines);
+                File.AppendAllLines(catalogTrashPath, removeLines);
             }
 
             // originalCatalogLines에서도 삭제
@@ -933,6 +942,56 @@ namespace DataManager
                     File.Move(trashFile, restorePath);
             }
 
+            // catalog_trash에서 카탈로그 레코드 복구
+            string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            if (File.Exists(catalogTrashPath))
+            {
+                var trashedLines = File.ReadAllLines(catalogTrashPath)
+                                       .Where(l => !string.IsNullOrWhiteSpace(l))
+                                       .ToList();
+
+                var restoredFileNames = trashFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+
+                var linesToRestore = trashedLines
+                    .Where(line =>
+                    {
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            return restoredFileNames.Contains(json?.ImageArray);
+                        }
+                        catch { return false; }
+                    }).ToList();
+
+                var linesToKeepInTrash = trashedLines.Except(linesToRestore).ToList();
+
+                // 원래 카탈로그에 복구
+                foreach (string line in linesToRestore)
+                {
+                    try
+                    {
+                        JObject json = JObject.Parse(line);
+                        int idx = (int)json["_index"];
+                        int catalogIndex = idx / 1000;
+
+                        string targetCatalog = catalogFiles
+                            .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == $"catalog_{catalogIndex}");
+
+                        if (targetCatalog != null)
+                            File.AppendAllText(targetCatalog, line + Environment.NewLine);
+                    }
+                    catch { }
+                }
+
+                // catalog_trash 업데이트
+                File.WriteAllLines(catalogTrashPath, linesToKeepInTrash);
+            }
+
             // imageFiles 재구성
             imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                   .OrderBy(f => f)
@@ -942,11 +1001,6 @@ namespace DataManager
             // catalogRecords 재구성
             originalCatalogLines.Clear();
             catalogRecords.Clear();
-
-            string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                                             .OrderBy(f => f)
-                                             .ToArray();
 
             foreach (string catalogFile in catalogFiles)
             {
@@ -970,6 +1024,24 @@ namespace DataManager
 
             await ShowImage(currentIndex);
             MessageBox.Show($"{trashFiles.Length}개 복구 완료!", "복구 완료");
+
+            // 복구 후 카탈로그 파일 정렬
+            foreach (string catalogFile in catalogFiles)
+            {
+                var lines = File.ReadAllLines(catalogFile)
+                                .Where(l => !string.IsNullOrWhiteSpace(l))
+                                .OrderBy(line =>
+                                {
+                                    try
+                                    {
+                                        JObject json = JObject.Parse(line);
+                                        return (int)json["_index"];
+                                    }
+                                    catch { return int.MaxValue; }
+                                })
+                                .ToList();
+                File.WriteAllLines(catalogFile, lines);
+            }
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
@@ -994,12 +1066,81 @@ namespace DataManager
             {
                 File.Move(trashFilePath, restorePath);
 
+                // catalog_trash에서 카탈로그 레코드 복구
+                string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+                string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                 .OrderBy(f => f)
+                                                 .ToArray();
+
+                if (File.Exists(catalogTrashPath))
+                {
+                    var trashedLines = File.ReadAllLines(catalogTrashPath)
+                                           .Where(l => !string.IsNullOrWhiteSpace(l))
+                                           .ToList();
+
+                    var linesToRestore = trashedLines
+                        .Where(line =>
+                        {
+                            try
+                            {
+                                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                return json?.ImageArray == fileName;
+                            }
+                            catch { return false; }
+                        }).ToList();
+
+                    var linesToKeepInTrash = trashedLines.Except(linesToRestore).ToList();
+
+                    foreach (string line in linesToRestore)
+                    {
+                        try
+                        {
+                            JObject json = JObject.Parse(line);
+                            int idx = (int)json["_index"];
+                            int catalogIndex = idx / 1000;
+
+                            string targetCatalog = catalogFiles
+                                .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == $"catalog_{catalogIndex}");
+
+                            if (targetCatalog != null)
+                                File.AppendAllText(targetCatalog, line + Environment.NewLine);
+                        }
+                        catch { }
+                    }
+
+                    File.WriteAllLines(catalogTrashPath, linesToKeepInTrash);
+                }
+
                 imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
                                       .OrderBy(f => f)
                                       .ToArray();
 
                 Imagebar.Maximum = imageFiles.Length - 1;
                 RefreshImageList();
+            }
+
+            // 복구 후 카탈로그 파일 정렬
+            string[] sortCatalogFiles = Directory.GetFiles(dataPath, "*.catalog")
+                                             .Where(f => !f.EndsWith(".catalog_manifest"))
+                                             .OrderBy(f => f)
+                                             .ToArray();
+
+            foreach (string catalogFile in sortCatalogFiles)
+            {
+                var lines = File.ReadAllLines(catalogFile)
+                                .Where(l => !string.IsNullOrWhiteSpace(l))
+                                .OrderBy(line =>
+                                {
+                                    try
+                                    {
+                                        JObject json = JObject.Parse(line);
+                                        return (int)json["_index"];
+                                    }
+                                    catch { return int.MaxValue; }
+                                })
+                                .ToList();
+                File.WriteAllLines(catalogFile, lines);
             }
         }
 
@@ -1258,21 +1399,30 @@ namespace DataManager
                                                  .OrderBy(f => f)
                                                  .ToArray();
 
+                string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+
                 foreach (string catalogFile in catalogFiles)
                 {
-                    var lines = File.ReadAllLines(catalogFile)
-                                    .Where(line =>
-                                    {
-                                        if (string.IsNullOrWhiteSpace(line)) return false;
-                                        try
-                                        {
-                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                            return !deletedFileNames.Contains(json?.ImageArray);
-                                        }
-                                        catch { return true; }
-                                    })
-                                    .ToList();
-                    File.WriteAllLines(catalogFile, lines);
+                    var allLines = File.ReadAllLines(catalogFile).ToList();
+                    var keepLines = new List<string>();
+                    var removeLines = new List<string>();
+
+                    foreach (string line in allLines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            if (deletedFileNames.Contains(json?.ImageArray))
+                                removeLines.Add(line);
+                            else
+                                keepLines.Add(line);
+                        }
+                        catch { keepLines.Add(line); }
+                    }
+
+                    File.WriteAllLines(catalogFile, keepLines);
+                    File.AppendAllLines(catalogTrashPath, removeLines);
                 }
 
                 originalCatalogLines = originalCatalogLines
@@ -1371,22 +1521,30 @@ namespace DataManager
                                                  .ToArray();
 
                 var deletedFileNames = imageFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+                string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
 
                 foreach (string catalogFile in catalogFiles)
                 {
-                    var lines = File.ReadAllLines(catalogFile)
-                                    .Where(line =>
-                                    {
-                                        if (string.IsNullOrWhiteSpace(line)) return false;
-                                        try
-                                        {
-                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                                            return !deletedFileNames.Contains(json?.ImageArray);
-                                        }
-                                        catch { return true; }
-                                    })
-                                    .ToList();
-                    File.WriteAllLines(catalogFile, lines);
+                    var allLines = File.ReadAllLines(catalogFile).ToList();
+                    var keepLines = new List<string>();
+                    var removeLines = new List<string>();
+
+                    foreach (string line in allLines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue;
+                        try
+                        {
+                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                            if (deletedFileNames.Contains(json?.ImageArray))
+                                removeLines.Add(line);
+                            else
+                                keepLines.Add(line);
+                        }
+                        catch { keepLines.Add(line); }
+                    }
+
+                    File.WriteAllLines(catalogFile, keepLines);
+                    File.AppendAllLines(catalogTrashPath, removeLines);
                 }
 
                 originalCatalogLines = originalCatalogLines

@@ -185,13 +185,12 @@ namespace DataManager_2
                     string item = Traninglst.Items[i].ToString();
                     if (item.Contains("loss:"))
                     {
-                        // "loss:" 뒤의 숫자만 추출
                         lastLoss = item.Split(new[] { "loss:" }, StringSplitOptions.None)[1].Trim().Split(' ')[0];
                         break;
                     }
                 }
 
-                // 2. 라벨에 표시 (TrainingProgresslbl2 등을 활용하면 좋을 것 같아!)
+                // 2. 라벨에 표시
                 lastlosslbl.Text = $"최종 오답률: {lastLoss}";
 
                 TrainingProgresslbl.Text = "훈련 진행률: 0%";
@@ -203,6 +202,13 @@ namespace DataManager_2
                 await Task.Delay(2000);
                 this.Invoke(new Action(() =>
                 {
+                    // ===== 이력 추가 =====
+                    string trainingTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                    string modelPath = $"{dataPath}/models/{fileName}";
+                    string imagePath = ""; // 이미지 경로 필요하면 설정
+                    trainingHistory.Add((trainingTime, modelPath, imagePath));
+                    // ===================
+
                     Traninglst.Items.Add($"[완료] 저장된 모델: {fileName} (최종 오답률: {lastLoss})");
                     TrainingStartbtn.Text = "훈련 시작";
                     RefreshListBox();
@@ -253,8 +259,8 @@ namespace DataManager_2
                 if (i < h) l.Items.Add(s);
                 else r.Items.Add(s);
             }
-            dp.Controls.Add(r);
-            dp.Controls.Add(l);
+            dp.Controls.Add(l); 
+            dp.Controls.Add(r);  
         }
         private void ShowCardView(){
             Traninglst.Visible = false;
@@ -268,10 +274,25 @@ namespace DataManager_2
             for (int i = 0; i < trainingHistory.Count; i++)
             {
                 var e = trainingHistory[i];
-                Panel card = new Panel { Width = 300, Height = 200, Location = new Point((i % 2) * 310 + 10, (i / 2) * 210 + 10), BorderStyle = BorderStyle.FixedSingle };
-                PictureBox p = new PictureBox { Width = 150, Height = 100, SizeMode = PictureBoxSizeMode.Zoom };
+                Panel card = new Panel { Width = 300, Height = 250, Location = new Point((i % 2) * 310 + 10, (i / 2) * 260 + 10), BorderStyle = BorderStyle.FixedSingle };
+                PictureBox p = new PictureBox { Width = 280, Height = 150, SizeMode = PictureBoxSizeMode.Zoom, Dock = DockStyle.Top };
 
-                if (File.Exists(e.imagePath)) p.Image = Image.FromFile(e.imagePath);
+                // ===== dataPath 직접 사용 =====
+                string imagesFolder = Path.Combine(dataPath, "images");
+
+                if (Directory.Exists(imagesFolder))
+                {
+                    string[] images = Directory.GetFiles(imagesFolder, "*_cam_image_array_.jpg").OrderBy(f => f).ToArray();
+                    if (images.Length > 0)
+                    {
+                        try
+                        {
+                            p.Image = Image.FromFile(images[0]);
+                        }
+                        catch { }
+                    }
+                }
+                // ===============================
 
                 Label lbl = new Label { Text = e.time, Dock = DockStyle.Bottom };
                 card.Controls.Add(p);

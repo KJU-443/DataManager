@@ -98,7 +98,7 @@ namespace DataManager
                 SaveOriginalColors(form.Controls);
                 colorssaved = true;
             }
-
+            
             Color backColor = isDarkMode ? Color.FromArgb(30, 30, 30) : SystemColors.Control;
             Color foreColor = isDarkMode ? Color.White : Color.Black;
             Color buttonBack = isDarkMode ? Color.FromArgb(60, 60, 60) : SystemColors.ButtonFace;
@@ -1243,6 +1243,10 @@ namespace DataManager
             LoadGraph();
             RefreshImageList();
 
+            MessageBox.Show(
+                $"images={filteredImages.Count}\nrecords={filteredRecords.Count}"
+                );
+
             if (imageFiles.Length > 0)
             {
                 currentIndex = 0;
@@ -1254,6 +1258,10 @@ namespace DataManager
 
                 DelImageFilteringbtn.Text = "이미지 필터링 해제";
                 isFiltering = true;
+            }
+            else
+            {
+                MessageBox.Show("조건에 맞는 이미지가 없습니다.");
             }
         }
 

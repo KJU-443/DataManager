@@ -228,13 +228,11 @@ namespace DataManager_2
                 tableLayoutPanel1.Controls.Remove(c);
 
             Traninglst.Visible = true;
-            chartPanel.Visible = true;
             Traninglst.Dock = DockStyle.Left;
             Traninglst.Width = tableLayoutPanel1.Width / 2;
         }
         private void Show2TableView(){
             Traninglst.Visible = false;
-            chartPanel.Visible = false;
 
             foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList())
                 tableLayoutPanel1.Controls.Remove(c);
@@ -260,7 +258,6 @@ namespace DataManager_2
         }
         private void ShowCardView(){
             Traninglst.Visible = false;
-            chartPanel.Visible = false;
 
             foreach (Control c in tableLayoutPanel1.Controls.OfType<Panel>().Where(p => p.Name == "dynamicPanel").ToList())
                 tableLayoutPanel1.Controls.Remove(c);

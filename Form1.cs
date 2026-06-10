@@ -1243,10 +1243,6 @@ namespace DataManager
             LoadGraph();
             RefreshImageList();
 
-            MessageBox.Show(
-                $"images={filteredImages.Count}\nrecords={filteredRecords.Count}"
-                );
-
             if (imageFiles.Length > 0)
             {
                 currentIndex = 0;
@@ -1258,10 +1254,6 @@ namespace DataManager
 
                 DelImageFilteringbtn.Text = "이미지 필터링 해제";
                 isFiltering = true;
-            }
-            else
-            {
-                MessageBox.Show("조건에 맞는 이미지가 없습니다.");
             }
         }
 

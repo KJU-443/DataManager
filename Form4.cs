@@ -115,10 +115,19 @@ namespace DataManager
                 if (Directory.Exists(targetImagesPath))
                 {
                     string[] extensions = { "*.jpg", "*.jpeg", "*.png", "*.JPG", "*.JPEG", "*.PNG" };
-                    imageFiles = extensions.SelectMany(ext => Directory.GetFiles(targetImagesPath, ext))
-                                           .Distinct()
-                                           .OrderBy(f => f)
-                                           .ToArray();
+                    imageFiles = extensions
+                        .SelectMany(ext => Directory.GetFiles(targetImagesPath, ext))
+                        .Distinct()
+                        .OrderBy(f =>
+                        {
+                            string numStr =
+                                Path.GetFileName(f).Split('_')[0];
+
+                            return int.TryParse(numStr, out int num)
+                                ? num
+                                : int.MaxValue;
+                        })
+                        .ToArray();
 
                     if (imageFiles.Length > 0)
                     {

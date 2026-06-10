@@ -154,7 +154,7 @@
             this.ClientSize = new System.Drawing.Size(1442, 1030);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Form3";
-            this.Text = "Form3";
+            this.Text = "DeletedImageList";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel2.ResumeLayout(false);

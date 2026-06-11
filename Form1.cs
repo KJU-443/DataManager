@@ -760,29 +760,122 @@ namespace DataManager
     <title>Image Viewer</title>
     <style>
         body {{ background: #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; font-family: Arial; }}
-        img {{ width: 95vw; height: 90vh; object-fit: contain; }}
+        img {{ width: 95vw; height: 80vh; object-fit: contain; }}
         #info {{ margin-top: 10px; font-size: 16px; }}
-        #controls {{ margin-top: 10px; font-size: 13px; color: #aaa; }}
+        #controls {{ margin-top: 5px; font-size: 13px; color: #aaa; }}
+        #status {{ margin-top: 5px; font-size: 13px; color: #aaa; }}
+        #speedbar-container {{ margin-top: 8px; width: 300px; background: #333; border-radius: 10px; height: 12px; }}
+        #speedbar {{ height: 12px; border-radius: 10px; background: linear-gradient(to right, #4fc3f7, #e040fb); width: 50%; transition: width 0.2s; }}
+        #speedlbl {{ margin-top: 4px; font-size: 12px; color: #ccc; }}
     </style>
 </head>
 <body>
     <img id='imgView' src='' />
     <div id='info'></div>
-    <div id='controls'>&larr; &rarr; 방향키로 이미지 넘기기</div>
+    <div id='controls'>&larr; &rarr; 넘기기 &nbsp;|&nbsp; Space: 재생/정지 &nbsp;|&nbsp; &uarr;&darr; 속도 조절 &nbsp;|&nbsp; Shift+Space: 전체 재생/정지</div>
+    <div id='status'>정지 (Space: 재생)</div>
+    <div id='speedbar-container'><div id='speedbar'></div></div>
+    <div id='speedlbl'>속도: 1.0x</div>
     <script>
         const images = [{jsArray}];
         let index = {currentIndex};
+        let isPlaying = false;
+        let playInterval = null;
+
+        const speedLevels = [0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 5.0];
+        let speedIndex = 2; // 기본 1.0x
+
+        function getInterval() {{
+            return Math.round(100 / speedLevels[speedIndex]);
+        }}
+
+        function updateSpeedBar() {{
+            const ratio = speedIndex / (speedLevels.length - 1);
+            document.getElementById('speedbar').style.width = (ratio * 100) + '%';
+            document.getElementById('speedlbl').innerText = '속도: ' + speedLevels[speedIndex] + 'x';
+        }}
 
         function showImage(i) {{
             document.getElementById('imgView').src = 'file:///' + images[i].replace(/\\\\/g, '/');
             document.getElementById('info').innerText = (i + 1) + ' / ' + images.length;
         }}
 
+        function startPlay() {{
+            isPlaying = true;
+            document.getElementById('status').innerText = '재생 중 (Space: 정지)';
+            playInterval = setInterval(() => {{
+                if (index < images.length - 1) {{
+                    index++;
+                    showImage(index);
+                }} else {{
+                    stopPlay();
+                }}
+            }}, getInterval());
+        }}
+
+        function stopPlay() {{
+            isPlaying = false;
+            clearInterval(playInterval);
+            document.getElementById('status').innerText = '정지 (Space: 재생)';
+        }}
+
+        function restartIfPlaying() {{
+            if (isPlaying) {{
+                clearInterval(playInterval);
+                playInterval = setInterval(() => {{
+                    if (index < images.length - 1) {{
+                        index++;
+                        showImage(index);
+                    }} else {{
+                        stopPlay();
+                    }}
+                }}, getInterval());
+            }}
+        }}
+
+        const bc = new BroadcastChannel('donkey_viewer');
+
+        bc.onmessage = function(e) {{
+            if (e.data === 'play' && !isPlaying) startPlay();
+            if (e.data === 'stop' && isPlaying) stopPlay();
+        }};
+
         document.addEventListener('keydown', function(e) {{
-            if (e.key === 'ArrowRight' && index < images.length - 1) {{ index++; showImage(index); }}
-            if (e.key === 'ArrowLeft' && index > 0) {{ index--; showImage(index); }}
+            if (e.key === 'ArrowRight' && !isPlaying && index < images.length - 1) {{ index++; showImage(index); }}
+            if (e.key === 'ArrowLeft' && !isPlaying && index > 0) {{ index--; showImage(index); }}
+            if (e.key === 'ArrowUp') {{
+                e.preventDefault();
+                if (speedIndex < speedLevels.length - 1) {{
+                    speedIndex++;
+                    updateSpeedBar();
+                    restartIfPlaying();
+                }}
+            }}
+            if (e.key === 'ArrowDown') {{
+                e.preventDefault();
+                if (speedIndex > 0) {{
+                    speedIndex--;
+                    updateSpeedBar();
+                    restartIfPlaying();
+                }}
+            }}
+            if (e.key === ' ' && !e.shiftKey) {{
+                e.preventDefault();
+                isPlaying ? stopPlay() : startPlay();
+            }}
+            if (e.key === ' ' && e.shiftKey) {{
+                e.preventDefault();
+                if (isPlaying) {{
+                    stopPlay();
+                    bc.postMessage('stop');
+                }} else {{
+                    startPlay();
+                    bc.postMessage('play');
+                }}
+            }}
         }});
 
+        updateSpeedBar();
         showImage(index);
     </script>
 </body>

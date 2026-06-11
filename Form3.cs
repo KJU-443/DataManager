@@ -126,16 +126,21 @@ namespace DataManager
             flowLayoutPanel1.Controls.Clear();
             selectedCards.Clear();
 
-            string trashPath = Path.Combine(dataPath, "image_trash");
+            string trashBasePath = Path.Combine(dataPath, "image_trash");
 
-            if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
+            if (!Directory.Exists(trashBasePath) ||
+                !Directory.GetDirectories(trashBasePath).Any(d => Directory.GetFiles(d, "*.jpg").Length > 0))
             {
                 Massagelbl.Text = "복구할 이미지가 없어요.";
                 Massagelbl.ForeColor = Color.Gray;
                 return;
             }
 
-            string[] trashFiles = Directory.GetFiles(trashPath, "*.jpg").OrderBy(f => f).ToArray();
+            // 날짜별 하위 폴더에서 모든 jpg 수집
+            string[] trashFiles = Directory.GetDirectories(trashBasePath)
+                                           .SelectMany(d => Directory.GetFiles(d, "*.jpg"))
+                                           .OrderBy(f => f)
+                                           .ToArray();
 
             foreach (string imgPath in trashFiles)
             {
@@ -146,7 +151,7 @@ namespace DataManager
             Massagelbl.ForeColor = Color.Blue;
         }
 
-     
+
         private void GoDatabtn_Click(object sender, EventArgs e)
         {
             parentForm.Show();

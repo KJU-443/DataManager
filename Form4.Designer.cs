@@ -106,7 +106,7 @@
             this.ImageNumberlbl.AutoSize = true;
             this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
-            this.ImageNumberlbl.Location = new System.Drawing.Point(100, 359);
+            this.ImageNumberlbl.Location = new System.Drawing.Point(100, 183);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
             this.ImageNumberlbl.TabIndex = 17;
@@ -117,7 +117,7 @@
             this.Reversebtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.Reversebtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Reversebtn.ForeColor = System.Drawing.Color.Black;
-            this.Reversebtn.Location = new System.Drawing.Point(14, 586);
+            this.Reversebtn.Location = new System.Drawing.Point(14, 548);
             this.Reversebtn.Name = "Reversebtn";
             this.Reversebtn.Size = new System.Drawing.Size(171, 51);
             this.Reversebtn.TabIndex = 14;
@@ -130,7 +130,7 @@
             this.Plsybtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.Plsybtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Plsybtn.ForeColor = System.Drawing.Color.Black;
-            this.Plsybtn.Location = new System.Drawing.Point(188, 586);
+            this.Plsybtn.Location = new System.Drawing.Point(188, 548);
             this.Plsybtn.Name = "Plsybtn";
             this.Plsybtn.Size = new System.Drawing.Size(171, 51);
             this.Plsybtn.TabIndex = 13;
@@ -143,7 +143,7 @@
             this.NextImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.NextImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.NextImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.NextImgbtn.Location = new System.Drawing.Point(188, 491);
+            this.NextImgbtn.Location = new System.Drawing.Point(188, 415);
             this.NextImgbtn.Name = "NextImgbtn";
             this.NextImgbtn.Size = new System.Drawing.Size(171, 51);
             this.NextImgbtn.TabIndex = 12;
@@ -156,7 +156,7 @@
             this.PreviousImgbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.PreviousImgbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.PreviousImgbtn.ForeColor = System.Drawing.Color.Black;
-            this.PreviousImgbtn.Location = new System.Drawing.Point(14, 491);
+            this.PreviousImgbtn.Location = new System.Drawing.Point(14, 415);
             this.PreviousImgbtn.Name = "PreviousImgbtn";
             this.PreviousImgbtn.Size = new System.Drawing.Size(171, 51);
             this.PreviousImgbtn.TabIndex = 11;
@@ -182,7 +182,7 @@
             this.OpenImgBrowserbtn.BackColor = System.Drawing.Color.PowderBlue;
             this.OpenImgBrowserbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.OpenImgBrowserbtn.ForeColor = System.Drawing.Color.Black;
-            this.OpenImgBrowserbtn.Location = new System.Drawing.Point(14, 283);
+            this.OpenImgBrowserbtn.Location = new System.Drawing.Point(13, 47);
             this.OpenImgBrowserbtn.Name = "OpenImgBrowserbtn";
             this.OpenImgBrowserbtn.Size = new System.Drawing.Size(346, 51);
             this.OpenImgBrowserbtn.TabIndex = 1;
@@ -196,7 +196,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(17, 356);
+            this.label2.Location = new System.Drawing.Point(17, 180);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 32);
             this.label2.TabIndex = 3;
@@ -207,7 +207,7 @@
             this.DoubleSpeedbtn.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.DoubleSpeedbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedbtn.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 402);
+            this.DoubleSpeedbtn.Location = new System.Drawing.Point(188, 288);
             this.DoubleSpeedbtn.Name = "DoubleSpeedbtn";
             this.DoubleSpeedbtn.Size = new System.Drawing.Size(171, 51);
             this.DoubleSpeedbtn.TabIndex = 5;
@@ -220,7 +220,7 @@
             this.DoubleSpeedtxt.BackColor = System.Drawing.Color.DarkSeaGreen;
             this.DoubleSpeedtxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.DoubleSpeedtxt.ForeColor = System.Drawing.Color.Black;
-            this.DoubleSpeedtxt.Location = new System.Drawing.Point(14, 408);
+            this.DoubleSpeedtxt.Location = new System.Drawing.Point(14, 294);
             this.DoubleSpeedtxt.Name = "DoubleSpeedtxt";
             this.DoubleSpeedtxt.Size = new System.Drawing.Size(171, 39);
             this.DoubleSpeedtxt.TabIndex = 2;
@@ -264,6 +264,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1407, 138);
             this.tableLayoutPanel1.TabIndex = 9;
             // 

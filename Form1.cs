@@ -630,7 +630,8 @@ namespace DataManager
 
             // image_trash 폴더 생성
             string dataPath = Imgtxt.Text;
-            string trashPath = Path.Combine(dataPath, "image_trash");
+            string today = DateTime.Now.ToString("yyyy-MM-dd");
+            string trashPath = Path.Combine(dataPath, "image_trash", today);
             if (!Directory.Exists(trashPath))
                 Directory.CreateDirectory(trashPath);
 
@@ -654,7 +655,7 @@ namespace DataManager
                                              .OrderBy(f => f)
                                              .ToArray();
 
-            string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+            string catalogTrashPath = Path.Combine(dataPath, $"catalog_trash_{today}.jsonl");
 
             foreach (string catalogFile in catalogFiles)
             {
@@ -916,15 +917,19 @@ namespace DataManager
         private async void Restorebtn_Click_1(object sender, EventArgs e)
         {
             string dataPath = Imgtxt.Text;
-            string trashPath = Path.Combine(dataPath, "image_trash");
+            string trashBasePath = Path.Combine(dataPath, "image_trash");
 
-            if (!Directory.Exists(trashPath) || Directory.GetFiles(trashPath, "*.jpg").Length == 0)
+            if (!Directory.Exists(trashBasePath) || !Directory.GetDirectories(trashBasePath).Any(d => Directory.GetFiles(d, "*.jpg").Length > 0))
             {
                 MessageBox.Show("복구할 데이터가 존재하지 않습니다.", "알림");
                 return;
             }
 
-            string[] trashFiles = Directory.GetFiles(trashPath, "*.jpg").OrderBy(f => f).ToArray();
+            // 날짜별 폴더에서 모든 jpg 수집
+            string[] trashFiles = Directory.GetDirectories(trashBasePath)
+                                           .SelectMany(d => Directory.GetFiles(d, "*.jpg"))
+                                           .OrderBy(f => f)
+                                           .ToArray();
 
             DialogResult confirm = MessageBox.Show(
                 $"image_trash의 이미지 {trashFiles.Length}개를 전부 복구할까요?",
@@ -934,6 +939,7 @@ namespace DataManager
 
             string imagesPath = Path.Combine(dataPath, "images");
 
+            // 이미지 복구
             foreach (string trashFile in trashFiles)
             {
                 string fileName = Path.GetFileName(trashFile);
@@ -942,54 +948,82 @@ namespace DataManager
                     File.Move(trashFile, restorePath);
             }
 
-            // catalog_trash에서 카탈로그 레코드 복구
-            string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+            // catalog 파일 목록
             string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
                                              .Where(f => !f.EndsWith(".catalog_manifest"))
                                              .OrderBy(f => f)
                                              .ToArray();
 
-            if (File.Exists(catalogTrashPath))
-            {
-                var trashedLines = File.ReadAllLines(catalogTrashPath)
-                                       .Where(l => !string.IsNullOrWhiteSpace(l))
-                                       .ToList();
+            // 날짜별 catalog_trash 파일 전부 탐색
+            var allCatalogTrashFiles = Directory.GetFiles(dataPath, "catalog_trash_*.jsonl");
+            var restoredFileNames = trashFiles.Select(f => Path.GetFileName(f)).ToHashSet();
 
-                var restoredFileNames = trashFiles.Select(f => Path.GetFileName(f)).ToHashSet();
+            var allTrashedLines = allCatalogTrashFiles
+                .SelectMany(f => File.ReadAllLines(f).Where(l => !string.IsNullOrWhiteSpace(l)))
+                .ToList();
 
-                var linesToRestore = trashedLines
-                    .Where(line =>
-                    {
-                        try
-                        {
-                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
-                            return restoredFileNames.Contains(json?.ImageArray);
-                        }
-                        catch { return false; }
-                    }).ToList();
-
-                var linesToKeepInTrash = trashedLines.Except(linesToRestore).ToList();
-
-                // 원래 카탈로그에 복구
-                foreach (string line in linesToRestore)
+            var linesToRestore = allTrashedLines
+                .Where(line =>
                 {
                     try
                     {
-                        JObject json = JObject.Parse(line);
-                        int idx = (int)json["_index"];
-                        int catalogIndex = idx / 1000;
-
-                        string targetCatalog = catalogFiles
-                            .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == $"catalog_{catalogIndex}");
-
-                        if (targetCatalog != null)
-                            File.AppendAllText(targetCatalog, line + Environment.NewLine);
+                        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                        return restoredFileNames.Contains(json?.ImageArray);
                     }
-                    catch { }
-                }
+                    catch { return false; }
+                }).ToList();
 
-                // catalog_trash 업데이트
-                File.WriteAllLines(catalogTrashPath, linesToKeepInTrash);
+            // 각 날짜별 파일에서 복구된 줄 제거
+            foreach (string catalogTrashFile in allCatalogTrashFiles)
+            {
+                var remaining = File.ReadAllLines(catalogTrashFile)
+                                    .Where(l => !string.IsNullOrWhiteSpace(l))
+                                    .Where(line =>
+                                    {
+                                        try
+                                        {
+                                            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<CatalogRecord>(line);
+                                            return !restoredFileNames.Contains(json?.ImageArray);
+                                        }
+                                        catch { return true; }
+                                    }).ToList();
+                File.WriteAllLines(catalogTrashFile, remaining);
+            }
+
+            // 원래 카탈로그에 복구
+            foreach (string line in linesToRestore)
+            {
+                try
+                {
+                    JObject json = JObject.Parse(line);
+                    int idx = (int)json["_index"];
+                    int catalogIndex = idx / 1000;
+
+                    string targetCatalog = catalogFiles
+                        .FirstOrDefault(f => Path.GetFileNameWithoutExtension(f) == $"catalog_{catalogIndex}");
+
+                    if (targetCatalog != null)
+                        File.AppendAllText(targetCatalog, line + Environment.NewLine);
+                }
+                catch { }
+            }
+
+            // 복구 후 카탈로그 파일 정렬
+            foreach (string catalogFile in catalogFiles)
+            {
+                var lines = File.ReadAllLines(catalogFile)
+                                .Where(l => !string.IsNullOrWhiteSpace(l))
+                                .OrderBy(line =>
+                                {
+                                    try
+                                    {
+                                        JObject json = JObject.Parse(line);
+                                        return (int)json["_index"];
+                                    }
+                                    catch { return int.MaxValue; }
+                                })
+                                .ToList();
+                File.WriteAllLines(catalogFile, lines);
             }
 
             // imageFiles 재구성
@@ -1023,25 +1057,22 @@ namespace DataManager
                 currentIndex = imageFiles.Length - 1;
 
             await ShowImage(currentIndex);
-            MessageBox.Show($"{trashFiles.Length}개 복구 완료!", "복구 완료");
 
-            // 복구 후 카탈로그 파일 정렬
-            foreach (string catalogFile in catalogFiles)
+            // 빈 날짜 폴더 삭제
+            foreach (string dateDir in Directory.GetDirectories(trashBasePath))
             {
-                var lines = File.ReadAllLines(catalogFile)
-                                .Where(l => !string.IsNullOrWhiteSpace(l))
-                                .OrderBy(line =>
-                                {
-                                    try
-                                    {
-                                        JObject json = JObject.Parse(line);
-                                        return (int)json["_index"];
-                                    }
-                                    catch { return int.MaxValue; }
-                                })
-                                .ToList();
-                File.WriteAllLines(catalogFile, lines);
+                if (Directory.GetFiles(dateDir, "*.jpg").Length == 0)
+                    Directory.Delete(dateDir);
             }
+
+            // 빈 catalog_trash 파일 삭제
+            foreach (string catalogTrashFile in Directory.GetFiles(dataPath, "catalog_trash_*.jsonl"))
+            {
+                if (!File.ReadAllLines(catalogTrashFile).Any(l => !string.IsNullOrWhiteSpace(l)))
+                    File.Delete(catalogTrashFile);
+            }
+
+            MessageBox.Show($"{trashFiles.Length}개 복구 완료!", "복구 완료");
         }
 
         private void GoToImage_Click(object sender, EventArgs e)
@@ -1056,26 +1087,30 @@ namespace DataManager
         public void RestoreImage(string fileName)
         {
             string dataPath = Imgtxt.Text;
-            string trashPath = Path.Combine(dataPath, "image_trash");
+            string trashBasePath = Path.Combine(dataPath, "image_trash");
             string imagesPath = Path.Combine(dataPath, "images");
 
-            string trashFilePath = Path.Combine(trashPath, fileName);
+            // 날짜별 폴더에서 파일 찾기
+            string trashFilePath = Directory.GetDirectories(trashBasePath)
+                                            .Select(d => Path.Combine(d, fileName))
+                                            .FirstOrDefault(f => File.Exists(f));
+
             string restorePath = Path.Combine(imagesPath, fileName);
 
-            if (File.Exists(trashFilePath))
+            if (trashFilePath != null)
             {
                 File.Move(trashFilePath, restorePath);
 
-                // catalog_trash에서 카탈로그 레코드 복구
-                string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+                // 날짜별 catalog_trash 파일 전부 탐색
+                var allCatalogTrashFiles = Directory.GetFiles(dataPath, "catalog_trash_*.jsonl");
                 string[] catalogFiles = Directory.GetFiles(dataPath, "*.catalog")
                                                  .Where(f => !f.EndsWith(".catalog_manifest"))
                                                  .OrderBy(f => f)
                                                  .ToArray();
 
-                if (File.Exists(catalogTrashPath))
+                foreach (string catalogTrashFile in allCatalogTrashFiles)
                 {
-                    var trashedLines = File.ReadAllLines(catalogTrashPath)
+                    var trashedLines = File.ReadAllLines(catalogTrashFile)
                                            .Where(l => !string.IsNullOrWhiteSpace(l))
                                            .ToList();
 
@@ -1109,7 +1144,7 @@ namespace DataManager
                         catch { }
                     }
 
-                    File.WriteAllLines(catalogTrashPath, linesToKeepInTrash);
+                    File.WriteAllLines(catalogTrashFile, linesToKeepInTrash);
                 }
 
                 imageFiles = Directory.GetFiles(imagesPath, "*.jpg")
@@ -1117,14 +1152,37 @@ namespace DataManager
                                       .ToArray();
 
                 Imagebar.Maximum = imageFiles.Length - 1;
+
+                // 빈 날짜 폴더 삭제
+                string trashBaseCleanPath = Path.Combine(dataPath, "image_trash");
+                foreach (string dateDir in Directory.GetDirectories(trashBasePath))
+                {
+                    if (Directory.GetFiles(dateDir, "*.jpg").Length == 0)
+                        Directory.Delete(dateDir);
+                }
+
+                // 빈 catalog_trash 파일 삭제
+                foreach (string catalogTrashFile in Directory.GetFiles(dataPath, "catalog_trash_*.jsonl"))
+                {
+                    if (!File.ReadAllLines(catalogTrashFile).Any(l => !string.IsNullOrWhiteSpace(l)))
+                        File.Delete(catalogTrashFile);
+                }
+
+                // 빈 catalog_trash 파일 삭제
+                foreach (string catalogTrashFile in Directory.GetFiles(dataPath, "catalog_trash_*.jsonl"))
+                {
+                    if (!File.ReadAllLines(catalogTrashFile).Any(l => !string.IsNullOrWhiteSpace(l)))
+                        File.Delete(catalogTrashFile);
+                }
+
                 RefreshImageList();
             }
 
             // 복구 후 카탈로그 파일 정렬
             string[] sortCatalogFiles = Directory.GetFiles(dataPath, "*.catalog")
-                                             .Where(f => !f.EndsWith(".catalog_manifest"))
-                                             .OrderBy(f => f)
-                                             .ToArray();
+                                                 .Where(f => !f.EndsWith(".catalog_manifest"))
+                                                 .OrderBy(f => f)
+                                                 .ToArray();
 
             foreach (string catalogFile in sortCatalogFiles)
             {
@@ -1319,6 +1377,11 @@ namespace DataManager
                     NumDowntxt.Text = rangeEnd.ToString();
                     _rangeStart = -1;
 
+                    // ↓ 추가
+                    playTimer.Stop();
+                    isPlaying = false;
+                    PlayAndStopbtn.Text = "재생";
+
                     button1_Click(this, EventArgs.Empty);
 
                     // 삭제 완료 후 UI 복구
@@ -1364,7 +1427,9 @@ namespace DataManager
                 }
 
                 string dataPath = Imgtxt.Text;
-                string trashPath = Path.Combine(dataPath, "image_trash");
+
+                string today = DateTime.Now.ToString("yyyy-MM-dd");
+                string trashPath = Path.Combine(dataPath, "image_trash", today);
                 if (!Directory.Exists(trashPath))
                     Directory.CreateDirectory(trashPath);
 
@@ -1399,7 +1464,7 @@ namespace DataManager
                                                  .OrderBy(f => f)
                                                  .ToArray();
 
-                string catalogTrashPath = Path.Combine(dataPath, "catalog_trash.jsonl");
+                string catalogTrashPath = Path.Combine(dataPath, $"catalog_trash_{today}.jsonl");
 
                 foreach (string catalogFile in catalogFiles)
                 {

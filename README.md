@@ -144,22 +144,24 @@ catalog 파일은 JSON Lines 형식으로 저장됩니다.
 
 * C#
 * Windows Forms (.NET)
+* .NET SDK 8.0
 
 ### Backend
 
 * Python
-* DonkeyCar
+* DonkeyCar 5.3.dev1
 
 ### Data Processing
 
 * JSON Parsing
 * File I/O
 * Image Processing
+* Ubuntu 22.04
 
 ### Development Environment
 
-* Visual Studio
-* Windows
+* Visual Studio 2026
+* Windows 11
 
 ---
 

@@ -106,7 +106,7 @@
             this.ImageNumberlbl.AutoSize = true;
             this.ImageNumberlbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ImageNumberlbl.ForeColor = System.Drawing.Color.Black;
-            this.ImageNumberlbl.Location = new System.Drawing.Point(100, 183);
+            this.ImageNumberlbl.Location = new System.Drawing.Point(100, 182);
             this.ImageNumberlbl.Name = "ImageNumberlbl";
             this.ImageNumberlbl.Size = new System.Drawing.Size(151, 29);
             this.ImageNumberlbl.TabIndex = 17;
